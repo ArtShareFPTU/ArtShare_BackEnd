@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Artwork;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,18 +25,18 @@ public class ArtworkService : IArtworkService
         return await _ArtworkRepository.GetArtworkByIdAsync(id);
     }
 
-    public async Task AddArtworkAsync(Artwork Artwork)
+    public async Task<IActionResult> AddArtworkAsync(ArtworkCreation Artwork)
     {
-        await _ArtworkRepository.AddArtworkAsync(Artwork);
+        return await _ArtworkRepository.AddArtworkAsync(Artwork);
     }
 
-    public async Task UpdateArtworkAsync(Artwork Artwork)
+    public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate Artwork)
     {
-        await _ArtworkRepository.UpdateArtworkAsync(Artwork);
+        return await _ArtworkRepository.UpdateArtworkAsync(Artwork);
     }
 
-    public async Task DeleteArtworkAsync(Guid id)
+    public async Task<IActionResult> DeleteArtworkAsync(Guid id)
     {
-        await _ArtworkRepository.DeleteArtworkAsync(id);
+        return await _ArtworkRepository.DeleteArtworkAsync(id);
     }
 }
