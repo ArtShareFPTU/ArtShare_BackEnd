@@ -18,7 +18,7 @@ public class AccountController : ODataController
     }
 
     // GET: api/Account
-    //[HttpGet]
+    [HttpGet]
     [EnableQuery]
     public async Task<ActionResult<List<Account>>> GetAccount()
     {
