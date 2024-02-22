@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Tags;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,18 +25,18 @@ public class TagService : ITagService
         return await _TagRepository.GetTagByIdAsync(id);
     }
 
-    public async Task AddTagAsync(Tag Tag)
+    public async Task<IActionResult> AddTagAsync(TagCreation Tag)
     {
-        await _TagRepository.AddTagAsync(Tag);
+        return await _TagRepository.AddTagAsync(Tag);
     }
 
-    public async Task UpdateTagAsync(Tag Tag)
+    public async Task<IActionResult> UpdateTagAsync(TagUpdate Tag)
     {
-        await _TagRepository.UpdateTagAsync(Tag);
+        return await _TagRepository.UpdateTagAsync(Tag);
     }
 
-    public async Task DeleteTagAsync(Guid id)
+    public async Task<IActionResult> DeleteTagAsync(Guid id)
     {
-        await _TagRepository.DeleteTagAsync(id);
+        return await _TagRepository.DeleteTagAsync(id);
     }
 }

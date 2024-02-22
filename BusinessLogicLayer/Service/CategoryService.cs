@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Category;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,18 +25,18 @@ public class CategoryService : ICategoryService
         return await _CategoryRepository.GetCategoryByIdAsync(id);
     }
 
-    public async Task AddCategoryAsync(Category Category)
+    public async Task<IActionResult> AddCategoryAsync(CategoryCreation Category)
     {
-        await _CategoryRepository.AddCategoryAsync(Category);
+        return await _CategoryRepository.AddCategoryAsync(Category);
     }
 
-    public async Task UpdateCategoryAsync(Category Category)
+    public async Task<IActionResult> UpdateCategoryAsync(CategoryUpdate Category)
     {
-        await _CategoryRepository.UpdateCategoryAsync(Category);
+        return await _CategoryRepository.UpdateCategoryAsync(Category);
     }
 
-    public async Task DeleteCategoryAsync(Guid id)
+    public async Task<IActionResult> DeleteCategoryAsync(Guid id)
     {
-        await _CategoryRepository.DeleteCategoryAsync(id);
+        return await _CategoryRepository.DeleteCategoryAsync(id);
     }
 }

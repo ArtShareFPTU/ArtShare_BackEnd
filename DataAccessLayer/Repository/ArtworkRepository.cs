@@ -1,6 +1,8 @@
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Artwork;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -23,22 +25,56 @@ public class ArtworkRepository : IArtworkRepository
         return await _context.Artworks.FindAsync(id);
     }
 
-    public async Task AddArtworkAsync(Artwork artwork)
+    public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
-        _context.Artworks.Add(artwork);
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
+        if (imageExist != null)
+        {
+            return new StatusCodeResult(409);
+        }
+        Artwork createArtwork = new Artwork {
+            Id = Guid.NewGuid(),
+            Title = artwork.Title,
+            AccountId = artwork.AccountId,
+            Description = artwork.Description,
+            Url = artwork.Url,
+            Likes = artwork.Likes,
+            Fee = artwork.Fee,
+            Status = artwork.Status
+        };
+        _context.Artworks.Add(createArtwork);
         await _context.SaveChangesAsync();
+        return new StatusCodeResult(201);
     }
 
-    public async Task UpdateArtworkAsync(Artwork artwork)
+    public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
-        _context.Entry(artwork).State = EntityState.Modified;
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
+        if (imageExist == null)
+        {
+            return new StatusCodeResult(409);
+        }
+        if(!string.IsNullOrEmpty(artwork.Title)) imageExist.Title = artwork.Title;
+        if (!string.IsNullOrEmpty(artwork.Url)) imageExist.Url = artwork.Url;
+        if (!string.IsNullOrEmpty(artwork.Description)) imageExist.Description = artwork.Description;
+        if(artwork.Fee != null) imageExist.Fee = artwork.Fee;
+        if(artwork.Status != null) imageExist.Status = artwork.Status;
+        if (artwork.Likes != null) artwork.Likes = artwork.Likes;
+        if(artwork.AccountId != null) imageExist.AccountId = artwork.AccountId;
+
+        _context.Artworks.Update(imageExist);
+
+        _context.Entry(imageExist).State = EntityState.Modified;
         await _context.SaveChangesAsync();
+        return new StatusCodeResult(200);
     }
 
-    public async Task DeleteArtworkAsync(Guid id)
+    public async Task<IActionResult> DeleteArtworkAsync(Guid id)
     {
-        var artwork = await _context.Artworks.FindAsync(id);
+        var artwork = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(id));
+        if (artwork == null) return new StatusCodeResult(404);
         _context.Artworks.Remove(artwork);
         await _context.SaveChangesAsync();
+        return new StatusCodeResult(204);
     }
 }
