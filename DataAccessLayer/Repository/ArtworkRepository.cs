@@ -17,7 +17,7 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
     {
-        return await _context.Artworks.ToListAsync();
+        return await _context.Artworks.Include(a => a.ArtworkTags).ThenInclude(a =>  a.Tag).ToListAsync();
     }
 
     public async Task<Artwork> GetArtworkByIdAsync(Guid id)

@@ -8,7 +8,7 @@ namespace WebApiLayer.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class AccountController : ODataController
+public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
 
@@ -19,18 +19,15 @@ public class AccountController : ODataController
 
     // GET: api/Account
     [HttpGet]
-    [EnableQuery]
     public async Task<ActionResult<List<Account>>> GetAccount()
     {
-
         return await _accountService.GetAllAccountAsync();
     }
 
     // GET: api/Account/5
     //[EnableQuery]
     //[HttpGet("{id}")]
-    [HttpGet("odata/Account({id})")]
-
+    [HttpGet("{id}")]
     public async Task<ActionResult<Account>> GetAccount(Guid id)
     {
         var account = await _accountService.GetAccountByIdAsync(id);

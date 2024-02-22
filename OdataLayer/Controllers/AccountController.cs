@@ -29,7 +29,6 @@ namespace OdataLayer.Controllers
         [EnableQuery]
         public async Task<ActionResult<List<Account>>> GetAccount()
         {
-
             return await _accountService.GetAllAccountAsync();
         }
 

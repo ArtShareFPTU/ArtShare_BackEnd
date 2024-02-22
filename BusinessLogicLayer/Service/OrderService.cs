@@ -7,6 +7,7 @@ namespace BusinessLogicLayer.Service;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _OrderRepository;
+    private readonly IOrderDetailRepository _orderDetailRepository;
 
     public OrderService(IOrderRepository OrderRepository)
     {
