@@ -17,17 +17,17 @@ public class TagRepository : ITagRepository
 
     public async Task<List<Tag>> GetAllTagAsync()
     {
-        return await _context.Tags.ToListAsync();
+        return await _context.Tags.Include(c => c.ArtworkTags).ToListAsync();
     }
 
     public async Task<Tag> GetTagByIdAsync(Guid id)
     {
-        return await _context.Tags.FindAsync(id);
+        return await _context.Tags.Include(c => c.ArtworkTags).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public async Task<IActionResult> AddTagAsync(TagCreation tag)
     {
-        var tagExist = await _context.Tags.AnyAsync(c => c.Title.Equals(tag.Title, StringComparison.OrdinalIgnoreCase));
+        var tagExist = await _context.Tags.AnyAsync(c => c.Title.ToLower().Equals(tag.Title.ToLower()));
         if (tagExist)
         {
             return new StatusCodeResult(409);

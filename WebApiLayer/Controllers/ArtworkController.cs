@@ -1,6 +1,7 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Artwork;
 
 namespace WebApiLayer.Controllers;
 
@@ -22,6 +23,65 @@ public class ArtworkController : ControllerBase
         return await _artworkService.GetAllArtworkAsync();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Artwork>> GetArtworkById(Guid id)  => await _artworkService.GetArtworkByIdAsync(id);
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateArtwork(ArtworkCreation artworkCreation)
+    {
+        try
+        {
+            var result = await _artworkService.AddArtworkAsync(artworkCreation);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork is existed"); }
+                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Artwork create success"); }
+            }
+            return BadRequest("Error when creating artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateArtwork(ArtworkUpdate artworkUpdate)
+    {
+        try
+        {
+            var result = await _artworkService.UpdateArtworkAsync(artworkUpdate);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before"); }
+                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Artwork update success"); }
+            }
+            return BadRequest("Error when updating artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete("remove")]
+    public async Task<IActionResult> RemoveArtwork(Guid id)
+    {
+        try
+        {
+            var result = await _artworkService.DeleteArtworkAsync(id);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before"); }
+                else if (statusCodeResult.StatusCode == 204) { return StatusCode(StatusCodes.Status204NoContent, "Artwork remove success"); }
+            }
+            return BadRequest("Error when removing artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
     /*// GET: api/Artwork/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Artwork>> GetArtwork(Guid id)
