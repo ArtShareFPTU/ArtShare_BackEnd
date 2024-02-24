@@ -1,6 +1,9 @@
 using BusinessLogicLayer.IService;
+using BusinessLogicLayer.Service;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Category;
+using ModelLayer.DTOS.Request.Tags;
 
 namespace WebApiLayer.Controllers;
 
@@ -22,6 +25,63 @@ public class TagController : ControllerBase
         return await _tagService.GetAllTagAsync();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Tag>> GetTagById (Guid id) => await _tagService.GetTagByIdAsync(id);
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateTag(TagCreation tagCreation)
+    {
+        try
+        {
+            var result = await _tagService.AddTagAsync(tagCreation);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This tag is existed"); }
+                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Tag create success"); }
+            }
+            return BadRequest("Error when creating tag");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateTag(TagUpdate tagUpdate)
+    {
+        try
+        {
+            var result = await _tagService.UpdateTagAsync(tagUpdate);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This tag was removed or not existed before"); }
+                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status200OK, "Tag update success"); }
+            }
+            return BadRequest("Error when updating tag");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpDelete("remove")]
+    public async Task<IActionResult> RemoveTag(Guid id)
+    {
+        try
+        {
+            var result = await _tagService.DeleteTagAsync(id);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status404NotFound, "This tag was removed or not existed before"); }
+                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Tag remove success"); }
+            }
+            return BadRequest("Error when removing tag");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
     /*// GET: api/Tag/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Tag>> GetTag(Guid id)

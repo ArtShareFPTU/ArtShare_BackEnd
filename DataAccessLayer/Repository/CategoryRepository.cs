@@ -17,17 +17,17 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<List<Category>> GetAllCategoryAsync()
     {
-        return await _context.Categories.ToListAsync();
+        return await _context.Categories.Include(c => c.ArtworkCategories).ToListAsync();
     }
 
     public async Task<Category> GetCategoryByIdAsync(Guid id)
     {
-        return await _context.Categories.FindAsync(id);
+        return await _context.Categories.Include(c => c.ArtworkCategories).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public async Task<IActionResult> AddCategoryAsync(CategoryCreation category)
     {
-        var categoryExist = await _context.Categories.AnyAsync(c => c.Title.Equals(category.Title, StringComparison.OrdinalIgnoreCase));
+        var categoryExist = await _context.Categories.AnyAsync(c => c.Title.ToLower().Equals(category.Title.ToLower()));
         if(categoryExist)
         {
             return new StatusCodeResult(409);

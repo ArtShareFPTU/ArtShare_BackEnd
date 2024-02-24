@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -17,17 +19,18 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
     {
-        return await _context.Artworks.Include(a => a.ArtworkTags).ThenInclude(a =>  a.Tag).ToListAsync();
+
+        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags).Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails).ToListAsync();
     }
 
     public async Task<Artwork> GetArtworkByIdAsync(Guid id)
     {
-        return await _context.Artworks.FindAsync(id);
+        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags).Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
-        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
         if (imageExist != null)
         {
             return new StatusCodeResult(409);
@@ -49,11 +52,12 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
-        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
-        if (imageExist == null)
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
+        if (imageExist != null)
         {
             return new StatusCodeResult(409);
         }
+        imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(artwork.Id));
         if(!string.IsNullOrEmpty(artwork.Title)) imageExist.Title = artwork.Title;
         if (!string.IsNullOrEmpty(artwork.Url)) imageExist.Url = artwork.Url;
         if (!string.IsNullOrEmpty(artwork.Description)) imageExist.Description = artwork.Description;
