@@ -4,6 +4,8 @@ builder.Services.AddSession();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 //ADD SESSION
 builder.Services.AddSession(options =>

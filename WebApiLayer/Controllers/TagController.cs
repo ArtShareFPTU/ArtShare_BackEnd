@@ -55,7 +55,7 @@ public class TagController : ControllerBase
             if (result is StatusCodeResult statusCodeResult)
             {
                 if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This tag was removed or not existed before"); }
-                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status200OK, "Tag update success"); }
+                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Tag update success"); }
             }
             return BadRequest("Error when updating tag");
         }
