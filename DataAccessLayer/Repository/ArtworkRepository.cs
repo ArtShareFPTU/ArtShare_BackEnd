@@ -100,7 +100,7 @@ public class ArtworkRepository : IArtworkRepository
         using var form = new MultipartFormDataContent();
         form.Add(new ByteArrayContent(imageData), "image", title);
 
-        var response = await client.PostAsync("https://api.imgbb.com/1/upload?key=92dec47e404d47646ced45163ff082ca", form, cancellationToken);
+        var response = await client.PostAsync("https://api.imgbb.com/1/upload?key=ed1d017feac2eabe0a248e4236b28736", form, cancellationToken);
         if (response.IsSuccessStatusCode)
         {
             var byteArray = await response.Content.ReadAsByteArrayAsync();
