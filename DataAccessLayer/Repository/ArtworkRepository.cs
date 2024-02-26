@@ -32,6 +32,14 @@ public class ArtworkRepository : IArtworkRepository
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
         if (artwork.Image == null) return new StatusCodeResult(500);
+        string fileExtension = Path.GetExtension(artwork.Image.FileName)?.ToLower();
+        if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
+            && fileExtension != ".bmp" && fileExtension != ".gif" && fileExtension != ".tiff"
+            && fileExtension != ".webp" && fileExtension != ".heic" && fileExtension != ".pdf")
+        {
+
+            return new StatusCodeResult(415);
+        }
         var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
         if (imageExist != null)
         {

@@ -37,6 +37,7 @@ public class ArtworkController : ControllerBase
                 if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork is existed"); }
                 else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Artwork create success"); }
                 else if (statusCodeResult.StatusCode == 500) { return StatusCode(StatusCodes.Status500InternalServerError, "Image not found or error when uploading");  }
+                else if (statusCodeResult.StatusCode == 415) { return StatusCode(StatusCodes.Status415UnsupportedMediaType, "File type is not supported"); }
             }
             return BadRequest("Error when creating artwork");
         }
