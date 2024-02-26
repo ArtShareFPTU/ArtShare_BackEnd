@@ -27,7 +27,7 @@ public class ArtworkController : ControllerBase
     public async Task<ActionResult<Artwork>> GetArtworkById(Guid id)  => await _artworkService.GetArtworkByIdAsync(id);
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateArtwork(ArtworkCreation artworkCreation)
+    public async Task<IActionResult> CreateArtwork([FromForm]ArtworkCreation artworkCreation)
     {
         try
         {
@@ -36,6 +36,7 @@ public class ArtworkController : ControllerBase
             {
                 if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork is existed"); }
                 else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Artwork create success"); }
+                else if (statusCodeResult.StatusCode == 500) { return StatusCode(StatusCodes.Status500InternalServerError, "Image not found or error when uploading");  }
             }
             return BadRequest("Error when creating artwork");
         }
