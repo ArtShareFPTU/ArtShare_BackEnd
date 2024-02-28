@@ -14,7 +14,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ArtShareContext>(options =>
-    options.UseSqlServer("server=NhaPhan\\SQLEXPRESS;user=sa;password=1234567890;database=ArtShare;"));
+    options.UseSqlServer("server=(local);user=sa;password=1234567890;database=ArtShare;"));
 
 
 // Add services to the container.

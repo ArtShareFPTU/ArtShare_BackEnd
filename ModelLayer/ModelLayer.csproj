@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="DTOS\Response\" />
+      <PackageReference Include="FluentValidation" Version="11.0.3" />
     </ItemGroup>
 
 </Project>

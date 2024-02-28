@@ -41,4 +41,9 @@ public class AccountRepository : IAccountRepository
         _context.Accounts.Remove(account);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Account> GetAccountByEmail(string email)
+    {
+        return await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email.ToLower().Equals(email.ToLower()));      
+    }
 }
