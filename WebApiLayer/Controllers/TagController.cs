@@ -29,7 +29,7 @@ public class TagController : ControllerBase
     public async Task<ActionResult<Tag>> GetTagById (Guid id) => await _tagService.GetTagByIdAsync(id);
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateTag(TagCreation tagCreation)
+    public async Task<IActionResult> CreateTag([FromForm] TagCreation tagCreation)
     {
         try
         {
@@ -47,7 +47,7 @@ public class TagController : ControllerBase
         }
     }
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateTag(TagUpdate tagUpdate)
+    public async Task<IActionResult> UpdateTag([FromForm]TagUpdate tagUpdate)
     {
         try
         {
@@ -64,7 +64,7 @@ public class TagController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpDelete("remove")]
+    [HttpPost("remove")]
     public async Task<IActionResult> RemoveTag(Guid id)
     {
         try

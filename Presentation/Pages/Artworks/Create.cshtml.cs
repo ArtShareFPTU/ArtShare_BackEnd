@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer;
 using ModelLayer.BussinessObject;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
+using ModelLayer.DTOS.Request.Artwork;
 
 namespace Presentation.Pages.Artworks
 {
@@ -16,9 +19,10 @@ namespace Presentation.Pages.Artworks
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
-        private readonly string _accountManage = "https://localhost:44365/api/Account";
+        private readonly string _accountManage = "https://localhost:44365/api/Account/";
 
         public List<Account> Accounts { get; set; }
+        public ArtworkCreation Artwork { get; set; }
         public CreateModel(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
@@ -30,18 +34,23 @@ namespace Presentation.Pages.Artworks
             //var key = HttpContext.Session.GetString("key");
             //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
             Accounts = await GetAccounts(client);
-            ViewData["AccountId"] = new SelectList(Accounts, "Id", "Id");
+
+            //ViewData["AccountId"] = new SelectList(Accounts.Select(c => c.Id), "AccountId", "AccountId");
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid) return Page();
 
             var client = _httpClientFactory.CreateClient();
-            //var key = HttpContext.Session.GetString("key");
-            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
             var endpoint = _artworkManage + "CreateArtwork/create";
+
+            // Create multipart form data content
+            var multipartContent = new MultipartFormDataContent();
+
+            // Add artwork data as JSON string
 
             var artworkData = new
             {
@@ -49,28 +58,50 @@ namespace Presentation.Pages.Artworks
                 title = Request.Form["Artwork.Title"],
                 description = Request.Form["Artwork.Description"],
                 url = Request.Form["Artwork.Url"],
-                likes = int.Parse(Request.Form["Artwork.Likes"]),
+                likes = Int32.Parse(Request.Form["Artwork.Likes"]),
                 fee = decimal.Parse(Request.Form["Artwork.Fee"]),
                 status = Request.Form["Artwork.Status"]
             };
 
-            var jsonData = System.Text.Json.JsonSerializer.Serialize(artworkData);
-            var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+            multipartContent.Add(new StringContent(artworkData.accountId.ToString()), "AccountId");
+            multipartContent.Add(new StringContent(artworkData.title), "Title");
+            multipartContent.Add(new StringContent(artworkData.description), "Description");
+            multipartContent.Add(new StringContent(artworkData.url), "Url");
+            multipartContent.Add(new StringContent(artworkData.likes.ToString()), "Likes");
+            multipartContent.Add(new StringContent(artworkData.fee.ToString()), "Fee");
+            multipartContent.Add(new StringContent(artworkData.status), "Status");
+            if (Request.Form.Files.Count > 0)
+            {
+                var imageFile = Request.Form.Files[0];
+                multipartContent.Add(new StreamContent(imageFile.OpenReadStream()), "Image", imageFile.FileName);
+            }
+            else
+            {
+                //multipartContent.Add(new StringContent(string.Empty), "Image");
+            }
 
-            var response = await client.PostAsync(endpoint, content);
-            if (response.IsSuccessStatusCode)
+            var response = await client.PostAsync(endpoint, multipartContent);
+            if (response.StatusCode != null)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                if(response.StatusCode == System.Net.HttpStatusCode.Created)
+                if (response.StatusCode == HttpStatusCode.Created)
                 {
                     TempData["AnnounceMessage"] = "Artwork created success";
-                }else if(response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                }
+                else if (response.StatusCode == HttpStatusCode.Conflict)
                 {
                     TempData["AnnounceMessage"] = "This artwork is existed";
+                    return RedirectToPage();
+                }
+                else if (response.StatusCode == HttpStatusCode.UnsupportedMediaType)
+                {
+                    TempData["AnnounceMessage"] = "This file is not supported, try another one";
+                    return RedirectToPage();
                 }
                 else
                 {
                     TempData["AnnounceMessage"] = "Error when creating artwork";
+                    return RedirectToPage();
                 }
                 ModelState.Clear();
                 return RedirectToPage();
@@ -82,7 +113,7 @@ namespace Presentation.Pages.Artworks
         {
             var endpoint = _accountManage + "GetAccount";
             var response = await client.GetAsync(endpoint);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<List<Account>>(content);

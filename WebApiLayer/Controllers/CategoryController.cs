@@ -27,7 +27,7 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult<Category>> GetCategoryById(Guid id) => await _categoryService.GetCategoryByIdAsync(id);
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCategory(CategoryCreation categoryCreation)
+    public async Task<IActionResult> CreateCategory([FromForm]CategoryCreation categoryCreation)
     {
         try
         {
@@ -45,7 +45,7 @@ public class CategoryController : ControllerBase
         }
     }
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateCategory(CategoryUpdate categoryUpdate)
+    public async Task<IActionResult> UpdateCategory([FromForm]CategoryUpdate categoryUpdate)
     {
         try
         {
@@ -62,7 +62,7 @@ public class CategoryController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpDelete("remove")]
+    [HttpPost("remove")]
     public async Task<IActionResult> RemoveCategory(Guid id)
     {
         try

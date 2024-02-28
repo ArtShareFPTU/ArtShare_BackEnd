@@ -47,7 +47,7 @@ namespace Presentation.Pages.Categories
         }
         private async Task<Category> GetCategory(HttpClient client, Guid id)
         {
-            var endpoint = _categoryManage + "GetCategoryById" + id;
+            var endpoint = _categoryManage + "GetCategoryById/" + id;
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {

@@ -2,6 +2,7 @@
 @model Presentation.Pages.Artworks.EditModel
 
 @{
+    Layout = "Shared/_Layout";
     ViewData["Title"] = "Edit";
 }
 
@@ -16,7 +17,9 @@
             <input type="hidden" asp-for="Artwork.Id" />
             <div class="form-group">
                 <label asp-for="Artwork.AccountId" class="control-label"></label>
-                <select asp-for="Artwork.AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
+                <select asp-for="Artwork.AccountId" class="form-control">
+                    <option value="@Model.Artwork.AccountId">@Model.Artwork.AccountId</option>
+                </select>
                 <span asp-validation-for="Artwork.AccountId" class="text-danger"></span>
             </div>
             <div class="form-group">

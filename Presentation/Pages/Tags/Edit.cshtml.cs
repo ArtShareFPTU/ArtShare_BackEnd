@@ -40,7 +40,7 @@ namespace Presentation.Pages.Tags
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid) return Page();
 
             var client = _httpClientFactory.CreateClient();
             //var key = HttpContext.Session.GetString("key");
@@ -52,17 +52,22 @@ namespace Presentation.Pages.Tags
             };
 
             var endpoint = _tagManage + "UpdateTag/update";
-            var jsonRequestData = System.Text.Json.JsonSerializer.Serialize(tagUpdate);
-
-            var content = new StringContent(jsonRequestData, System.Text.Encoding.UTF8, "application/json");
-
-            var response = await client.PutAsync(endpoint, content);
-            if (response.IsSuccessStatusCode)
+            var multipartContent = new MultipartFormDataContent
             {
-                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+
+                { new StringContent(tagUpdate.Id.ToString()), "Id" },
+
+                { new StringContent(tagUpdate.Title), "Title" }
+            };
+
+            var response = await client.PutAsync(endpoint, multipartContent);
+            if (response.StatusCode != null)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     TempData["AnnounceMessage"] = "Update tag success";
-                }else if(response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
                 {
                     TempData["AnnounceMessage"] = "This tag was removed or not existed before";
                 }
