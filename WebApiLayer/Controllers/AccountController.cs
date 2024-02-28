@@ -24,18 +24,15 @@ public class AccountController : ControllerBase
 
     // GET: api/Account
     [HttpGet]
-    [EnableQuery]
     public async Task<ActionResult<List<Account>>> GetAccount()
     {
-
         return await _accountService.GetAllAccountAsync();
     }
 
     // GET: api/Account/5
     //[EnableQuery]
     //[HttpGet("{id}")]
-    [HttpGet("odata/Account({id})")]
-
+    [HttpGet("{id}")]
     public async Task<ActionResult<Account>> GetAccount(Guid id)
     {
         var account = await _accountService.GetAccountByIdAsync(id);

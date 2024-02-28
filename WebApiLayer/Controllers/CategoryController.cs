@@ -1,6 +1,7 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Category;
 
 namespace WebApiLayer.Controllers;
 
@@ -22,6 +23,63 @@ public class CategoryController : ControllerBase
         return await _categoryService.GetAllCategoryAsync();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Category>> GetCategoryById(Guid id) => await _categoryService.GetCategoryByIdAsync(id);
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateCategory(CategoryCreation categoryCreation)
+    {
+        try
+        {
+            var result = await _categoryService.AddCategoryAsync(categoryCreation);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This category has existed before"); }
+                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Category add success"); }
+            }
+            return BadRequest("Error when creating category");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateCategory(CategoryUpdate categoryUpdate)
+    {
+        try
+        {
+            var result = await _categoryService.UpdateCategoryAsync(categoryUpdate);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This category was removed or not created before"); }
+                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Category update success"); }
+            }
+            return BadRequest("Error when updating category");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpDelete("remove")]
+    public async Task<IActionResult> RemoveCategory(Guid id)
+    {
+        try
+        {
+            var result = await _categoryService.DeleteCategoryAsync(id);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status404NotFound, "This category was removed or not created before"); }
+                else if (statusCodeResult.StatusCode == 204) { return StatusCode(StatusCodes.Status204NoContent, "Category remove success"); }
+            }
+            return BadRequest("Error when removing category");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
     /*// GET: api/Category/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategory(Guid id)

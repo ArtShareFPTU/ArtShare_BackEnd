@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -17,21 +20,42 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
     {
-        return await _context.Artworks.ToListAsync();
+
+        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags).Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails).ToListAsync();
     }
 
     public async Task<Artwork> GetArtworkByIdAsync(Guid id)
     {
-        return await _context.Artworks.FindAsync(id);
+        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags).Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
-        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
+        if (artwork.Image == null) return new StatusCodeResult(500);
+        string fileExtension = Path.GetExtension(artwork.Image.FileName)?.ToLower();
+        if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
+            && fileExtension != ".bmp" && fileExtension != ".gif" && fileExtension != ".tiff"
+            && fileExtension != ".webp" && fileExtension != ".heic" && fileExtension != ".pdf")
+        {
+
+            return new StatusCodeResult(415);
+        }
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
         if (imageExist != null)
         {
             return new StatusCodeResult(409);
         }
+        byte[] imageData;
+        using (var memoryStream = new MemoryStream())
+        {
+            await artwork.Image.CopyToAsync(memoryStream);
+            imageData = memoryStream.ToArray();
+        }
+
+        var imgbbURL = await UploadToImgBB(imageData, artwork.Title);
+        if (imgbbURL == null) return new StatusCodeResult(500);
+        if(artwork.Url == null || artwork.Url.Length == 0) artwork.Url = imgbbURL;
+
         Artwork createArtwork = new Artwork {
             Id = Guid.NewGuid(),
             Title = artwork.Title,
@@ -49,11 +73,12 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
-        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.Equals(artwork.Title, StringComparison.OrdinalIgnoreCase));
-        if (imageExist == null)
+        var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
+        if (imageExist != null)
         {
             return new StatusCodeResult(409);
         }
+        imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(artwork.Id));
         if(!string.IsNullOrEmpty(artwork.Title)) imageExist.Title = artwork.Title;
         if (!string.IsNullOrEmpty(artwork.Url)) imageExist.Url = artwork.Url;
         if (!string.IsNullOrEmpty(artwork.Description)) imageExist.Description = artwork.Description;
@@ -77,4 +102,30 @@ public class ArtworkRepository : IArtworkRepository
         await _context.SaveChangesAsync();
         return new StatusCodeResult(204);
     }
+    private async Task<string?> UploadToImgBB(byte[] imageData, string title, CancellationToken cancellationToken = default)
+    {
+        using var client = new HttpClient();
+        using var form = new MultipartFormDataContent();
+        form.Add(new ByteArrayContent(imageData), "image", title);
+
+        var response = await client.PostAsync("https://api.imgbb.com/1/upload?key=ed1d017feac2eabe0a248e4236b28736", form, cancellationToken);
+        if (response.IsSuccessStatusCode)
+        {
+            var byteArray = await response.Content.ReadAsByteArrayAsync();
+
+            using var stream = new MemoryStream(byteArray);
+            using var jsonDocument = await JsonDocument.ParseAsync(stream);
+
+            var root = jsonDocument.RootElement;
+            if (root.TryGetProperty("data", out var dataElement))
+            {
+                if (dataElement.TryGetProperty("url", out var urlElement))
+                {
+                    return urlElement.GetString();
+                }
+            }
+        }
+        return null;
+    }
+
 }
