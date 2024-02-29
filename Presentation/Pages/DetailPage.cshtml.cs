@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Presentation.wwwroot.css
+namespace Presentation.Pages
 {
     public class DetailPageModel : PageModel
     {
