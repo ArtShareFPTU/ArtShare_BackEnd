@@ -12,6 +12,6 @@ public class ArtworkRespone
     public decimal? Fee { get; set; }
     public List<String> Categorys { get; set; }
     public List<String> Tags { get; set; }
-    
+    public string? Status { get; set; }
 
 }

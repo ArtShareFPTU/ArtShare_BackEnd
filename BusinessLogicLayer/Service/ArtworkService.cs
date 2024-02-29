@@ -1,18 +1,21 @@
+using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using ModelLayer.DTOS.Response;
 
 namespace BusinessLogicLayer.Service;
 
 public class ArtworkService : IArtworkService
 {
     private readonly IArtworkRepository _ArtworkRepository;
-
-    public ArtworkService(IArtworkRepository ArtworkRepository)
+    private readonly IMapper _mapper;
+    public ArtworkService(IArtworkRepository ArtworkRepository, IMapper mapper)
     {
         _ArtworkRepository = ArtworkRepository;
+        _mapper = mapper;
     }
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
@@ -38,5 +41,11 @@ public class ArtworkService : IArtworkService
     public async Task<IActionResult> DeleteArtworkAsync(Guid id)
     {
         return await _ArtworkRepository.DeleteArtworkAsync(id);
+    }
+
+    public async Task<List<ArtworkRespone>> GetArtworkByArtistId(Guid artistId)
+    {
+        var response = await _ArtworkRepository.GetArtworkByArtistId(artistId);
+        return _mapper.Map<List<ArtworkRespone>>(response);
     }
 }

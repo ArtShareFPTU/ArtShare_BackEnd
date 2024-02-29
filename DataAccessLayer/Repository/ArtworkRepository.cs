@@ -135,4 +135,8 @@ public class ArtworkRepository : IArtworkRepository
         return null;
     }
 
+    public async Task<List<Artwork>> GetArtworkByArtistId(Guid artistId)
+    {
+        return await _context.Set<Artwork>().Where(c => c.AccountId.Equals(artistId)).ToListAsync();
+    }
 }
