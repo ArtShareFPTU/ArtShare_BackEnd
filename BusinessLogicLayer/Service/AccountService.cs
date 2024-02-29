@@ -1,11 +1,16 @@
+using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Account;
+using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
+using ModelLayer.Enum;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace BusinessLogicLayer.Service;
 
@@ -13,21 +18,25 @@ public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
 
-    public AccountService(IAccountRepository accountRepository, IConfiguration configuration)
+    public AccountService(IAccountRepository accountRepository, IConfiguration configuration, IMapper mapper)
     {
         _accountRepository = accountRepository;
         _configuration = configuration;
+        _mapper = mapper;
     }
 
-    public async Task<List<Account>> GetAllAccountAsync()
+    public async Task<List<AccountResponse>> GetAllAccountAsync()
     {
-        return await _accountRepository.GetAllAccountAsync();
+        var response =  await _accountRepository.GetAllAccountAsync();
+        return _mapper.Map<List<AccountResponse>>(response);
     }
 
-    public async Task<Account> GetAccountByIdAsync(Guid id)
+    public async Task<AccountResponse> GetAccountById(Guid id)
     {
-        return await _accountRepository.GetAccountByIdAsync(id);
+        var response = await _accountRepository.GetAccountById(id);
+        return _mapper.Map<AccountResponse>(response);
     }
 
     public async Task AddAccountAsync(Account account)
@@ -35,9 +44,26 @@ public class AccountService : IAccountService
         await _accountRepository.AddAccountAsync(account);
     }
 
-    public async Task UpdateAccountAsync(Account account)
+    public async Task<ServiceResponse<AccountResponse>> UpdateAccount(Guid id, UpdateAccountRequest account)
     {
-        await _accountRepository.UpdateAccountAsync(account);
+        var respone = new ServiceResponse<AccountResponse>();
+        var checkid = await _accountRepository.GetAccountById(id);
+        if (checkid == null)
+        {
+            respone.Success = false;
+            respone.Message = "This account does not exist";
+            return respone;
+        }
+        else
+        {
+            // use Mapper ` request => DB
+            var data =  _mapper.Map(account, checkid);
+            var setdata = await _accountRepository.UpdateAccount(data);
+            respone.Success = true;
+            respone.Message = "Update successfully";
+            respone.Data = _mapper.Map<AccountResponse>(setdata);
+        }
+        return respone;
     }
 
     public async Task DeleteAccountAsync(Guid id)
@@ -82,5 +108,36 @@ public class AccountService : IAccountService
             expires: DateTime.Now.AddHours(3),
             signingCredentials: credentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public async Task<ServiceResponse<AccountResponse>> CreateNewAccount(CreateAccountRequest userAccount)
+    {
+        var respone = new ServiceResponse<AccountResponse>();
+        var checkid = await _accountRepository.isExistedByMail(userAccount.Email);
+        if (checkid != null)
+        {
+            respone.Success = false;
+            respone.Message = "Email is existed";
+            return respone;
+        }
+
+        var checkUsername = await _accountRepository.GetByUserName(userAccount.UserName);
+        if (checkUsername is not null)
+        {
+            respone.Success = false;
+            respone.Message = "Username is existed";
+        }
+        else
+        {
+            var request = _mapper.Map<Account>(userAccount);
+            request.CreateDate = DateTime.Now;
+            request.Status = AccountStatus.Active.ToString();
+            var newaccount = await _accountRepository.CreateAccount(request);
+            respone.Data = _mapper.Map<AccountResponse>(newaccount);
+            respone.Success = true;
+            respone.Message = "Created successfully";
+        }
+
+        return respone;
     }
 }

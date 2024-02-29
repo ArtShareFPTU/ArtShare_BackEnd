@@ -32,7 +32,7 @@ public static class DependencyInjection
 
 
         //AUTOMAPPER
-        //services.AddAutoMapper(typeof(ApplicationMapper).Assembly);
+        services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         return services;
     }

@@ -15,12 +15,13 @@ public class AccountRepository : IAccountRepository
 
     public async Task<List<Account>> GetAllAccountAsync()
     {
-        return await _context.Accounts.ToListAsync();
+        return await _context.Accounts.Include(c => c.Artworks).Include(c => c.FollowFollowers).Include(c => c.FollowArtists).ToListAsync();
     }
 
-    public async Task<Account> GetAccountByIdAsync(Guid id)
+    public async Task<Account> GetAccountById(Guid id)
     {
-        return await _context.Accounts.FindAsync(id);
+        var account = _context.Set<Account>().Include(c => c.Artworks).Include(c => c.FollowFollowers).Include(c => c.FollowArtists).FirstOrDefault(c => c.Id.Equals(id));
+        return account;
     }
 
     public async Task AddAccountAsync(Account account)
@@ -29,10 +30,11 @@ public class AccountRepository : IAccountRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAccountAsync(Account account)
+    public async Task<Account> UpdateAccount(Account account)
     {
-        _context.Entry(account).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        _context.Accounts.Update(account);
+        _context.SaveChanges();
+        return account;
     }
 
     public async Task DeleteAccountAsync(Guid id)
@@ -45,5 +47,24 @@ public class AccountRepository : IAccountRepository
     public async Task<Account> GetAccountByEmail(string email)
     {
         return await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email.ToLower().Equals(email.ToLower()));      
+    }
+
+    public async Task<Account> isExistedByMail(string email)
+    {
+        var account = await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email == email);
+        return account;
+    }
+
+    public async Task<Account> CreateAccount(Account userAccount)
+    {
+        await _context.Accounts.AddAsync(userAccount);
+        _context.SaveChanges();
+        return userAccount;
+    }
+
+    public async Task<Account> GetByUserName(string username)
+    {
+        var account = await _context.Set<Account>().FirstOrDefaultAsync(c => c.UserName.ToLower().Equals(username.ToLower()));
+        return account;
     }
 }
