@@ -21,4 +21,10 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.2-mauipre.1.22102.15" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="ArtShareContext.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Response.Commons;
 
 namespace BusinessLogicLayer.IService;
 
@@ -9,4 +10,5 @@ public interface IAccountService
     Task AddAccountAsync(Account account);
     Task UpdateAccountAsync(Account account);
     Task DeleteAccountAsync(Guid id);
+    Task<ServiceResponse<string>> Login(string email, string password);
 }

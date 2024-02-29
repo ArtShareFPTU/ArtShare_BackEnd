@@ -1,20 +1,25 @@
 using BusinessLogicLayer.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Account;
+using ModelLayer.DTOS.Response.Commons;
+using ModelLayer.DTOS.Validators;
 
 namespace WebApiLayer.Controllers;
-
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
-
-    public AccountController(IAccountService accountService)
+    private readonly UserLoginResponseValidator _loginValidations;
+    public AccountController(IAccountService accountService, UserLoginResponseValidator loginValidations)
     {
         _accountService = accountService;
+        _loginValidations = loginValidations;
     }
 
     // GET: api/Account
@@ -37,7 +42,27 @@ public class AccountController : ControllerBase
         }
         return Ok(account);
     }
-
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<ServiceResponse<string>> Login(LoginAccountResponse lg)
+    {
+        var validationResult = await _loginValidations.ValidateAsync(lg);
+        if (!validationResult.IsValid)
+        {
+            var errorrMessages = validationResult.Errors
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            var response = new ServiceResponse<string>
+            {
+                Success = false,
+                Message = "Invalid input data." + string.Join("; ", errorrMessages),
+                Data = null
+            };
+            return response;
+        }
+        var result = await _accountService.Login(lg.Email, lg.Password);
+        return result;
+    }
     /*// PUT: api/Account/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]

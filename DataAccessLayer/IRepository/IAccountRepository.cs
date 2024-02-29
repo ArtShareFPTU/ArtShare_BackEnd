@@ -9,4 +9,5 @@ public interface IAccountRepository
     Task AddAccountAsync(Account account);
     Task UpdateAccountAsync(Account account);
     Task DeleteAccountAsync(Guid id);
+    Task<Account> GetAccountByEmail(string email);
 }
