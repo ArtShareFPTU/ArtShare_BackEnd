@@ -79,15 +79,15 @@ namespace Presentation.Pages.Artworks
 
         private async Task<string> DeleteArtwork(HttpClient client, Guid id)
         {
-            var endpoint = _artworkManage + "RemoveArtwork/remove" + id;
+            var endpoint = _artworkManage + "RemoveArtwork/remove/" + id;
             var response = await client.PostAsync(endpoint, null);
 
             string announce = "";
             if (response.IsSuccessStatusCode)
             {
-                if (response.StatusCode == HttpStatusCode.NoContent)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    announce = "Artwork has been deleted";
+                    announce = "Artwork has been disabled";
                 }
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)

@@ -67,12 +67,14 @@ namespace Presentation.Pages.Categories
                 Title = Request.Form["Category.Title"]
             };
              var endpoint = _categoryManage + "UpdateCategory/update";
-            var jsonRequestData = System.Text.Json.JsonSerializer.Serialize(categoryUpdate);
+            var multipartContent = new MultipartFormDataContent
+            {
+                { new StringContent(categoryUpdate.Id.ToString()), "Id" },
+                { new StringContent(categoryUpdate.Title), "Title" }
+            };
 
-            var content = new StringContent(jsonRequestData, System.Text.Encoding.UTF8, "application/json");
-
-            var response = await client.PutAsync(endpoint, content);
-            if (response.IsSuccessStatusCode)
+            var response = await client.PutAsync(endpoint, multipartContent);
+            if (response.StatusCode != null)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -92,7 +94,7 @@ namespace Presentation.Pages.Categories
 
         private async Task<Category> GetCategory(HttpClient client, Guid id)
         {
-            var endpoint = _categoryManage + "GetCategoryById" + id;
+            var endpoint = _categoryManage + "GetCategoryById/" + id;
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {

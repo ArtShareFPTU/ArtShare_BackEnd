@@ -2,7 +2,14 @@
 @model Presentation.Pages.Categories.EditModel
 
 @{
+    Layout = "Shared/_Layout";
     ViewData["Title"] = "Edit";
+}
+@if (TempData["AnnounceMessage"] != null)
+{
+<div class="alert alert-primary" role="alert">
+    @TempData["AnnounceMessage"]
+</div>
 }
 
 <h1>Edit</h1>

@@ -43,10 +43,10 @@
 
     <div class="box">
         <div class="dream">
-            <img src="assets/img/art1.jpg" alt="">
-            <img src="assets/img/art2.jpg" alt="">
-            <img src="assets/img/art3.jpg" alt="">
-            <img src="assets/img/art4.jpg" alt="">
+            @foreach (var dream in Model.Artwork)
+            {
+                <img src="@dream.Url" alt="@dream.Description" title="@dream.Title">
+            }
         </div>
         <div class="dream">
             <img src="assets/img/art5.jpg" alt="">

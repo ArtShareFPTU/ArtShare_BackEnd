@@ -66,7 +66,7 @@ public class ArtworkController : ControllerBase
         }
     }
 
-    [HttpDelete("remove")]
+    [HttpPost("remove/{id}")]
     public async Task<IActionResult> RemoveArtwork(Guid id)
     {
         try
@@ -74,8 +74,8 @@ public class ArtworkController : ControllerBase
             var result = await _artworkService.DeleteArtworkAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before"); }
-                else if (statusCodeResult.StatusCode == 204) { return StatusCode(StatusCodes.Status204NoContent, "Artwork remove success"); }
+                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was disabled or not existed before"); }
+                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Artwork disabled success"); }
             }
             return BadRequest("Error when removing artwork");
         }

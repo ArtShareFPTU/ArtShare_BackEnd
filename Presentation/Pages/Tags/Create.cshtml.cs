@@ -9,6 +9,7 @@ using DataAccessLayer;
 using ModelLayer.BussinessObject;
 using System.Text.Json;
 using System.Text;
+using ModelLayer.DTOS.Request.Tags;
 
 namespace Presentation.Pages.Tags
 {
@@ -17,6 +18,8 @@ namespace Presentation.Pages.Tags
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _tagManage = "https://localhost:44365/api/Tag/";
+
+        public TagCreation Tag {  get; set; }
 
         public CreateModel(IHttpClientFactory httpClientFactory)
         {
@@ -36,16 +39,18 @@ namespace Presentation.Pages.Tags
             var client = _httpClientFactory.CreateClient();
             //var key = HttpContext.Session.GetString("key");
             //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-            var endpoint = _tagManage + "CreateTag/create/";
+            var endpoint = _tagManage + "CreateTag/create";
 
            
             var title = Request.Form["Tag.Title"];
             var requestData = new { title = title };
-            var jsonData = JsonSerializer.Serialize(requestData);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json" );
+            var multipartContent = new MultipartFormDataContent
+            {
+                { new StringContent(title), "title" }
+            };
 
-            var response = await client.PostAsync(endpoint, content);
-            if(response.IsSuccessStatusCode)
+            var response = await client.PostAsync(endpoint, multipartContent);
+            if (response.StatusCode != null)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
                 if(response.StatusCode == System.Net.HttpStatusCode.Created)

@@ -64,7 +64,7 @@ namespace Presentation.Pages.Categories
         }
         private async Task<Category> GetCategory(HttpClient client, Guid id)
         {
-            var endpoint = _categoryManage + "GetCategoryById" + id;
+            var endpoint = _categoryManage + "GetCategoryById/" + id;
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
@@ -77,7 +77,7 @@ namespace Presentation.Pages.Categories
         }
         private async Task<string> DeleteCategory(HttpClient client, Guid id)
         {
-            var endpoint = _categoryManage + "RemoveCategory/remove" + id;
+            var endpoint = _categoryManage + "RemoveCategory/remove/" + id;
             var response = await client.PostAsync(endpoint, null);
 
             string announce = "";

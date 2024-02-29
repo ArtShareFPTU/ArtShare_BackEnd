@@ -9,6 +9,9 @@ using DataAccessLayer;
 using ModelLayer.BussinessObject;
 using System.Text;
 using System.Text.Json;
+using ModelLayer.DTOS.Request.Category;
+using System.Net.Http;
+using System.Net;
 
 namespace Presentation.Pages.Categories
 {
@@ -17,6 +20,8 @@ namespace Presentation.Pages.Categories
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _categoryManage = "https://localhost:44365/api/Category/";
+
+        public CategoryCreation Category {  get; set; }
 
         public CreateModel(IHttpClientFactory httpClientFactory)
         {
@@ -39,31 +44,33 @@ namespace Presentation.Pages.Categories
             var client = _httpClientFactory.CreateClient();
             //var key = HttpContext.Session.GetString("key");
             //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-            var endpoint = _categoryManage + "CreateCategory/create/";
+            var endpoint = _categoryManage + "CreateCategory/create";
 
 
             var title = Request.Form["Category.Title"];
-            var requestData = new { title = title };
-            var jsonData = JsonSerializer.Serialize(requestData);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var multipartData = new MultipartFormDataContent
+            {
+                { new StringContent(title.ToString()), "Title" }
+            };
 
-            var response = await client.PostAsync(endpoint, content);
-            if (response.IsSuccessStatusCode)
+            var response = await client.PostAsync(endpoint, multipartData);
+            if (response.StatusCode != null)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                if (response.StatusCode == HttpStatusCode.Created)
                 {
                     TempData["AnnounceMessage"] = "Category created success";
                 }
-                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                else if (response.StatusCode == HttpStatusCode.Conflict)
                 {
                     TempData["AnnounceMessage"] = "This category is existed";
+                    return RedirectToPage();
                 }
                 else
                 {
                     TempData["AnnounceMessage"] = "Error when creating, please try again";
+                    return RedirectToPage();
                 }
-
                 ModelState.Clear();
                 return RedirectToPage();
             }

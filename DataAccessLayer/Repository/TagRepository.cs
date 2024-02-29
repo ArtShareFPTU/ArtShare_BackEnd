@@ -65,6 +65,11 @@ public class TagRepository : ITagRepository
         {
             return new StatusCodeResult(404);
         }
+        if (await _context.ArtworkTags.AnyAsync(c => c.ArtworkId.Equals(id)) == true)
+        {
+            var artworkTags = _context.ArtworkTags.Where(c => c.ArtworkId.Equals(id));
+            _context.ArtworkTags.RemoveRange(artworkTags);
+        }
         _context.Tags.Remove(tag);
         await _context.SaveChangesAsync();
         return new StatusCodeResult(204);
