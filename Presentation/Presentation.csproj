@@ -7,7 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Data\" />
+      <Folder Include="Models\" />
       <Folder Include="wwwroot\assets\" />
+      <Folder Include="wwwroot\css\" />
+      <Folder Include="wwwroot\images\" />
+      <Folder Include="wwwroot\js\" />
+      <Folder Include="wwwroot\lib\bootstrap\" />
+      <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
+      <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
+      <Folder Include="wwwroot\lib\jquery-validation\" />
+      <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+      <Folder Include="wwwroot\lib\jquery\" />
+      <Folder Include="wwwroot\lib\jquery\dist\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,11 +41,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Delete.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Details.cshtml" />
