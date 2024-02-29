@@ -28,4 +28,22 @@
       <ProjectReference Include="..\WebApiLayer\WebApiLayer.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Artworks\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Artworks\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Artworks\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Artworks\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Artworks\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Categories\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Categories\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Categories\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Categories\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Categories\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Tags\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Tags\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Tags\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Tags\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Tags\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

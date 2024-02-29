@@ -9,17 +9,15 @@ using ModelLayer.DTOS.Response.Commons;
 using ModelLayer.DTOS.Validators;
 
 namespace WebApiLayer.Controllers;
-[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
-    private readonly UserLoginResponseValidator _loginValidations;
-    public AccountController(IAccountService accountService, UserLoginResponseValidator loginValidations)
+    private readonly UserLoginResponseValidator _loginValidations = new UserLoginResponseValidator();
+    public AccountController(IAccountService accountService)
     {
         _accountService = accountService;
-        _loginValidations = loginValidations;
     }
 
     // GET: api/Account
@@ -42,6 +40,7 @@ public class AccountController : ControllerBase
         }
         return Ok(account);
     }
+    
     [AllowAnonymous]
     [HttpPost]
     public async Task<ServiceResponse<string>> Login(LoginAccountResponse lg)
