@@ -34,7 +34,7 @@ public partial class ArtShareContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-            optionsBuilder.UseSqlServer(GetConnectionStrings()).EnableSensitiveDataLogging();
+            optionsBuilder.UseSqlServer("server=(local);user=sa;password=1234567890;database=ArtShare;Trusted_Connection=True;TrustServerCertificate=True").EnableSensitiveDataLogging();
         }
     }
     
@@ -51,6 +51,7 @@ public partial class ArtShareContext : DbContext
         modelBuilder.Entity<Account>(entity =>
         {
             entity.ToTable("Account");
+            entity.Property(e => e.Avatar).HasMaxLength(255);
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 

@@ -26,11 +26,11 @@ namespace OdataLayer.Controllers
 
         // GET: api/Account
         //[HttpGet]
-        [EnableQuery]
+        /*[EnableQuery]
         public async Task<ActionResult<List<Account>>> GetAccount()
         {
             return await _accountService.GetAllAccountAsync();
-        }
+        }*/
 
         /*// GET: api/Account/5
         [HttpGet("{id}")]

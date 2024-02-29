@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Account;
+using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
 using ModelLayer.DTOS.Validators;
 
@@ -22,7 +23,7 @@ public class AccountController : ControllerBase
 
     // GET: api/Account
     [HttpGet]
-    public async Task<ActionResult<List<Account>>> GetAccount()
+    public async Task<ActionResult<List<AccountResponse>>> GetAccount()
     {
         return await _accountService.GetAllAccountAsync();
     }
@@ -31,9 +32,9 @@ public class AccountController : ControllerBase
     //[EnableQuery]
     //[HttpGet("{id}")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Account>> GetAccount(Guid id)
+    public async Task<ActionResult<AccountResponse>> GetAccount(Guid id)
     {
-        var account = await _accountService.GetAccountByIdAsync(id);
+        var account = await _accountService.GetAccountById(id);
         if (account == null)
         {
             return NotFound();
@@ -62,68 +63,25 @@ public class AccountController : ControllerBase
         var result = await _accountService.Login(lg.Email, lg.Password);
         return result;
     }
-    /*// PUT: api/Account/5
+    // PUT: api/Account/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutAccount(Guid id, Account account)
+    [HttpPut]
+    public async Task<ServiceResponse<AccountResponse>> UpdateAccount([FromBody] UpdateAccountRequest account, Guid id)
     {
-        if (id != account.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(account).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!AccountExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
+        var response = await _accountService.UpdateAccount(id, account);
+        return response;
     }
 
     // POST: api/Account
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Account>> PostAccount(Account account)
+    public async Task<ServiceResponse<AccountResponse>> CreateAccount(CreateAccountRequest account)
     {
-        if (_context.Accounts == null)
-        {
-            return Problem("Entity set 'ArtShareContext.Accounts'  is null.");
-        }
-
-        _context.Accounts.Add(account);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            if (AccountExists(account.Id))
-            {
-                return Conflict();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+        var response = await _accountService.CreateNewAccount(account);
+        return response;
     }
 
-    // DELETE: api/Account/5
+    /*// DELETE: api/Account/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAccount(Guid id)
     {
@@ -142,10 +100,7 @@ public class AccountController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
-    }
-
-    private bool AccountExists(Guid id)
-    {
-        return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
     }*/
+
+
 }
