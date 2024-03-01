@@ -1,0 +1,101 @@
+﻿@page
+@model Presentation.Pages.ArtworkDetailsModel
+@{
+}
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Details";
+}
+<head>
+    <link href="~/css/ArtworkDetails.css" rel="stylesheet" />
+</head>
+<div class="container content-area">
+    <h1>Details</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.Artwork.Url" class="img-fluid" alt="Artwork Image">
+        </div>
+        <div class="col-md-8">
+            <h4>Artwork</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Title)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Title)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Description)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Url)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Url)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Likes)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Likes)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Fee)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Fee)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Status)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Artwork.Status)
+                </dd>
+                <dt class="col-sm-3">
+                    Created by
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Account.FullName)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Artwork.Likes)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Likes.Count)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Categories)
+                </dt>
+                <dd class="col-sm-9">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="category-box">
+                            @category.Title
+                        </div>
+                    }
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Tags)
+                </dt>
+                <dd class="col-sm-9">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <div class="tag-box">
+                            @tag.Title
+                        </div>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div>
+        <a asp-page="/UpdateArtwork" asp-route-id="@Model.Artwork?.Id" class="btn btn-primary">Edit</a>
+        <a asp-page="/HomePage" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+

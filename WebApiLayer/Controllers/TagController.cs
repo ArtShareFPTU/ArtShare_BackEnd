@@ -28,6 +28,8 @@ public class TagController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Tag>> GetTagById (Guid id) => await _tagService.GetTagByIdAsync(id);
+    [HttpGet("{artworkId}")]
+    public async Task<ActionResult<List<Tag>>> GetTagByArtworkId (Guid artworkId) => await _tagService.GetTagByArtworkIdAsync(artworkId);
 
     [HttpPost("create")]
     public async Task<IActionResult> CreateTag([FromForm] TagCreation tagCreation)

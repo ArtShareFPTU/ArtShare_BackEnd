@@ -32,6 +32,10 @@ public class AccountService : IAccountService
         var response =  await _accountRepository.GetAllAccountAsync();
         return _mapper.Map<List<AccountResponse>>(response);
     }
+    public async Task<Account> GetAccountByArtworkId(Guid id)
+    {
+        return await _accountRepository.GetAccountByArtworkId(id);
+    }
 
     public async Task<AccountResponse> GetAccountById(Guid id)
     {

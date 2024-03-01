@@ -10,6 +10,7 @@ public interface IAccountService
     Task<List<AccountResponse>> GetAllAccountAsync();
     Task<AccountResponse> GetAccountById(Guid id);
     Task AddAccountAsync(Account account);
+    Task<Account> GetAccountByArtworkId(Guid id);
     Task<ServiceResponse<AccountResponse>> UpdateAccount(Guid id,UpdateAccountRequest account);
     Task DeleteAccountAsync(Guid id);
     Task<ServiceResponse<string>> Login(string email, string password);

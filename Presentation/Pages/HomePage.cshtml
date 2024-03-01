@@ -53,9 +53,18 @@
 
     <div class="box">
         <div class="dream">
-            @foreach (var dream in Model.Artwork)
+            @if (Model.Artwork != null && Model.Artwork.Any())
             {
-                <img src="@dream.Url" alt="@dream.Description" title="@dream.Title">
+                @foreach (var dream in Model.Artwork)
+                {
+                    <a href="/ArtworkDetails?id=@dream.Id">
+                        <img src="@dream.Url" alt="@dream.Description" title="@dream.Title">
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="no-results">Không có kết quả được tìm thấy</div>
             }
         </div>
         <div class="dream">
