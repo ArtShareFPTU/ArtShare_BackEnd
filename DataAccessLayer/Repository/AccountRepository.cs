@@ -23,6 +23,11 @@ public class AccountRepository : IAccountRepository
         var account = _context.Set<Account>().Include(c => c.Artworks).Include(c => c.FollowFollowers).Include(c => c.FollowArtists).FirstOrDefault(c => c.Id.Equals(id));
         return account;
     }
+    public async Task<Account> GetAccountByArtworkId(Guid id)
+    {
+        var artwork = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(id));
+        return await _context.Accounts.FirstOrDefaultAsync(c => c.Id.Equals(artwork.AccountId));
+    }
 
     public async Task AddAccountAsync(Account account)
     {

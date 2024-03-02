@@ -80,7 +80,7 @@ public class ArtworkRepository : IArtworkRepository
     public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
         var imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
-        if (imageExist != null)
+        if (imageExist == null)
         {
             return new StatusCodeResult(409);
         }

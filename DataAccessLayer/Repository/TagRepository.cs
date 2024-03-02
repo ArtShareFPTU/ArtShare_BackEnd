@@ -24,7 +24,21 @@ public class TagRepository : ITagRepository
     {
         return await _context.Tags.Include(c => c.ArtworkTags).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
-
+    public async Task<List<Tag>> GetTagByArtworkIdAsync(Guid id)
+    {
+        var artworkTags = _context.ArtworkTags.Where(c => c.ArtworkId.Equals(id)).ToList();
+        var tagIDs = new HashSet<Guid>();
+        foreach (var item in artworkTags)
+        {
+            tagIDs.Add((Guid)item.TagId);
+        }
+        var tags = new List<Tag>();
+        foreach (var tagId in tagIDs)
+        {
+            tags.Add(await _context.Tags.FirstOrDefaultAsync(c => c.Id.Equals(tagId)));
+        }
+        return tags;
+    }
     public async Task<IActionResult> AddTagAsync(TagCreation tag)
     {
         var tagExist = await _context.Tags.AnyAsync(c => c.Title.ToLower().Equals(tag.Title.ToLower()));

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.5.33516.290
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLayer", "ModelLayer\ModelLayer.csproj", "{EC927F52-E716-41EA-BE7E-FE8B52EB3A5F}"
 EndProject
@@ -50,6 +50,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D8EF196B-07D7-4F95-AA5B-7BD8FD820B68}
+		SolutionGuid = {5A4F196A-7E1B-4FBF-B4B0-814B5F6F315E}
 	EndGlobalSection
 EndGlobal

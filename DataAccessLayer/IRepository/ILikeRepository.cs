@@ -6,6 +6,7 @@ public interface ILikeRepository
 {
     Task<List<Like>> GetAllLikeAsync();
     Task<Like> GetLikeByIdAsync(Guid id);
+    Task<List<Like>> GetLikeByArtworkId(Guid id);
     Task AddLikeAsync(Like like);
     Task UpdateLikeAsync(Like like);
     Task DeleteLikeAsync(Guid id);

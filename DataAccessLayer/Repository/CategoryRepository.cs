@@ -24,6 +24,22 @@ public class CategoryRepository : ICategoryRepository
     {
         return await _context.Categories.Include(c => c.ArtworkCategories).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
+    public async Task<List<Category>> GetCategoryByArtworkId(Guid id)
+    {
+        var artworkCategories = _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(id)).ToList();
+
+        var categoryIDs = new HashSet<Guid>();
+        foreach (var item in artworkCategories)
+        {
+            categoryIDs.Add((Guid)item.CategoryId);
+        }
+        var categories = new List<Category>();
+        foreach (var category in categoryIDs)
+        {
+            categories.Add(await _context.Categories.FirstOrDefaultAsync(c => c.Id.Equals(category)));
+        }
+        return categories;
+    }
 
     public async Task<IActionResult> AddCategoryAsync(CategoryCreation category)
     {

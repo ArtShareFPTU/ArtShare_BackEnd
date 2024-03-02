@@ -20,15 +20,15 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container">
-                <a style="text-decoration: none; color: black" href="#"><h3>ARTOln</h3></a>
+                <a style="text-decoration: none; color: black" href="/HomePage"><h3>ARTOln</h3></a>
                 <div class="header-container1-right">
 
-                    <div class="search-header">
-                        <form action="" method="post">
-                            <input type="text" placeholder="Tìm kiếm..." name="txtsearch">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
+                <div class="search-header">
+                    <form action="/HomePage" method="get">
+                        <input type="text" placeholder="Tìm kiếm..." name="search">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
                 </div>
                 
             <div class="menu-acc">
@@ -104,6 +104,6 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
     </body>
 </html>
-

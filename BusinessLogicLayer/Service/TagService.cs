@@ -30,6 +30,10 @@ public class TagService : ITagService
     {
         return await _TagRepository.AddTagAsync(Tag);
     }
+    public async Task<List<Tag>> GetTagByArtworkIdAsync(Guid id)
+    {
+        return await _TagRepository.GetTagByArtworkIdAsync(id);
+    }
 
     public async Task<IActionResult> UpdateTagAsync(TagUpdate Tag)
     {

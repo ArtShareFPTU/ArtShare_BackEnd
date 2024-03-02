@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="wwwroot\assets\" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.27" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.27" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
@@ -25,11 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Artworks\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Delete.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Categories\Details.cshtml" />

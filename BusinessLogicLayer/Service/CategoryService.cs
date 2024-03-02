@@ -19,6 +19,10 @@ public class CategoryService : ICategoryService
     {
         return await _CategoryRepository.GetAllCategoryAsync();
     }
+    public async Task<List<Category>> GetCategoryByArtworkId(Guid id)
+    {
+        return await _CategoryRepository.GetCategoryByArtworkId(id);
+    }
 
     public async Task<Category> GetCategoryByIdAsync(Guid id)
     {

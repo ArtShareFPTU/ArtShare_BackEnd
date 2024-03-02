@@ -1,0 +1,75 @@
+﻿@page
+@model Presentation.Pages.UpdateArtworkModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+
+<h1>Edit</h1>
+
+<h4>Artwork</h4>
+<hr />
+@if (TempData["AnnounceMessage"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["AnnounceMessage"]
+    </div>
+}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Artwork.Id" />
+            <div class="mb-3">
+                <label asp-for="Artwork.AccountId" class="form-label"></label>
+                <select asp-for="Artwork.AccountId" class="form-control">
+                    <option value="@Model.Artwork.AccountId">@Model.Artwork.AccountId</option>
+                </select>
+                <span asp-validation-for="Artwork.AccountId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Title" class="form-label"></label>
+                <input asp-for="Artwork.Title" class="form-control" />
+                <span asp-validation-for="Artwork.Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Description" class="form-label"></label>
+                <input asp-for="Artwork.Description" class="form-control" />
+                <span asp-validation-for="Artwork.Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Url" class="form-label"></label>
+                <input asp-for="Artwork.Url" class="form-control" />
+                <span asp-validation-for="Artwork.Url" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Likes" class="form-label"></label>
+                <input asp-for="Artwork.Likes" class="form-control" />
+                <span asp-validation-for="Artwork.Likes" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Fee" class="form-label"></label>
+                <input asp-for="Artwork.Fee" class="form-control" />
+                <span asp-validation-for="Artwork.Fee" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Artwork.Status" class="form-label"></label>
+                <input asp-for="Artwork.Status" class="form-control" />
+                <span asp-validation-for="Artwork.Status" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center">
+    <a asp-page="./Index" class="btn btn-link">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
