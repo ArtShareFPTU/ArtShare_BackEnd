@@ -18,8 +18,8 @@ namespace Presentation.Pages.Artworks
     {
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
-        private readonly string _accountManage = "https://localhost:44365/api/Account/";
+        private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+        private readonly string _accountManage = "https://localhost:7168/api/Account/";
 
         public List<Account> Accounts { get; set; }
         public ArtworkCreation Artwork { get; set; }

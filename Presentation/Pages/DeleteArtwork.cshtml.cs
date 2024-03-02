@@ -10,11 +10,11 @@ namespace Presentation.Pages
     {
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
-        private readonly string _tagManage = "https://localhost:44365/api/Tag/";
-        private readonly string _categoryManage = "https://localhost:44365/api/Category/";
-        private readonly string _likeManage = "https://localhost:44365/api/Like/";
-        private readonly string _accountManage = "https://localhost:44365/api/Account/";
+        private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+        private readonly string _tagManage = "https://localhost:7168/api/Tag/";
+        private readonly string _categoryManage = "https://localhost:7168/api/Category/";
+        private readonly string _likeManage = "https://localhost:7168/api/Like/";
+        private readonly string _accountManage = "https://localhost:7168/api/Account/";
 
         public DeleteArtworkModel(IHttpClientFactory httpClientFactory)
         {

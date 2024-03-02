@@ -10,7 +10,7 @@ namespace Presentation.Pages
     {
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
+        private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
 
         public UpdateArtworkModel(IHttpClientFactory httpClientFactory)
         {
