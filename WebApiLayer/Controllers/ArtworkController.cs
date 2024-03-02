@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using ModelLayer.DTOS.Response;
 
 namespace WebApiLayer.Controllers;
 
@@ -100,25 +101,16 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    /*// GET: api/Artwork/5
+    // GET: api/Artwork/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Artwork>> GetArtwork(Guid id)
+    public async Task<List<ArtworkRespone>> GetArtworksByArtistId(Guid id)
     {
-      if (_context.Artworks == null)
-      {
-          return NotFound();
-      }
-        var artwork = await _context.Artworks.FindAsync(id);
+        var list = await _artworkService.GetArtworkByArtistId(id);
 
-        if (artwork == null)
-        {
-            return NotFound();
-        }
-
-        return artwork;
+        return list;
     }
 
-    // PUT: api/Artwork/5
+    /*// PUT: api/Artwork/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutArtwork(Guid id, Artwork artwork)
@@ -154,10 +146,10 @@ public class ArtworkController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Artwork>> PostArtwork(Artwork artwork)
     {
-      if (_context.Artworks == null)
-      {
-          return Problem("Entity set 'ArtShareContext.Artworks'  is null.");
-      }
+        if (_context.Artworks == null)
+        {
+            return Problem("Entity set 'ArtShareContext.Artworks'  is null.");
+        }
         _context.Artworks.Add(artwork);
         try
         {

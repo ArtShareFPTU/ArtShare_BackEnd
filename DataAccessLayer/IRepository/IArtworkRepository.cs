@@ -11,4 +11,5 @@ public interface IArtworkRepository
     Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork);
     Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork);
     Task<IActionResult> DeleteArtworkAsync(Guid id);
+    Task<List<Artwork>> GetArtworkByArtistId(Guid artistId);
 }
