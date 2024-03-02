@@ -11,7 +11,7 @@
 <main class="detail-content">
     <div class="container-detail">
         <div class="cover">
-            <img src="https://www.kiettacnghethuat.com/wp-content/uploads/The-Starry-Night.jpg" alt="">
+            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
         </div>
         <div class="content">
             <div class="nav">
@@ -29,18 +29,17 @@
                 </div>
                 <div class="black-label">
                     <span class="title">
-                        <b>Black Label</b>
+                        <b>@Html.DisplayFor(modle => modle.ArtworkRespone.Title)</b>
                     </span>
                     <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                        Tenetur corporis modi aliquam, quis laborum a nam fugit ducimus?
-                        Molestiae repellendus adipisci ea aut eligendi nemo velit itaque,
-                        illum placeat? Velit.
+                        @Html.DisplayFor(modle => modle.ArtworkRespone.Name)
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modle => modle.ArtworkRespone.Description)
                     </p>
 
-
                     <div class="add-to-card" style="padding: 5px 0; width: 426px;display: flex;justify-content: space-evenly;">
-                        <a href="#"> Download for $<span>200</span></a>
+                        <a href="#"> Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></a>
                         <a href="">Add to card</a>
                     </div>
 
