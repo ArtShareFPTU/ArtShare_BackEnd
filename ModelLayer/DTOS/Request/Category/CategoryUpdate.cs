@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelLayer.DTOS.Request.Category
+namespace ModelLayer.DTOS.Request.Category;
+
+public class CategoryUpdate
 {
-    public class CategoryUpdate
-    {
-        public Guid Id { get; set; }
-        public string? Title { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string? Title { get; set; }
 }

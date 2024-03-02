@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelLayer.DTOS.Request.Tags
+namespace ModelLayer.DTOS.Request.Tags;
+
+public class TagUpdate
 {
-    public class TagUpdate
-    {
-        public Guid Id { get; set; }
-        public string Title {  get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Title { get; set; }
 }

@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "Busin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiLayer", "WebApiLayer\WebApiLayer.csproj", "{C660E81B-06D8-41DA-82AB-FA3E7C8BD8B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdataLayer", "OdataLayer\OdataLayer.csproj", "{1F7343F0-08EC-43B1-B5D2-1600DCC4AEF4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{1700E782-1FD5-4501-9E14-E2BFB34CC506}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{C660E81B-06D8-41DA-82AB-FA3E7C8BD8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C660E81B-06D8-41DA-82AB-FA3E7C8BD8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C660E81B-06D8-41DA-82AB-FA3E7C8BD8B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F7343F0-08EC-43B1-B5D2-1600DCC4AEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F7343F0-08EC-43B1-B5D2-1600DCC4AEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F7343F0-08EC-43B1-B5D2-1600DCC4AEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F7343F0-08EC-43B1-B5D2-1600DCC4AEF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1700E782-1FD5-4501-9E14-E2BFB34CC506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1700E782-1FD5-4501-9E14-E2BFB34CC506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1700E782-1FD5-4501-9E14-E2BFB34CC506}.Release|Any CPU.ActiveCfg = Release|Any CPU

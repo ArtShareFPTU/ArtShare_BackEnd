@@ -1,12 +1,13 @@
 
-body{
+body {
 
     margin: 0;
 }
 
-.header-body{
+.header-body {
     height: 56px;
 }
+
 .header-container1 {
     width: 100%;
     height: 56px;
@@ -21,14 +22,13 @@ body{
 }
 
 
-
-.header-container1-right{
+.header-container1-right {
     display: flex;
     /* justify-content: flex-start; */
     align-items: center;
 }
 
-.header-ketnoi1{
+.header-ketnoi1 {
     margin-right: 40px;
 }
 
@@ -41,20 +41,20 @@ body{
     align-items: center;
 }
 
-.cart-header{
+.cart-header {
     border-radius: 5px;
-    
+
 }
 
-.cart-header a{
+.cart-header a {
     text-decoration: none;
     display: flex;
     align-items: flex-start;
     padding: 6px 2px;
 }
 
-.cart-header span{
-        padding: 0 4px;
+.cart-header span {
+    padding: 0 4px;
     color: black;
     background-color: white;
     font-size: 12px;
@@ -62,12 +62,12 @@ body{
     border-radius: 4px;
 }
 
-.cart-header:hover{
+.cart-header:hover {
     background-color: #535A62;
     text-decoration: none;
 }
 
-.search-header input{
+.search-header input {
     padding: 4px 5px;
     margin-right: 10px;
     border: none;
@@ -76,7 +76,7 @@ body{
 }
 
 .search-header button {
-   background-color: #5a6268;
+    background-color: #5a6268;
     color: white;
     padding: 4px 8px;
     margin-left: -14px;
@@ -94,11 +94,11 @@ body{
     color: #fff;
 }
 
-.manager-menu{
+.manager-menu {
     position: relative;
 }
 
-.manager-menu-body{
+.manager-menu-body {
     background-color: white;
     min-width: 150px;
     position: absolute;
@@ -108,11 +108,11 @@ body{
     display: none;
 }
 
-.manager-menu:hover .manager-menu-hover{
+.manager-menu:hover .manager-menu-hover {
     display: block;
 }
 
-.modal-profile{
+.modal-profile {
     position: fixed;
     top: 0;
     right: 0;
@@ -127,23 +127,23 @@ body{
     transition: opacity linear 0.2s;
 }
 
-.modal-profile:target{
+.modal-profile:target {
     visibility: visible;
     opacity: 1;
 }
 
-.modal-overlay{
-    background-color: rgba(0,0,0,0.3);
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-.overlay-close{
+.overlay-close {
     position: absolute;
     width: 100%;
     height: 100%;
     cursor: default;
 }
 
-.modal_close-btn{
+.modal_close-btn {
     position: absolute;
     top: 2px;
     right: 6px;
@@ -151,7 +151,7 @@ body{
     color: #333;
 }
 
-.modal_profile-body{
+.modal_profile-body {
     height: 500px;
     width: 600px;
     position: relative;
@@ -169,41 +169,43 @@ body{
     justify-content: center;
 
 }
-.header_Login-name{
+
+.header_Login-name {
     font-size: 16px;
     margin-bottom: 2px;
-    color: black; 
-    text-decoration: none; 
+    color: black;
+    text-decoration: none;
     max-width: 110px;
     max-height: 24px;
     overflow: hidden;
     cursor: pointer;
 }
-.header_Login-img{
-    position: relative; 
+
+.header_Login-img {
+    position: relative;
     cursor: pointer;
     padding-right: 80px;
     margin-right: -80px;
 }
 
-.header_Login-img:hover .header_Login-ht{
+.header_Login-img:hover .header_Login-ht {
     display: block;
 }
 
-.menu-acc{
+.menu-acc {
     width: 160px;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     margin-bottom: -3px;
-}       
+}
 
-.menu-ketnoi{
+.menu-ketnoi {
     width: 150px;
 }
 
 
-.header-Login{
+.header-Login {
     background-color: white;
     min-width: 150px;
     position: absolute;
@@ -213,7 +215,7 @@ body{
     display: none;
 }
 
-.header-Login::before{
+.header-Login::before {
     position: absolute;
     width: 128px;
     height: 20px;
@@ -222,30 +224,30 @@ body{
     top: -20px;
 
 }
-.header-Login-p{
-    margin:  5px 0;
-    padding: 5px 0;
-} 
 
-.header-Login-p a{
-    color: black;
-    padding: 5px;
-    
+.header-Login-p {
+    margin: 5px 0;
+    padding: 5px 0;
 }
 
-.header-Login a{
+.header-Login-p a {
+    color: black;
+    padding: 5px;
+
+}
+
+.header-Login a {
     text-decoration: none;
 }
 
-.header-Login-p:hover , .header-Login-p:hover a {
+.header-Login-p:hover, .header-Login-p:hover a {
     background-color: #2196F3;
     color: white;
 }
 
 
-
 /*modal-profile*/
-.modal-profile{
+.modal-profile {
     position: fixed;
     top: 0;
     right: 0;
@@ -260,23 +262,23 @@ body{
     transition: opacity linear 0.2s;
 }
 
-.modal-profile:target{
+.modal-profile:target {
     visibility: visible;
     opacity: 1;
 }
 
-.modal-overlay{
-    background-color: rgba(0,0,0,0.3);
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-.overlay-close{
+.overlay-close {
     position: absolute;
     width: 100%;
     height: 100%;
     cursor: default;
 }
 
-.modal_close-btn{
+.modal_close-btn {
     font-size: xx-large;
     position: absolute;
     top: -4px;
@@ -285,12 +287,12 @@ body{
     text-decoration: none;
 }
 
-.modal_close-btn:hover{
-        color: #0056b3;
+.modal_close-btn:hover {
+    color: #0056b3;
     text-decoration: none;
 }
 
-.modal_profile-body{
+.modal_profile-body {
     height: 500px;
     width: 600px;
     position: relative;
@@ -298,26 +300,26 @@ body{
     border-radius: 10px;
 }
 
-.modal_profile-body h1{
+.modal_profile-body h1 {
     display: flex;
     justify-content: center;
     margin-bottom: 35px;
 }
 
-.profile-img{
+.profile-img {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.profile-img img{
+.profile-img img {
     width: 140px;
 }
 
-.profile-info-body{
+.profile-info-body {
     display: flex;
     justify-content: space-evenly;
-        
+
 }
 
 .profile-info {
@@ -325,14 +327,15 @@ body{
     grid-gap: 10px;
 }
 
-.profile-info img{
+.profile-info img {
     width: 25px;
 }
 
 .profile-info h2 {
     margin: 0;
 }
-.profile-info p{
+
+.profile-info p {
     color: black;
 }
 
@@ -361,17 +364,21 @@ body{
 .edit-button {
     background-color: #2196F3;
 }
-.profile-info-body img{
+
+.profile-info-body img {
     margin-right: 10px;
 }
+
 .save-button {
     background-color: #4CAF50;
 }
-.profile-info-submit{
+
+.profile-info-submit {
     display: flex;
     justify-content: center;
 }
-.profile-info-submit input{
+
+.profile-info-submit input {
     padding: 6px 109px;
     border: none;
     color: white;
@@ -380,47 +387,50 @@ body{
     cursor: pointer;
 }
 
-.edit-form-profile label{
+.edit-form-profile label {
     font-size: large;
     font-weight: 500;
 }
 
-.edit-form-profile input[type=text]{
+.edit-form-profile input[type=text] {
     padding: 4px 4px;
 }
-.edit-form-profile input[type=email]{
+
+.edit-form-profile input[type=email] {
     margin-left: 4px;
     padding: 4px 5px;
 }
-.edit-form-profile input[type=tel]{
+
+.edit-form-profile input[type=tel] {
     padding: 4px 5px;
     margin-left: -3px;
 }
 
-.profile-info-email img{
+.profile-info-email img {
     height: 26px;
 }
 
-.profile-info-email{
+.profile-info-email {
     display: flex;
-        align-items: center;
-        
+    align-items: center;
+
 }
-.profile-info-email div{
+
+.profile-info-email div {
     word-wrap: break-word;
     font-size: unset;
     font-weight: 700;
     max-width: 200px;
 }
 
-.profile-info-link{
+.profile-info-link {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.profile-info-link a{
-        text-decoration: none;
+.profile-info-link a {
+    text-decoration: none;
     border: 1px solid;
     padding: 5px 10px;
     font-size: large;

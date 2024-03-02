@@ -5,8 +5,8 @@ var sass = require('gulp-sass');
 
 gulp.task('default', function () {
     return gulp.src('./flexbin.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./'));
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./'));
 });
 
 // Watch SASS file changes

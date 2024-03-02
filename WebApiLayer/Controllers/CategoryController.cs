@@ -25,21 +25,31 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategoryById(Guid id) => await _categoryService.GetCategoryByIdAsync(id);
+    public async Task<ActionResult<Category>> GetCategoryById(Guid id)
+    {
+        return await _categoryService.GetCategoryByIdAsync(id);
+    }
+
     [HttpGet("{artworkId}")]
-    public async Task<ActionResult<List<Category>>> GetCategoryByArtworkId(Guid artworkId) => await _categoryService.GetCategoryByArtworkId(artworkId);
+    public async Task<ActionResult<List<Category>>> GetCategoryByArtworkId(Guid artworkId)
+    {
+        return await _categoryService.GetCategoryByArtworkId(artworkId);
+    }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCategory([FromForm]CategoryCreation categoryCreation)
+    public async Task<IActionResult> CreateCategory([FromForm] CategoryCreation categoryCreation)
     {
         try
         {
             var result = await _categoryService.AddCategoryAsync(categoryCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This category has existed before"); }
-                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Category add success"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This category has existed before");
+                else if (statusCodeResult.StatusCode == 201)
+                    return StatusCode(StatusCodes.Status201Created, "Category add success");
             }
+
             return BadRequest("Error when creating category");
         }
         catch (Exception ex)
@@ -47,17 +57,21 @@ public class CategoryController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateCategory([FromForm]CategoryUpdate categoryUpdate)
+    public async Task<IActionResult> UpdateCategory([FromForm] CategoryUpdate categoryUpdate)
     {
         try
         {
             var result = await _categoryService.UpdateCategoryAsync(categoryUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This category was removed or not created before"); }
-                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Category update success"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This category was removed or not created before");
+                else if (statusCodeResult.StatusCode == 200)
+                    return StatusCode(StatusCodes.Status200OK, "Category update success");
             }
+
             return BadRequest("Error when updating category");
         }
         catch (Exception ex)
@@ -65,6 +79,7 @@ public class CategoryController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPost("remove")]
     public async Task<IActionResult> RemoveCategory(Guid id)
     {
@@ -73,9 +88,12 @@ public class CategoryController : ControllerBase
             var result = await _categoryService.DeleteCategoryAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status404NotFound, "This category was removed or not created before"); }
-                else if (statusCodeResult.StatusCode == 204) { return StatusCode(StatusCodes.Status204NoContent, "Category remove success"); }
+                if (statusCodeResult.StatusCode == 404)
+                    return StatusCode(StatusCodes.Status404NotFound, "This category was removed or not created before");
+                else if (statusCodeResult.StatusCode == 204)
+                    return StatusCode(StatusCodes.Status204NoContent, "Category remove success");
             }
+
             return BadRequest("Error when removing category");
         }
         catch (Exception ex)

@@ -27,9 +27,16 @@ public class TagController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Tag>> GetTagById (Guid id) => await _tagService.GetTagByIdAsync(id);
+    public async Task<ActionResult<Tag>> GetTagById(Guid id)
+    {
+        return await _tagService.GetTagByIdAsync(id);
+    }
+
     [HttpGet("{artworkId}")]
-    public async Task<ActionResult<List<Tag>>> GetTagByArtworkId (Guid artworkId) => await _tagService.GetTagByArtworkIdAsync(artworkId);
+    public async Task<ActionResult<List<Tag>>> GetTagByArtworkId(Guid artworkId)
+    {
+        return await _tagService.GetTagByArtworkIdAsync(artworkId);
+    }
 
     [HttpPost("create")]
     public async Task<IActionResult> CreateTag([FromForm] TagCreation tagCreation)
@@ -39,9 +46,12 @@ public class TagController : ControllerBase
             var result = await _tagService.AddTagAsync(tagCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This tag is existed"); }
-                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Tag create success"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This tag is existed");
+                else if (statusCodeResult.StatusCode == 201)
+                    return StatusCode(StatusCodes.Status201Created, "Tag create success");
             }
+
             return BadRequest("Error when creating tag");
         }
         catch (Exception ex)
@@ -49,17 +59,21 @@ public class TagController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateTag([FromForm]TagUpdate tagUpdate)
+    public async Task<IActionResult> UpdateTag([FromForm] TagUpdate tagUpdate)
     {
         try
         {
             var result = await _tagService.UpdateTagAsync(tagUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This tag was removed or not existed before"); }
-                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Tag update success"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This tag was removed or not existed before");
+                else if (statusCodeResult.StatusCode == 200)
+                    return StatusCode(StatusCodes.Status200OK, "Tag update success");
             }
+
             return BadRequest("Error when updating tag");
         }
         catch (Exception ex)
@@ -67,6 +81,7 @@ public class TagController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPost("remove")]
     public async Task<IActionResult> RemoveTag(Guid id)
     {
@@ -75,9 +90,12 @@ public class TagController : ControllerBase
             var result = await _tagService.DeleteTagAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status404NotFound, "This tag was removed or not existed before"); }
-                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Tag remove success"); }
+                if (statusCodeResult.StatusCode == 404)
+                    return StatusCode(StatusCodes.Status404NotFound, "This tag was removed or not existed before");
+                else if (statusCodeResult.StatusCode == 201)
+                    return StatusCode(StatusCodes.Status201Created, "Tag remove success");
             }
+
             return BadRequest("Error when removing tag");
         }
         catch (Exception ex)

@@ -6,6 +6,5 @@ public class ProfilePage : PageModel
 {
     public void OnGet()
     {
-        
     }
 }

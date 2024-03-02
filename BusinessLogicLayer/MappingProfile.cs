@@ -16,7 +16,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => DateTime.Now))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => OderStatus.Unpaid.ToString()))
-            .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => "PayPal")) ;
+            .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => "PayPal"));
 
         CreateMap<ArtworkRespone, Artwork>();
 
@@ -44,10 +44,8 @@ public class MappingProfile : Profile
             .ForMember(c => c.FullName, opt => opt.MapFrom(a => a.FullName))
             .ForMember(c => c.Description, opt => opt.MapFrom(a => a.Description))
             .ForMember(c => c.UserName, opt => opt.MapFrom(a => a.UserName))
-            .ForMember(c => c. Birthday, opt => opt.MapFrom(a => a.Birthday))
+            .ForMember(c => c.Birthday, opt => opt.MapFrom(a => a.Birthday))
             .ForMember(c => c.Email, opt => opt.MapFrom(a => a.UserName))
             .ForMember(c => c.Password, opt => opt.MapFrom(a => a.Password));
-
     }
-
 }

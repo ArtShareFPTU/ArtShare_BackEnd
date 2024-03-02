@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 
-
 .detail-content {
     width: 100%;
     height: 100vh;
@@ -19,7 +18,7 @@
     display: grid;
     grid-template-columns: 40% 60%;
     grid-template-areas: "cover content";
-    box-shadow: -2px 0px 33px 0px rgba(0,0,0,0.75);
+    box-shadow: -2px 0px 33px 0px rgba(0, 0, 0, 0.75);
 }
 
 .add-to-card a {
@@ -44,10 +43,10 @@
     overflow: hidden;
 }
 
-    .cover img {
-        max-width: 100%; /* Kích th??c t?i ?a là 100% chi?u r?ng c?a th? div */
-        max-height: 100%; /* Kích th??c t?i ?a là 100% chi?u cao c?a th? div */
-    }
+.cover img {
+    max-width: 100%; /* Kï¿½ch th??c t?i ?a lï¿½ 100% chi?u r?ng c?a th? div */
+    max-height: 100%; /* Kï¿½ch th??c t?i ?a lï¿½ 100% chi?u cao c?a th? div */
+}
 
 .content {
     grid-area: content;
@@ -89,20 +88,20 @@
     overflow: auto;
 }
 
-    .pages span {
-        margin-top: 15px;
-    }
+.pages span {
+    margin-top: 15px;
+}
 
 .black-label {
     width: 80%;
     /* position: relative; */
 }
 
-    .black-label p {
-        font-size: 13px;
-        color: gray;
-        width: 70%;
-    }
+.black-label p {
+    font-size: 13px;
+    color: gray;
+    width: 70%;
+}
 
 .title {
     font-size: 64px;
@@ -113,17 +112,17 @@
     width: 45%;
     display: flex;
     justify-content: space-between;
-    border-left: 4px solid rgb(255,177,33);
+    border-left: 4px solid rgb(255, 177, 33);
 }
 
-    .prix span {
-        padding-left: 10px;
-    }
+.prix span {
+    padding-left: 10px;
+}
 
 .crt {
     color: gray;
     left: 2px;
-    border-bottom: 1px solid rgb(177,177,177);
+    border-bottom: 1px solid rgb(177, 177, 177);
 }
 
 .active {
@@ -132,18 +131,18 @@
     transform: translateX(60px);
 }
 
-    .active::before {
-        position: absolute;
-        content: "";
-        display: block;
-        width: 67px;
-        right: 117%;
-        top: 45%;
-        background-color: #555;
-        height: .2em;
-        min-height: 1px;
-        z-index: 1;
-    }
+.active::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 67px;
+    right: 117%;
+    top: 45%;
+    background-color: #555;
+    height: .2em;
+    min-height: 1px;
+    z-index: 1;
+}
 
 .bdge {
     height: 21px;

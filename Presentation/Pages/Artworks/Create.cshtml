@@ -15,14 +15,14 @@
 <h1>Create</h1>
 
 <h4>Artwork</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Artwork.AccountId" class="control-label">Account ID</label>
-                <select asp-for="Artwork.AccountId" class ="form-control">
+                <select asp-for="Artwork.AccountId" class="form-control">
                     @foreach (var item in Model.Accounts)
                     {
                         <option value="@item.Id">@item.Id</option>
@@ -31,17 +31,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Title" class="control-label">Title</label>
-                <input asp-for="Artwork.Title" class="form-control" />
+                <input asp-for="Artwork.Title" class="form-control"/>
                 <span asp-validation-for="Artwork.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Description" class="control-label">Description</label>
-                <input asp-for="Artwork.Description" class="form-control" />
+                <input asp-for="Artwork.Description" class="form-control"/>
                 <span asp-validation-for="Artwork.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Image" class="control-label">Image</label>
-                <input type="file" asp-for="Artwork.Image" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf" />
+                <input type="file" asp-for="Artwork.Image" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf"/>
                 <span asp-validation-for="Artwork.Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,21 +51,21 @@
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Likes" class="control-label">Likes</label>
-                <input asp-for="Artwork.Likes" class="form-control" />
+                <input asp-for="Artwork.Likes" class="form-control"/>
                 <span asp-validation-for="Artwork.Likes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Fee" class="control-label">Fee</label>
-                <input asp-for="Artwork.Fee" class="form-control" />
+                <input asp-for="Artwork.Fee" class="form-control"/>
                 <span asp-validation-for="Artwork.Fee" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Artwork.Status" class="control-label">Status</label>
-                <input asp-for="Artwork.Status" class="form-control" />
+                <input asp-for="Artwork.Status" class="form-control"/>
                 <span asp-validation-for="Artwork.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -76,5 +76,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -3,120 +3,126 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModelLayer.BussinessObject;
 using Newtonsoft.Json;
 
-namespace Presentation.Pages
+namespace Presentation.Pages;
+
+public class ArtworkDetailsModel : PageModel
 {
-    public class ArtworkDetailsModel : PageModel
+    private readonly ILogger _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+    private readonly string _tagManage = "https://localhost:7168/api/Tag/";
+    private readonly string _categoryManage = "https://localhost:7168/api/Category/";
+    private readonly string _likeManage = "https://localhost:7168/api/Like/";
+    private readonly string _accountManage = "https://localhost:7168/api/Account/";
+
+    public ArtworkDetailsModel(IHttpClientFactory httpClientFactory)
     {
-        private readonly ILogger _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
-        private readonly string _tagManage = "https://localhost:7168/api/Tag/";
-        private readonly string _categoryManage = "https://localhost:7168/api/Category/";
-        private readonly string _likeManage = "https://localhost:7168/api/Like/";
-        private readonly string _accountManage = "https://localhost:7168/api/Account/";
+        _httpClientFactory = httpClientFactory;
+    }
 
-        public ArtworkDetailsModel(IHttpClientFactory httpClientFactory)
+    public Artwork Artwork { get; set; } = default!;
+    public Account Account { get; set; } = default!;
+
+    public List<Tag> Tags { get; set; }
+    public List<Category> Categories { get; set; }
+    public List<Like> Likes { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(Guid id)
+    {
+        if (id == null) return NotFound();
+        var client = _httpClientFactory.CreateClient();
+        //var key = HttpContext.Session.GetString("key");
+        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var artwork = await GetArtwork(client, id);
+
+        if (artwork == null)
         {
-            _httpClientFactory = httpClientFactory;
+            return NotFound();
+        }
+        else
+        {
+            Artwork = artwork;
+            Tags = await GetTag(client, artwork.Id);
+            Categories = await GetCategory(client, artwork.Id);
+            Likes = await GetLike(client, artwork.Id);
+            Account = await GetAccount(client, artwork.Id);
         }
 
-        public Artwork Artwork { get; set; } = default!;
-        public Account Account { get; set; } = default!;
+        return Page();
+    }
 
-        public List<Tag> Tags { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<Like> Likes { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(Guid id)
+    private async Task<Artwork> GetArtwork(HttpClient client, Guid id)
+    {
+        var endpoint = _artworkManage + "GetArtworkById/" + id;
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var client = _httpClientFactory.CreateClient();
-            //var key = HttpContext.Session.GetString("key");
-            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-            var artwork = await GetArtwork(client, id);
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Artwork>(content);
 
-            if (artwork == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Artwork = artwork;
-                Tags = await GetTag(client, artwork.Id);
-                Categories = await GetCategory(client, artwork.Id);
-                Likes = await GetLike(client, artwork.Id);
-                Account = await GetAccount(client, artwork.Id);
-            }
-            return Page();
+            return result;
         }
 
-        private async Task<Artwork> GetArtwork(HttpClient client, Guid id)
-        {
-            var endpoint = _artworkManage + "GetArtworkById/" + id;
-            var response = await client.GetAsync(endpoint);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<Artwork>(content);
+        return null;
+    }
 
-                return result;
-            }
-            return null;
-        }
-        public async Task<List<Tag>> GetTag(HttpClient client, Guid id)
+    public async Task<List<Tag>> GetTag(HttpClient client, Guid id)
+    {
+        var endpoint = _tagManage + "GetTagByArtworkId/" + id;
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
         {
-            var endpoint = _tagManage + "GetTagByArtworkId/" + id;
-            var response = await client.GetAsync(endpoint);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var tag = JsonConvert.DeserializeObject<List<Tag>>(content);
+            var content = await response.Content.ReadAsStringAsync();
+            var tag = JsonConvert.DeserializeObject<List<Tag>>(content);
 
-                return tag;
-            }
-            return null;
+            return tag;
         }
-        public async Task<List<Category>> GetCategory(HttpClient client, Guid id)
+
+        return null;
+    }
+
+    public async Task<List<Category>> GetCategory(HttpClient client, Guid id)
+    {
+        var endpoint = _categoryManage + "GetCategoryByArtworkId/" + id;
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
         {
-            var endpoint = _categoryManage + "GetCategoryByArtworkId/" + id;
-            var response = await client.GetAsync(endpoint);
-            if(response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var categories = JsonConvert.DeserializeObject<List<Category>>(content);
+            var content = await response.Content.ReadAsStringAsync();
+            var categories = JsonConvert.DeserializeObject<List<Category>>(content);
 
-                return categories;
-            }
-            return null;
+            return categories;
         }
-        public async Task<List<Like>> GetLike(HttpClient client, Guid id)
+
+        return null;
+    }
+
+    public async Task<List<Like>> GetLike(HttpClient client, Guid id)
+    {
+        var endpoint = _likeManage + "GetLikeByArtworkId/" + id;
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
         {
-            var endpoint = _likeManage + "GetLikeByArtworkId/" + id;
-            var response = await client.GetAsync(endpoint);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var categories = JsonConvert.DeserializeObject<List<Like>>(content);
+            var content = await response.Content.ReadAsStringAsync();
+            var categories = JsonConvert.DeserializeObject<List<Like>>(content);
 
-                return categories;
-            }
-            return null;
+            return categories;
         }
-        public async Task<Account> GetAccount(HttpClient client, Guid id)
+
+        return null;
+    }
+
+    public async Task<Account> GetAccount(HttpClient client, Guid id)
+    {
+        var endpoint = _accountManage + "GetAccountByArtworkId/" + id;
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
         {
-            var endpoint = _accountManage + "GetAccountByArtworkId/" + id;
-            var response = await client.GetAsync(endpoint);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var account = JsonConvert.DeserializeObject<Account>(content);
+            var content = await response.Content.ReadAsStringAsync();
+            var account = JsonConvert.DeserializeObject<Account>(content);
 
-                return account;
-            }
-            return null;
+            return account;
         }
+
+        return null;
     }
 }

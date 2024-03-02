@@ -25,21 +25,30 @@ public class ArtworkController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Artwork>> GetArtworkById(Guid id)  => await _artworkService.GetArtworkByIdAsync(id);
+    public async Task<ActionResult<Artwork>> GetArtworkById(Guid id)
+    {
+        return await _artworkService.GetArtworkByIdAsync(id);
+    }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateArtwork([FromForm]ArtworkCreation artworkCreation)
+    public async Task<IActionResult> CreateArtwork([FromForm] ArtworkCreation artworkCreation)
     {
         try
         {
             var result = await _artworkService.AddArtworkAsync(artworkCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork is existed"); }
-                else if (statusCodeResult.StatusCode == 201) { return StatusCode(StatusCodes.Status201Created, "Artwork create success"); }
-                else if (statusCodeResult.StatusCode == 500) { return StatusCode(StatusCodes.Status500InternalServerError, "Image not found or error when uploading");  }
-                else if (statusCodeResult.StatusCode == 415) { return StatusCode(StatusCodes.Status415UnsupportedMediaType, "File type is not supported"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This artwork is existed");
+                else if (statusCodeResult.StatusCode == 201)
+                    return StatusCode(StatusCodes.Status201Created, "Artwork create success");
+                else if (statusCodeResult.StatusCode == 500)
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        "Image not found or error when uploading");
+                else if (statusCodeResult.StatusCode == 415)
+                    return StatusCode(StatusCodes.Status415UnsupportedMediaType, "File type is not supported");
             }
+
             return BadRequest("Error when creating artwork");
         }
         catch (Exception ex)
@@ -56,9 +65,12 @@ public class ArtworkController : ControllerBase
             var result = await _artworkService.UpdateArtworkAsync(artworkUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 409) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before"); }
-                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Artwork update success"); }
+                if (statusCodeResult.StatusCode == 409)
+                    return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before");
+                else if (statusCodeResult.StatusCode == 200)
+                    return StatusCode(StatusCodes.Status200OK, "Artwork update success");
             }
+
             return BadRequest("Error when updating artwork");
         }
         catch (Exception ex)
@@ -75,9 +87,12 @@ public class ArtworkController : ControllerBase
             var result = await _artworkService.DeleteArtworkAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {
-                if (statusCodeResult.StatusCode == 404) { return StatusCode(StatusCodes.Status409Conflict, "This artwork was disabled or not existed before"); }
-                else if (statusCodeResult.StatusCode == 200) { return StatusCode(StatusCodes.Status200OK, "Artwork disabled success"); }
+                if (statusCodeResult.StatusCode == 404)
+                    return StatusCode(StatusCodes.Status409Conflict, "This artwork was disabled or not existed before");
+                else if (statusCodeResult.StatusCode == 200)
+                    return StatusCode(StatusCodes.Status200OK, "Artwork disabled success");
             }
+
             return BadRequest("Error when removing artwork");
         }
         catch (Exception ex)

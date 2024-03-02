@@ -1,4 +1,4 @@
-.container{
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,23 +6,25 @@
     text-align: center;
     margin: 40px 20px 0 20px;
 }
-.container .heading{
+
+.container .heading {
     width: 50%;
     padding-bottom: 50px;
 }
 
-.container .box{
+.container .box {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.container .box .dream{
+
+.container .box .dream {
     display: flex;
     flex-direction: column;
     width: 32.5%;
 }
 
-.container .box .dream img{
+.container .box .dream img {
     width: 100%;
     padding-bottom: 15px;
     border-radius: 5px;

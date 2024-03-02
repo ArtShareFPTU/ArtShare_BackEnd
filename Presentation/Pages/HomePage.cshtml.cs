@@ -16,12 +16,13 @@ public class HomePage : PageModel
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public List<Artwork> Artwork { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
-        
+
         //var key = HttpContext.Session.GetString("key");
         //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);
@@ -31,18 +32,12 @@ public class HomePage : PageModel
         }
         else
         {
-            if(search == null || search.Length == 0)
-            {
-               
+            if (search == null || search.Length == 0)
                 Artwork = artworks;
-            }
             else
-            {
-                
                 Artwork = artworks.Where(c => c.Title.ToLower().Contains(search.ToLower())).ToList();
-            }
-            
         }
+
         return Page();
     }
 
@@ -57,6 +52,7 @@ public class HomePage : PageModel
 
             return result;
         }
+
         return null;
     }
 }

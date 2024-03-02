@@ -7,7 +7,7 @@
     ViewData["Title"] = "Details";
 }
 <head>
-    <link href="~/css/ArtworkDetails.css" rel="stylesheet" />
+    <link href="~/css/ArtworkDetails.css" rel="stylesheet"/>
 </head>
 <div class="container content-area">
     @if (TempData["AnnounceMessage"] != null)
@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-8">
             <h4>Artwork</h4>
-            <hr />
+            <hr/>
             <dl class="row">
                 <dt class="col-sm-3">
                     @Html.DisplayNameFor(model => model.Artwork.Title)
@@ -101,8 +101,8 @@
     </div>
     <div>
         <form method="post">
-            <input type="hidden" asp-for="Artwork.Id" />
-            <input type="submit" value="Disable" class="btn btn-danger" /> |
+            <input type="hidden" asp-for="Artwork.Id"/>
+            <input type="submit" value="Disable" class="btn btn-danger"/> |
             <a asp-page="/HomePage">Back to List</a>
         </form>
         <a asp-page="/HomePage" class="btn btn-secondary">Back to List</a>
