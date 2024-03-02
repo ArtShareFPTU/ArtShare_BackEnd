@@ -12,4 +12,10 @@ public interface IArtworkRepository
     Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork);
     Task<IActionResult> DeleteArtworkAsync(Guid id);
     Task<List<Artwork>> GetArtworkByArtistId(Guid artistId);
+    Task<IActionResult> AddCategory4Artwork(ArtworkCategoryAddition artworkCategoryAddition);
+    Task<IActionResult> UpdateCategory4Artwork(ArtworkCategoryUpdate artworkCategoryUpdate);
+    Task<IActionResult> AddTag4Artwork(ArtworkTagAddition artworkTagAddition);
+    Task<IActionResult> UpdateTag4Artwork(ArtworkTagUpdate artworkTagUpdate);
+    Task<IActionResult> RemoveTag4Artwork(Guid id);
+    Task<IActionResult> RemoveCategory4Artwork(Guid id);
 }

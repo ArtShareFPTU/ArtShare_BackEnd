@@ -1,4 +1,3 @@
-using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -47,5 +46,29 @@ public class ArtworkService : IArtworkService
     {
         var response = await _ArtworkRepository.GetArtworkByArtistId(artistId);
         return _mapper.Map<List<ArtworkRespone>>(response);
+    }
+    public async Task<IActionResult> UpdateCategory4Artwork(ArtworkCategoryUpdate artworkCategoryUpdate)
+    {
+        return await _ArtworkRepository.UpdateCategory4Artwork(artworkCategoryUpdate);
+    }
+    public async Task<IActionResult> AddCategory4Artwork(ArtworkCategoryAddition artworkCategoryAddition)
+    {
+        return await _ArtworkRepository.AddCategory4Artwork(artworkCategoryAddition);
+    }
+    public async Task<IActionResult> UpdateTag4Artwork(ArtworkTagUpdate artworkTagUpdate)
+    {
+        return await _ArtworkRepository.UpdateTag4Artwork(artworkTagUpdate);
+    }
+    public async Task<IActionResult> AddTag4Artwork(ArtworkTagAddition artworkTagAddition)
+    {
+        return await _ArtworkRepository.AddTag4Artwork(artworkTagAddition);
+    }
+    public async Task<IActionResult> RemoveTag4Artwork(Guid id)
+    {
+        return await _ArtworkRepository.RemoveTag4Artwork(id);
+    }
+    public async Task<IActionResult> RemoveCategory4Artwork(Guid id)
+    {
+        return await _ArtworkRepository.RemoveCategory4Artwork(id);
     }
 }

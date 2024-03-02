@@ -17,7 +17,7 @@
 }
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Artwork.Id"/>
             <div class="mb-3">
@@ -38,8 +38,8 @@
                 <span asp-validation-for="Artwork.Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Artwork.Url" class="form-label"></label>
-                <input asp-for="Artwork.Url" class="form-control"/>
+                <label asp-for="Artwork.Url" class="control-label">Image</label>
+                <input type="file" asp-for="Artwork.Url" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf" />
                 <span asp-validation-for="Artwork.Url" class="text-danger"></span>
             </div>
             <div class="mb-3">

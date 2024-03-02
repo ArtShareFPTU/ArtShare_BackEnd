@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Presentation.Pages;
 
@@ -10,7 +11,7 @@ public class UpdateArtworkModel : PageModel
 {
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+    private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
 
     public UpdateArtworkModel(IHttpClientFactory httpClientFactory)
     {
@@ -48,19 +49,28 @@ public class UpdateArtworkModel : PageModel
             AccountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
             Title = Request.Form["Artwork.Title"],
             Description = Request.Form["Artwork.Description"],
-            Url = Request.Form["Artwork.Url"],
             Fee = decimal.Parse(Request.Form["Artwork.Fee"]),
             Likes = int.Parse(Request.Form["Artwork.Likes"]),
             Status = Request.Form["Artwork.Status"]
         };
 
         var endpoint = _artworkManage + "UpdateArtwork/update";
-        var jsonRequestData = System.Text.Json.JsonSerializer.Serialize(artworkUpdate);
+        
+        var multipartContent = new MultipartFormDataContent();
+        multipartContent.Add(new StringContent(artworkUpdate.Id.ToString()), "AccountId");
+        multipartContent.Add(new StringContent(artworkUpdate.Title), "Title");
+        multipartContent.Add(new StringContent(artworkUpdate.Description), "Description");
+        multipartContent.Add(new StringContent(artworkUpdate.Likes.ToString()), "Likes");
+        multipartContent.Add(new StringContent(artworkUpdate.Fee.ToString()), "Fee");
+        multipartContent.Add(new StringContent(artworkUpdate.Status), "Status");
+        if (Request.Form.Files.Count > 0)
+        {
+            var imageFile = Request.Form.Files[0];
+            multipartContent.Add(new StreamContent(imageFile.OpenReadStream()), "Image", imageFile.FileName);
+        }
 
-        var content = new StringContent(jsonRequestData, System.Text.Encoding.UTF8, "application/json");
-
-        var response = await client.PutAsync(endpoint, content);
-        if (response.IsSuccessStatusCode)
+        var response = await client.PutAsync(endpoint, multipartContent);
+        if (response.StatusCode != null)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 TempData["AnnounceMessage"] = "Update artwork success";
