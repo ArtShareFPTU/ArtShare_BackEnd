@@ -58,7 +58,7 @@ public class ArtworkController : ControllerBase
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateArtwork(ArtworkUpdate artworkUpdate)
+    public async Task<IActionResult> UpdateArtwork([FromForm]ArtworkUpdate artworkUpdate)
     {
         try
         {
@@ -69,6 +69,10 @@ public class ArtworkController : ControllerBase
                     return StatusCode(StatusCodes.Status409Conflict, "This artwork was removed or not existed before");
                 else if (statusCodeResult.StatusCode == 200)
                     return StatusCode(StatusCodes.Status200OK, "Artwork update success");
+                else if (statusCodeResult.StatusCode == 500)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error when uploading image");
+                else if (statusCodeResult.StatusCode == 415)
+                    return StatusCode(StatusCodes.Status415UnsupportedMediaType, "Artwork update success");
             }
 
             return BadRequest("Error when updating artwork");
@@ -94,6 +98,115 @@ public class ArtworkController : ControllerBase
             }
 
             return BadRequest("Error when removing artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("createTag")]
+    public async Task<IActionResult> CreateTag4Artwork([FromForm]ArtworkTagAddition artworkTagAddition)
+    {
+        try
+        {
+            var result = await _artworkService.AddTag4Artwork(artworkTagAddition);
+            if(result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) return StatusCode(StatusCodes.Status409Conflict, "This tag was removed or was added before");
+                else if (statusCodeResult.StatusCode == 201) return StatusCode(StatusCodes.Status201Created, "Add tag for artwork success");
+            }
+            return BadRequest("Error when adding tag for artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost("createCategory")]
+    public async Task<IActionResult> CreateCategory4Artwork([FromForm] ArtworkCategoryAddition artworkCategoryAddition)
+    {
+        try
+        {
+            var result = await _artworkService.AddCategory4Artwork(artworkCategoryAddition);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) return StatusCode(StatusCodes.Status409Conflict, "This category was removed or was added before");
+                else if (statusCodeResult.StatusCode == 201) return StatusCode(StatusCodes.Status201Created, "Add category for artwork success");
+            }
+            return BadRequest("Error when adding tag for artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPut("updateTag")]
+    public async Task<IActionResult> UpdateTag4Artwork([FromForm] ArtworkTagUpdate artworkTagUpdate)
+    {
+        try
+        {
+            var result = await _artworkService.UpdateTag4Artwork(artworkTagUpdate);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) return StatusCode(StatusCodes.Status409Conflict, "This tag was removed before");
+                else if (statusCodeResult.StatusCode == 200) return StatusCode(StatusCodes.Status200OK, "Update tag for artwork success");
+            }
+            return BadRequest("Update tag for artwork failed");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPut("updateCategory")]
+    public async Task<IActionResult> UpdateCategory4Artwork([FromForm] ArtworkCategoryUpdate artworkCategoryUpdate)
+    {
+        try
+        {
+            var result = await _artworkService.UpdateCategory4Artwork(artworkCategoryUpdate);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 409) return StatusCode(StatusCodes.Status409Conflict, "This category was removed before");
+                else if (statusCodeResult.StatusCode == 200) return StatusCode(StatusCodes.Status200OK, "Update tag for artwork success");
+            }
+            return BadRequest("Update category for artwork failed");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost("removeTag")]
+    public async Task<IActionResult> RemoveTag4Artwork(Guid id)
+    {
+        try
+        {
+            var result = await _artworkService.RemoveTag4Artwork(id);
+            if(result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 404) return StatusCode(StatusCodes.Status404NotFound, "This tag is not found on the artwork");
+                else if (statusCodeResult.StatusCode == 204) return StatusCode(StatusCodes.Status204NoContent, "Remove tag for artwork success");
+            }
+            return BadRequest("Error when removing tag for artwork");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    [HttpPost("removeCategory")]
+    public async Task<IActionResult> RemoveCategory4Artwork(Guid id)
+    {
+        try
+        {
+            var result = await _artworkService.RemoveCategory4Artwork(id);
+            if (result is StatusCodeResult statusCodeResult)
+            {
+                if (statusCodeResult.StatusCode == 404) return StatusCode(StatusCodes.Status404NotFound, "This category is not found on the artwork");
+                else if (statusCodeResult.StatusCode == 204) return StatusCode(StatusCodes.Status204NoContent, "Remove category for artwork success");
+            }
+            return BadRequest("Error when removing category for artwork");
         }
         catch (Exception ex)
         {

@@ -11,8 +11,8 @@ public class CreateArtworkModel : PageModel
 {
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
-    private readonly string _accountManage = "https://localhost:7168/api/Account/";
+    private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
+    private readonly string _accountManage = "https://localhost:44365/api/Account/";
 
     public List<Account> Accounts { get; set; }
     public ArtworkCreation Artwork { get; set; }
@@ -51,7 +51,6 @@ public class CreateArtworkModel : PageModel
             accountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
             title = Request.Form["Artwork.Title"],
             description = Request.Form["Artwork.Description"],
-            url = Request.Form["Artwork.Url"],
             likes = int.Parse(Request.Form["Artwork.Likes"]),
             fee = decimal.Parse(Request.Form["Artwork.Fee"]),
             status = Request.Form["Artwork.Status"]
@@ -60,7 +59,6 @@ public class CreateArtworkModel : PageModel
         multipartContent.Add(new StringContent(artworkData.accountId.ToString()), "AccountId");
         multipartContent.Add(new StringContent(artworkData.title), "Title");
         multipartContent.Add(new StringContent(artworkData.description), "Description");
-        multipartContent.Add(new StringContent(artworkData.url), "Url");
         multipartContent.Add(new StringContent(artworkData.likes.ToString()), "Likes");
         multipartContent.Add(new StringContent(artworkData.fee.ToString()), "Fee");
         multipartContent.Add(new StringContent(artworkData.status), "Status");
