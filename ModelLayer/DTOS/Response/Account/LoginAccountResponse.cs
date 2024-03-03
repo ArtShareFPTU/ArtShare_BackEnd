@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ModelLayer.DTOS.Request.Account
 {
     public class LoginAccountResponse
-    {
+	{
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
     }
