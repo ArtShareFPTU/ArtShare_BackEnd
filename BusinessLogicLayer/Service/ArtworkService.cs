@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
+using ModelLayer.DTOS.Response.Comment;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,9 +24,22 @@ public class ArtworkService : IArtworkService
         return await _ArtworkRepository.GetAllArtworkAsync();
     }
 
-    public async Task<Artwork> GetArtworkByIdAsync(Guid id)
+    public async Task<ArtworkRespone> GetArtworkByIdAsync(Guid id)
     {
-        return await _ArtworkRepository.GetArtworkByIdAsync(id);
+        var artwork = await _ArtworkRepository.GetArtworkByIdAsync(id);    
+        var respone = _mapper.Map<ArtworkRespone>(artwork);
+        respone.Comments = _mapper.Map<List<CommentResponse>>(artwork.Comments);
+        respone.Tags = new List<string>();
+        foreach (var item in artwork.ArtworkTags)
+        {
+            respone.Tags.Add(item.Tag.Title);
+        }
+        respone.Categorys = new List<string>();
+        foreach (var item in artwork.ArtworkCategories)
+        {
+            respone.Tags.Add(item.Category.Title);
+        }
+        return respone;
     }
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation Artwork)

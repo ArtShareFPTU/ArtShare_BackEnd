@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using ModelLayer.DTOS.Response;
 
 namespace WebApiLayer.Controllers;
 
@@ -25,7 +26,7 @@ public class ArtworkController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Artwork>> GetArtworkById(Guid id)
+    public async Task<ActionResult<ArtworkRespone>> GetArtworkById(Guid id)
     {
         return await _artworkService.GetArtworkByIdAsync(id);
     }

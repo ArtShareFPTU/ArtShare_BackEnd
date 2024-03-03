@@ -20,14 +20,17 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
     {
-        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags)
-            .Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails).ToListAsync();
+        return await _context.Artworks.Include(a => a.Account).ToListAsync();
     }
 
     public async Task<Artwork> GetArtworkByIdAsync(Guid id)
     {
-        return await _context.Artworks.Include(a => a.ArtworkCategories).Include(a => a.ArtworkTags)
-            .Include(a => a.Comments).Include(a => a.LikesNavigation).Include(a => a.OrderDetails)
+        return await _context.Artworks.Include(a => a.ArtworkCategories)
+            .Include(a => a.Account)
+            .Include(a => a.ArtworkTags).ThenInclude(t => t.Tag)
+            .Include(a => a.ArtworkCategories).ThenInclude(c => c.Category)
+            .Include(a => a.Comments)
+            .Include(a => a.LikesNavigation)
             .FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
