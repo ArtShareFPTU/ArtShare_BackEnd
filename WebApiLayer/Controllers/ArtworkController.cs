@@ -6,7 +6,7 @@ using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
 
 namespace WebApiLayer.Controllers;
-
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class ArtworkController : ControllerBase
@@ -19,6 +19,7 @@ public class ArtworkController : ControllerBase
     }
 
     // GET: api/Artwork
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Artwork>>> GetArtworks()
     {

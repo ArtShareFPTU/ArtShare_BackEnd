@@ -10,6 +10,7 @@ using ModelLayer.DTOS.Response.Commons;
 using ModelLayer.DTOS.Validators;
 
 namespace WebApiLayer.Controllers;
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
@@ -74,6 +75,7 @@ public class AccountController : ControllerBase
 
     // POST: api/Account
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [AllowAnonymous]
     [HttpPost]
     public async Task<ServiceResponse<AccountResponse>> CreateAccount(CreateAccountRequest account)
     {

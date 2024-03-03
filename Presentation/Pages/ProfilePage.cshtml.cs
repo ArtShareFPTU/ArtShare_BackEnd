@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Response;
 using ModelLayer.DTOS.Response.Account;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Presentation.Pages;
 
@@ -11,17 +14,21 @@ public class ProfilePage : PageModel
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _accountManage = "https://localhost:7168/api/";
+    private readonly IConfiguration _configuration;
 
-    public ProfilePage(IHttpClientFactory httpClientFactory)
+    public ProfilePage(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
     }
     public AccountResponse Accounts { get; set; }
     public List<ArtworkRespone> Artwork { get; set; }
     public async Task<IActionResult> OnGetAsync()
     {
         var client = _httpClientFactory.CreateClient();
-        Guid id = Guid.Parse("4e0bd8d4-aa01-4b6b-86a0-e214af826f2a");
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        Guid id = Guid.Parse(GetIdFromJwt(key));
         var account = await GetAccountById(id,client);
         var artwork = await GetArtworkByArtistId(id,client);
         if (account == null || artwork is null)
@@ -60,5 +67,25 @@ public class ProfilePage : PageModel
             return result;
         }
         return null;
+    }
+    public string GetIdFromJwt(string jwtToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
+
+        tokenHandler.ValidateToken(jwtToken, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        }, out SecurityToken validatedToken);
+
+        var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
+
+        // Truy cập vào các thông tin trong payload
+        string userId = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
+
+        return userId;
     }
 }
