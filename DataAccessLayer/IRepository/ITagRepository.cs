@@ -8,6 +8,7 @@ public interface ITagRepository
 {
     Task<List<Tag>> GetAllTagAsync();
     Task<Tag> GetTagByIdAsync(Guid id);
+    Task<List<Tag>> GetTagByArtworkIdAsync(Guid id);
     Task<IActionResult> AddTagAsync(TagCreation tag);
     Task<IActionResult> UpdateTagAsync(TagUpdate tag);
     Task<IActionResult> DeleteTagAsync(Guid id);

@@ -17,7 +17,6 @@ public class TagService : ITagService
 
     public async Task<List<Tag>> GetAllTagAsync()
     {
-        
         return await _TagRepository.GetAllTagAsync();
     }
 
@@ -29,6 +28,11 @@ public class TagService : ITagService
     public async Task<IActionResult> AddTagAsync(TagCreation Tag)
     {
         return await _TagRepository.AddTagAsync(Tag);
+    }
+
+    public async Task<List<Tag>> GetTagByArtworkIdAsync(Guid id)
+    {
+        return await _TagRepository.GetTagByArtworkIdAsync(id);
     }
 
     public async Task<IActionResult> UpdateTagAsync(TagUpdate Tag)

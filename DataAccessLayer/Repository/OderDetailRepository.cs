@@ -6,14 +6,13 @@ namespace DataAccessLayer.BussinessObject.Repository;
 
 public class OderDetailRepository : IOrderDetailRepository
 {
-    
     private readonly ArtShareContext _context;
 
     public OderDetailRepository()
     {
         _context = new ArtShareContext();
     }
-    
+
     public async Task<List<OrderDetail>> GetAllOrderDetailAsync()
     {
         return await _context.OrderDetails.ToListAsync();

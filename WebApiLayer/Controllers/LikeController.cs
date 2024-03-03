@@ -22,6 +22,12 @@ public class LikeController : ControllerBase
         return await _likeService.GetAllLikeAsync();
     }
 
+    [HttpGet("{artworkId}")]
+    public async Task<ActionResult<List<Like>>> GetLikeByArtworkId(Guid artworkId)
+    {
+        return await _likeService.GetLikeByArtworkId(artworkId);
+    }
+
     /*// GET: api/Like/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Like>> GetLike(Guid id)

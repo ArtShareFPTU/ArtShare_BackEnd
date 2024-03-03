@@ -18,6 +18,11 @@ public class LikeService : ILikeService
         return await _LikeRepository.GetAllLikeAsync();
     }
 
+    public async Task<List<Like>> GetLikeByArtworkId(Guid id)
+    {
+        return await _LikeRepository.GetLikeByArtworkId(id);
+    }
+
     public async Task<Like> GetLikeByIdAsync(Guid id)
     {
         return await _LikeRepository.GetLikeByIdAsync(id);

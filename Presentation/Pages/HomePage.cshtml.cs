@@ -11,13 +11,15 @@ public class HomePage : PageModel
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
 
+
     public HomePage(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
+
     public List<Artwork> Artwork { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
@@ -29,8 +31,12 @@ public class HomePage : PageModel
         }
         else
         {
-            Artwork = artworks;
+            if (search == null || search.Length == 0)
+                Artwork = artworks;
+            else
+                Artwork = artworks.Where(c => c.Title.ToLower().Contains(search.ToLower())).ToList();
         }
+
         return Page();
     }
 
@@ -45,6 +51,7 @@ public class HomePage : PageModel
 
             return result;
         }
+
         return null;
     }
     public IActionResult OnGetLogout()

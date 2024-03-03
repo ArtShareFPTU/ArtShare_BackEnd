@@ -16,7 +16,8 @@ namespace WebApiLayer.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
-    private readonly UserLoginResponseValidator _loginValidations = new UserLoginResponseValidator();
+    private readonly UserLoginResponseValidator _loginValidations = new();
+
     public AccountController(IAccountService accountService)
     {
         _accountService = accountService;
@@ -36,13 +37,16 @@ public class AccountController : ControllerBase
     public async Task<ActionResult<AccountResponse>> GetAccount(Guid id)
     {
         var account = await _accountService.GetAccountById(id);
-        if (account == null)
-        {
-            return NotFound();
-        }
+        if (account == null) return NotFound();
         return Ok(account);
     }
-    
+
+    [HttpGet("{artworkId}")]
+    public async Task<ActionResult<Account>> GetAccountByArtworkId(Guid artworkId)
+    {
+        return await _accountService.GetAccountByArtworkId(artworkId);
+    }
+
     [AllowAnonymous]
     [HttpPost]
     public async Task<ServiceResponse<string>> Login(LoginAccountResponse lg)
@@ -61,9 +65,11 @@ public class AccountController : ControllerBase
             };
             return response;
         }
+
         var result = await _accountService.Login(lg.Email, lg.Password);
         return result;
     }
+
     // PUT: api/Account/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut]
@@ -103,6 +109,4 @@ public class AccountController : ControllerBase
 
         return NoContent();
     }*/
-
-
 }

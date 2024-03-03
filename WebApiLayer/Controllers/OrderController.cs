@@ -1,6 +1,7 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS;
 
 namespace WebApiLayer.Controllers;
 
@@ -69,38 +70,17 @@ public class OrderController : ControllerBase
         }
 
         return NoContent();
-    }
+    }*/
 
     // POST: api/Order
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Order>> PostOrder(Order order)
+    public async Task<ActionResult<Order>> PostOrder(List<Carts> cartsList, Guid customerId)
     {
-      if (_context.Orders == null)
-      {
-          return Problem("Entity set 'ArtShareContext.Orders'  is null.");
-      }
-        _context.Orders.Add(order);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            if (OrderExists(order.Id))
-            {
-                return Conflict();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+        return await _orderService.AddOrderAsync(cartsList, customerId);
     }
 
-    // DELETE: api/Order/5
+    /*// DELETE: api/Order/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOrder(Guid id)
     {

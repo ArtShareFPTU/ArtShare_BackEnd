@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelLayer.DTOS.Request.Tags
+namespace ModelLayer.DTOS.Request.Tags;
+
+public class TagCreation
 {
-    public class TagCreation
-    {
-        public string Title {  get; set; }
-    }
+    public string Title { get; set; }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
+using ModelLayer.DTOS.Response.Comment;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,9 +24,22 @@ public class ArtworkService : IArtworkService
         return await _ArtworkRepository.GetAllArtworkAsync();
     }
 
-    public async Task<Artwork> GetArtworkByIdAsync(Guid id)
+    public async Task<ArtworkRespone> GetArtworkByIdAsync(Guid id)
     {
-        return await _ArtworkRepository.GetArtworkByIdAsync(id);
+        var artwork = await _ArtworkRepository.GetArtworkByIdAsync(id);    
+        var respone = _mapper.Map<ArtworkRespone>(artwork);
+        respone.Comments = _mapper.Map<List<CommentResponse>>(artwork.Comments);
+        respone.Tags = new List<string>();
+        foreach (var item in artwork.ArtworkTags)
+        {
+            respone.Tags.Add(item.Tag.Title);
+        }
+        respone.Categorys = new List<string>();
+        foreach (var item in artwork.ArtworkCategories)
+        {
+            respone.Tags.Add(item.Category.Title);
+        }
+        return respone;
     }
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation Artwork)
@@ -47,5 +61,29 @@ public class ArtworkService : IArtworkService
     {
         var response = await _ArtworkRepository.GetArtworkByArtistId(artistId);
         return _mapper.Map<List<ArtworkRespone>>(response);
+    }
+    public async Task<IActionResult> UpdateCategory4Artwork(ArtworkCategoryUpdate artworkCategoryUpdate)
+    {
+        return await _ArtworkRepository.UpdateCategory4Artwork(artworkCategoryUpdate);
+    }
+    public async Task<IActionResult> AddCategory4Artwork(ArtworkCategoryAddition artworkCategoryAddition)
+    {
+        return await _ArtworkRepository.AddCategory4Artwork(artworkCategoryAddition);
+    }
+    public async Task<IActionResult> UpdateTag4Artwork(ArtworkTagUpdate artworkTagUpdate)
+    {
+        return await _ArtworkRepository.UpdateTag4Artwork(artworkTagUpdate);
+    }
+    public async Task<IActionResult> AddTag4Artwork(ArtworkTagAddition artworkTagAddition)
+    {
+        return await _ArtworkRepository.AddTag4Artwork(artworkTagAddition);
+    }
+    public async Task<IActionResult> RemoveTag4Artwork(Guid id)
+    {
+        return await _ArtworkRepository.RemoveTag4Artwork(id);
+    }
+    public async Task<IActionResult> RemoveCategory4Artwork(Guid id)
+    {
+        return await _ArtworkRepository.RemoveCategory4Artwork(id);
     }
 }

@@ -23,6 +23,11 @@ public class LikeRepository : ILikeRepository
         return await _context.Likes.FindAsync(id);
     }
 
+    public async Task<List<Like>> GetLikeByArtworkId(Guid id)
+    {
+        return await _context.Likes.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
+    }
+
     public async Task AddLikeAsync(Like like)
     {
         _context.Likes.Add(like);

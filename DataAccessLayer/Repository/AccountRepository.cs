@@ -15,13 +15,21 @@ public class AccountRepository : IAccountRepository
 
     public async Task<List<Account>> GetAllAccountAsync()
     {
-        return await _context.Accounts.Include(c => c.Artworks).Include(c => c.FollowFollowers).Include(c => c.FollowArtists).ToListAsync();
+        return await _context.Accounts.Include(c => c.Artworks).Include(c => c.FollowFollowers)
+            .Include(c => c.FollowArtists).ToListAsync();
     }
 
     public async Task<Account> GetAccountById(Guid id)
     {
-        var account = _context.Set<Account>().Include(c => c.Artworks).Include(c => c.FollowFollowers).Include(c => c.FollowArtists).FirstOrDefault(c => c.Id.Equals(id));
+        var account = _context.Set<Account>().Include(c => c.Artworks).Include(c => c.FollowFollowers)
+            .Include(c => c.FollowArtists).FirstOrDefault(c => c.Id.Equals(id));
         return account;
+    }
+
+    public async Task<Account> GetAccountByArtworkId(Guid id)
+    {
+        var artwork = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(id));
+        return await _context.Accounts.FirstOrDefaultAsync(c => c.Id.Equals(artwork.AccountId));
     }
 
     public async Task AddAccountAsync(Account account)
@@ -46,7 +54,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task<Account> GetAccountByEmail(string email)
     {
-        return await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email.ToLower().Equals(email.ToLower()));      
+        return await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email.ToLower().Equals(email.ToLower()));
     }
 
     public async Task<Account> isExistedByMail(string email)
@@ -64,7 +72,8 @@ public class AccountRepository : IAccountRepository
 
     public async Task<Account> GetByUserName(string username)
     {
-        var account = await _context.Set<Account>().FirstOrDefaultAsync(c => c.UserName.ToLower().Equals(username.ToLower()));
+        var account = await _context.Set<Account>()
+            .FirstOrDefaultAsync(c => c.UserName.ToLower().Equals(username.ToLower()));
         return account;
     }
 }

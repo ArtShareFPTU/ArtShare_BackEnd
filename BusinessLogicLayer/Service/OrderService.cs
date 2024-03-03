@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS;
+using ModelLayer.Enum;
 
 namespace BusinessLogicLayer.Service;
 
@@ -24,9 +26,25 @@ public class OrderService : IOrderService
         return await _OrderRepository.GetOrderByIdAsync(id);
     }
 
-    public async Task AddOrderAsync(Order Order)
+    public async Task<Order> AddOrderAsync(List<Carts> cartsList, Guid customerId)
     {
-        await _OrderRepository.AddOrderAsync(Order);
+        var order = new Order();
+        order.CreateDate = DateTime.Now;
+        order.AccountId = customerId;
+        order.PaymentMethod = "Paypal";
+        order.Id = Guid.NewGuid();
+        order.Status = OderStatus.Unpaid.ToString();
+        foreach (var item in cartsList)
+        {
+            var orderDetails = new OrderDetail();
+            orderDetails.Id = new Guid();
+            orderDetails.OrderId = order.Id;
+            orderDetails.Price = item.Price;
+            orderDetails.ArtworkId = item.Id;
+            order.OrderDetails.Add(orderDetails);
+        }
+        await _OrderRepository.AddOrderAsync(order);
+        return order;
     }
 
     public async Task UpdateOrderAsync(Order Order)

@@ -8,6 +8,7 @@ public interface ICategoryRepository
 {
     Task<List<Category>> GetAllCategoryAsync();
     Task<Category> GetCategoryByIdAsync(Guid id);
+    Task<List<Category>> GetCategoryByArtworkId(Guid id);
     Task<IActionResult> AddCategoryAsync(CategoryCreation category);
     Task<IActionResult> UpdateCategoryAsync(CategoryUpdate category);
     Task<IActionResult> DeleteCategoryAsync(Guid id);

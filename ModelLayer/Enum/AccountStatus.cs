@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelLayer.Enum
+namespace ModelLayer.Enum;
+
+public enum AccountStatus
 {
-    public enum AccountStatus
-    {
-        Active,
-        Inactive
-    }
+    Active,
+    Inactive
 }

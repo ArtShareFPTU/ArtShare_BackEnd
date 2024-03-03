@@ -29,8 +29,13 @@ public class AccountService : IAccountService
 
     public async Task<List<AccountResponse>> GetAllAccountAsync()
     {
-        var response =  await _accountRepository.GetAllAccountAsync();
+        var response = await _accountRepository.GetAllAccountAsync();
         return _mapper.Map<List<AccountResponse>>(response);
+    }
+
+    public async Task<Account> GetAccountByArtworkId(Guid id)
+    {
+        return await _accountRepository.GetAccountByArtworkId(id);
     }
 
     public async Task<AccountResponse> GetAccountById(Guid id)
@@ -57,12 +62,13 @@ public class AccountService : IAccountService
         else
         {
             // use Mapper ` request => DB
-            var data =  _mapper.Map(account, checkid);
+            var data = _mapper.Map(account, checkid);
             var setdata = await _accountRepository.UpdateAccount(data);
             respone.Success = true;
             respone.Message = "Update successfully";
             respone.Data = _mapper.Map<AccountResponse>(setdata);
         }
+
         return respone;
     }
 
@@ -89,8 +95,10 @@ public class AccountService : IAccountService
         {
             response.Data = CreateToken(user);
         }
+
         return response;
     }
+
     public string CreateToken(Account ua)
     {
         var claims = new List<Claim>
@@ -99,9 +107,9 @@ public class AccountService : IAccountService
                 new Claim("Username", ua.UserName.ToString()),
             };
 
-        SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 
-        SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(_configuration["Tokens:Issuer"],
             _configuration["Tokens:Issuer"],

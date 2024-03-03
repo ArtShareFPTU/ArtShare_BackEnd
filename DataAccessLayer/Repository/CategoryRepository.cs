@@ -25,14 +25,23 @@ public class CategoryRepository : ICategoryRepository
         return await _context.Categories.Include(c => c.ArtworkCategories).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
+    public async Task<List<Category>> GetCategoryByArtworkId(Guid id)
+    {
+        var artworkCategories = _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(id)).ToList();
+
+        var categoryIDs = new HashSet<Guid>();
+        foreach (var item in artworkCategories) categoryIDs.Add((Guid)item.CategoryId);
+        var categories = new List<Category>();
+        foreach (var category in categoryIDs)
+            categories.Add(await _context.Categories.FirstOrDefaultAsync(c => c.Id.Equals(category)));
+        return categories;
+    }
+
     public async Task<IActionResult> AddCategoryAsync(CategoryCreation category)
     {
         var categoryExist = await _context.Categories.AnyAsync(c => c.Title.ToLower().Equals(category.Title.ToLower()));
-        if(categoryExist)
-        {
-            return new StatusCodeResult(409);
-        }
-        Category categoryToAdd = new Category
+        if (categoryExist) return new StatusCodeResult(409);
+        var categoryToAdd = new Category
         {
             Id = Guid.NewGuid(),
             Title = category.Title,
@@ -46,10 +55,7 @@ public class CategoryRepository : ICategoryRepository
     public async Task<IActionResult> UpdateCategoryAsync(CategoryUpdate category)
     {
         var categoryExist = await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
-        if(categoryExist == null)
-        {
-            return new StatusCodeResult(409);
-        }
+        if (categoryExist == null) return new StatusCodeResult(409);
         categoryExist.Title = category.Title;
         _context.Categories.Update(categoryExist);
         _context.Entry(categoryExist).State = EntityState.Modified;
@@ -60,10 +66,7 @@ public class CategoryRepository : ICategoryRepository
     public async Task<IActionResult> DeleteCategoryAsync(Guid id)
     {
         var category = await _context.Categories.FindAsync(id);
-        if(category == null)
-        {
-            return new StatusCodeResult(404);
-        }
+        if (category == null) return new StatusCodeResult(404);
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
         return new StatusCodeResult(204);

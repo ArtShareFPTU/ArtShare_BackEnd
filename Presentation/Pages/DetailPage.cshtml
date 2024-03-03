@@ -1,0 +1,77 @@
+﻿@page
+@model Presentation.Pages.DetailPageModel
+@{
+}
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "DetaiPage";
+}
+
+<link href="css/DetailStyle.css" rel="stylesheet"/>
+<main class="detail-content">
+    <div class="container-detail">
+        <div class="cover">
+            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
+        </div>
+        <div class="content">
+            <div class="content-body">
+                <div class="pages">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="black-label">
+                    <span class="title">
+                        <b>@Html.DisplayFor(modle => modle.ArtworkRespone.Title)</b>
+                    </span>
+                    <p>
+                        @Html.DisplayFor(modle => modle.ArtworkRespone.Name)
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modle => modle.ArtworkRespone.Description)
+                    </p>
+
+                    <div class="add-to-card" style="padding: 5px 0; width: 426px;display: flex;justify-content: space-evenly;">
+                        <form method="post" asp-page-handler="Payment">
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
+                            <button type="submit">Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></button>
+                        </form>
+
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
+                            <button type="submit"><i class="fas fa-shopping-cart"></i> <span>Add to Cart</span></button>
+                        </form>
+                    </div>
+
+
+                    <div class="comment-content" style="padding-bottom: 10px;">
+                        <div class="">
+                            <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Comments.Count)</span>
+                            <span>comments</span>
+                        </div>
+
+                        <div style="display: table-caption; margin: 10px 0; ">
+                            <textarea style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
+                            <button class="btn btn-primary" type="button" style="padding: 5px;cursor: pointer;">Comment</button>
+                        </div>
+                        @foreach (var comment in Model.ArtworkRespone.Comments)
+                        {
+                            <div>
+                                <div>
+                                    <span style="font-size: larger;">@comment.Name</span>
+                                    <span style="font-size: small;">@comment.CreateDate</span>
+                                </div>
+                                <p style="border: 1px solid #ccc;background-color: white;padding: 10px; margin-top: 0px;">@comment.Content</p>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</main>
