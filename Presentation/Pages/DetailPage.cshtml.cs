@@ -10,7 +10,7 @@ public class DetailPageModel : PageModel
     private readonly HttpClient _client = new HttpClient();
     public ArtworkRespone ArtworkRespone { get; set; } = default!; 
 
-    public async Task OnGetAsync(int id)
+    public async Task OnGetAsync(Guid id)
     {
         //var accessToken = HttpContext.Session.GetString("account");
         //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

@@ -9,7 +9,7 @@ public class HomePage : PageModel
 {
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
+    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
 
 
     public HomePage(IHttpClientFactory httpClientFactory)
@@ -22,7 +22,6 @@ public class HomePage : PageModel
     public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
-
         //var key = HttpContext.Session.GetString("key");
         //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);

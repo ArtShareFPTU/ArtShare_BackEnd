@@ -15,7 +15,6 @@
         </div>
         <div class="content">
             <div class="nav">
-                <span class="logo"></span>
                 <span>
                     <i class="fab fa-sistrix" style="font-size:24px"></i>
                 </span>
@@ -45,7 +44,7 @@
 
                     <div class="comment-content" style="padding-bottom: 10px;">
                         <div class="">
-                            <span>10</span>
+                            <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Comments.Count)</span>
                             <span>comments</span>
                         </div>
 
@@ -54,25 +53,18 @@
                             <textarea style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
                             <button class="btn btn-primary" type="button" style="padding: 5px;cursor: pointer;">Comment</button>
                         </div>
-
-                        <div>
+                        @foreach (var comment in Model.ArtworkRespone.Comments)
+                        {
                             <div>
-                                <span style="font-size: larger;">Corey oates</span>
-                                <span style="font-size: small;">12/11/2023</span>
+                                <div>
+                                    <span style="font-size: larger;">@comment.Name</span>
+                                    <span style="font-size: small;">@comment.CreateDate</span>
+                                </div>
+                                <p style="border: 1px solid #ccc;background-color: white;padding: 10px; margin-top: 0px;">@comment.Content</p>
                             </div>
-                            <p style="border: 1px solid #ccc;background-color: white;padding: 10px; margin-top: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-
-                        <div>
-                            <div>
-                                <span style="font-size: larger;">Corey oates</span>
-                                <span style="font-size: small;">12/11/2023</span>
-                            </div>
-                            <p style="border: 1px solid #ccc;background-color: white;padding: 10px;margin-top: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
+                        }
                     </div>
-
-
+                    
                 </div>
 
 
