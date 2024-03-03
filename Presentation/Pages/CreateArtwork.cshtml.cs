@@ -51,17 +51,15 @@ public class CreateArtworkModel : PageModel
             accountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
             title = Request.Form["Artwork.Title"],
             description = Request.Form["Artwork.Description"],
-            likes = int.Parse(Request.Form["Artwork.Likes"]),
-            fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            status = Request.Form["Artwork.Status"]
+            fee = decimal.Parse(Request.Form["Artwork.Fee"])
         };
 
         multipartContent.Add(new StringContent(artworkData.accountId.ToString()), "AccountId");
         multipartContent.Add(new StringContent(artworkData.title), "Title");
         multipartContent.Add(new StringContent(artworkData.description), "Description");
-        multipartContent.Add(new StringContent(artworkData.likes.ToString()), "Likes");
+        multipartContent.Add(new StringContent("0"), "Likes");
         multipartContent.Add(new StringContent(artworkData.fee.ToString()), "Fee");
-        multipartContent.Add(new StringContent(artworkData.status), "Status");
+        multipartContent.Add(new StringContent("Active"), "Status");
         if (Request.Form.Files.Count > 0)
         {
             var imageFile = Request.Form.Files[0];

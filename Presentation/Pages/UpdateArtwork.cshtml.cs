@@ -50,7 +50,6 @@ public class UpdateArtworkModel : PageModel
             Title = Request.Form["Artwork.Title"],
             Description = Request.Form["Artwork.Description"],
             Fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            Likes = int.Parse(Request.Form["Artwork.Likes"]),
             Status = Request.Form["Artwork.Status"]
         };
 
@@ -60,7 +59,6 @@ public class UpdateArtworkModel : PageModel
         multipartContent.Add(new StringContent(artworkUpdate.Id.ToString()), "AccountId");
         multipartContent.Add(new StringContent(artworkUpdate.Title), "Title");
         multipartContent.Add(new StringContent(artworkUpdate.Description), "Description");
-        multipartContent.Add(new StringContent(artworkUpdate.Likes.ToString()), "Likes");
         multipartContent.Add(new StringContent(artworkUpdate.Fee.ToString()), "Fee");
         multipartContent.Add(new StringContent(artworkUpdate.Status), "Status");
         if (Request.Form.Files.Count > 0)

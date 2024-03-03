@@ -86,4 +86,34 @@ public class ArtworkService : IArtworkService
     {
         return await _ArtworkRepository.RemoveCategory4Artwork(id);
     }
+
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByArtworkId(Guid id)
+    {
+        return await _ArtworkRepository.GetArtworkCategoryByCategoryId(id);
+    }
+
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByCategoryId(Guid id)
+    {
+        return await _ArtworkRepository.GetArtworkCategoryByCategoryId(id);
+    }
+
+    public async Task<List<ArtworkCategory>> GetArtworkCategories()
+    {
+        return await _ArtworkRepository.GetArtworkCategories();
+    }
+
+    public async Task<List<ArtworkTag>> GetArtworkTagByArtworkId(Guid id)
+    {
+        return await _ArtworkRepository.GetArtworkTagByArtworkId(id);
+    }
+
+    public async Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id)
+    {
+        return await _ArtworkRepository.GetArtworkTagByTagId(id);
+    }
+
+    public async Task<List<ArtworkTag>> GetArtworkTags()
+    {
+        return await _ArtworkRepository.GetArtworkTags();
+    }
 }
