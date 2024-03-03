@@ -96,6 +96,7 @@ public class AccountService : IAccountService
         var claims = new List<Claim>
             {
                 new Claim("Id", ua.Id.ToString()),
+                new Claim("Username", ua.UserName.ToString()),
             };
 
         SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));

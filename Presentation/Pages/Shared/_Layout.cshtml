@@ -32,16 +32,29 @@
                 </div>
                 
             <div class="menu-acc">
-                <div class="header_Login-img">
-                    <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login" />
-                    <div class="header-Login header_Login-ht">
-                        <p style="margin-top: 5px;" class="header-Login-p"><a href="#profile">Tài khoản của tôi</a></p>
-                        <p class="header-Login-p"><a href="#" class="address-button">Đơn hàng của tôi</a></p>
-                        <p style="" class="header-Login-p"><a href="Login1_1.jsp">Đăng Nhập</a></p>
+                @if(Context.Session.GetString("Token") is null){
+                    
+                    <div class="header_Login-img">
+                        <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login" />
+                        <div class="header-Login header_Login-ht">
+                            <p style="margin-top: 5px;" class="header-Login-p"><a asp-page="/LoginPage">Login</a></p>
 
+                        </div>
                     </div>
-                </div>
-                <div class="" style="width: contain; color: darkblue; margin: 5px;"> Huynh pham</div>
+                }
+                else{
+                    <div class="header_Login-img">
+                        <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login" />
+                        <div class="header-Login header_Login-ht">
+                            <p style="margin-top: 5px;" class="header-Login-p"><a asp-page="/ProfilePage" >My Profile</a></p>
+                            <p class="header-Login-p"><a href="#" class="address-button">Transaction History</a></p>
+                            <p style="" class="header-Login-p"><a asp-page="HomePage" asp-page-handler="logout">Logout</a></p>
+
+                        </div>
+                    </div>
+                    <div class="" style="width: contain; color: darkblue; margin: 5px;">@Context.Session.GetString("Username")</div>
+                    
+                }   
             </div>
             <div class="cart-header">
                 <a href="#"><i style="    font-size: 30px;color: black;" class="fa fa-shopping-cart"></i><span>3</span></a>

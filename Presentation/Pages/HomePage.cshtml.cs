@@ -47,4 +47,9 @@ public class HomePage : PageModel
         }
         return null;
     }
+    public IActionResult OnGetLogout()
+    {
+        HttpContext.Session.Remove("Token");
+        return RedirectToPage();
+    }
 }

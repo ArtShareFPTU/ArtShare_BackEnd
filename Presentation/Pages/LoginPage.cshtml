@@ -261,11 +261,13 @@ footer a {
 	<div class="form-container sign-up-container">
 		<form method="post" asp-page-handler="Register">
 			<h1>Create Account</h1>
-			<input type="text" required placeholder="Email" />
-			<input type="text" required placeholder="Username" />
-			<input type="date" required placeholder="Birthday" />
-			<input type="password" required placeholder="Password" />
-			<button type="submit">Sign Up</button>
+			<input type="email" asp-for="createAccountRequest.Email" required placeholder="Email" />
+			<input type="text" asp-for="createAccountRequest.UserName" minlength="3" maxlength="12" required placeholder="Username"  />
+			@*<span style="text-align:left; font-size:20px;" asp-validation-for="createAccountRequest.Birthday" class="text-danger">Birthday</span>*@
+			<input type="date" id="birthdayInput" asp-for="createAccountRequest.Birthday" required placeholder="Birthday" />
+			<input type="password" asp-for="createAccountRequest.Password" maxlength="12" minlength="6" required placeholder="Password" />
+			<button type="submit">Register</button>
+			<div class="text-danger" style="color:red;">@ViewData["Notification"]</div>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
@@ -288,7 +290,7 @@ footer a {
 			<div class="overlay-panel overlay-right">
 				<h1>Hello, Friend!</h1>
 				<p>Enter your personal details and start journey with us</p>
-				<button class="ghost" id="signUp">Sign Up</button>
+				<button class="ghost" id="signUp">Register</button>
 			</div>
 		</div>
 	</div>
@@ -306,7 +308,16 @@ footer a {
 		container.classList.remove("right-panel-active");
 	});
 </script>
+<script>
+	document.getElementById("birthdayInput").addEventListener("change", function () {
+		var inputDate = new Date(this.value);
+		var currentDate = new Date();
 
+		if (inputDate > currentDate) {
+			alert("Please select a date before today.");
+		}
+	});
+</script>
 <footer>
 	<p>
 		Created with <i class="fa fa-heart"></i> by

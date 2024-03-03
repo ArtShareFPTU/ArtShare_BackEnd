@@ -54,7 +54,7 @@ public class MappingProfile : Profile
             .ForMember(c => c.Description, opt => opt.MapFrom(a => a.Description))
             .ForMember(c => c.UserName, opt => opt.MapFrom(a => a.UserName))
             .ForMember(c => c. Birthday, opt => opt.MapFrom(a => a.Birthday))
-            .ForMember(c => c.Email, opt => opt.MapFrom(a => a.UserName))
+            .ForMember(c => c.Email, opt => opt.MapFrom(a => a.Email))
             .ForMember(c => c.Password, opt => opt.MapFrom(a => a.Password));
 
     }
