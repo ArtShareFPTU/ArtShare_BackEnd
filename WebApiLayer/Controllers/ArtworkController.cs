@@ -215,6 +215,18 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [HttpGet]
+    public async Task<List<ArtworkCategory>> GetArtworkCategories() => await _artworkService.GetArtworkCategories();
+    [HttpGet]
+    public async Task<List<ArtworkCategory>> GetArtworkCategoriesByArtworkId(Guid id) => await _artworkService.GetArtworkCategoryByArtworkId(id);
+    [HttpGet]
+    public async Task<List<ArtworkCategory>> GetArtworkCategoriesByCategoryId(Guid id) => await _artworkService.GetArtworkCategoryByCategoryId(id);
+    [HttpGet]
+    public async Task<List<ArtworkTag>> GetArtworkTags() => await _artworkService.GetArtworkTags();
+    [HttpGet]
+    public async Task<List<ArtworkTag>> GetArtworkTagsByArtworkId(Guid id) => await _artworkService.GetArtworkTagByArtworkId(id);
+    [HttpGet]
+    public async Task<List<ArtworkTag>> GetArtworkTagsByTagId(Guid id) => await _artworkService.GetArtworkTagByTagId(id);
     /*// GET: api/Artwork/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Artwork>> GetArtwork(Guid id)
