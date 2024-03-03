@@ -25,8 +25,8 @@ public class ArtworkController : ControllerBase
     {
         return await _artworkService.GetAllArtworkAsync();
     }
-
-    [HttpGet("{id}")]
+	[AllowAnonymous]
+	[HttpGet("{id}")]
     public async Task<ActionResult<ArtworkRespone>> GetArtworkById(Guid id)
     {
         return await _artworkService.GetArtworkByIdAsync(id);
