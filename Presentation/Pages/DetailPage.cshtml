@@ -14,11 +14,6 @@
             <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
         </div>
         <div class="content">
-            <div class="nav">
-                <span>
-                    <i class="fab fa-sistrix" style="font-size:24px"></i>
-                </span>
-            </div>
             <div class="content-body">
                 <div class="pages">
                     <span></span>
@@ -38,9 +33,17 @@
                     </p>
 
                     <div class="add-to-card" style="padding: 5px 0; width: 426px;display: flex;justify-content: space-evenly;">
-                        <a href="#"> Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></a>
-                        <a href="">Add to card</a>
+                        <form method="post" asp-page-handler="Payment">
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
+                            <button type="submit">Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></button>
+                        </form>
+
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
+                            <button type="submit"><i class="fas fa-shopping-cart"></i> <span>Add to Cart</span></button>
+                        </form>
                     </div>
+
 
                     <div class="comment-content" style="padding-bottom: 10px;">
                         <div class="">
@@ -49,7 +52,6 @@
                         </div>
 
                         <div style="display: table-caption; margin: 10px 0; ">
-
                             <textarea style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
                             <button class="btn btn-primary" type="button" style="padding: 5px;cursor: pointer;">Comment</button>
                         </div>
@@ -64,7 +66,7 @@
                             </div>
                         }
                     </div>
-                    
+
                 </div>
 
 
