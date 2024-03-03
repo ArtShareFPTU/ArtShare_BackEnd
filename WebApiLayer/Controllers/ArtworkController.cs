@@ -7,6 +7,7 @@ using ModelLayer.DTOS.Response;
 
 namespace WebApiLayer.Controllers;
 
+[Authorize]
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class ArtworkController : ControllerBase
