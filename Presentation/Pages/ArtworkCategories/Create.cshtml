@@ -1,0 +1,53 @@
+﻿@page
+@model Presentation.Pages.ArtworkCategories.CreateModel
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Create";
+}
+
+@if (TempData["AnnounceMessage"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["AnnounceMessage"]
+    </div>
+}
+<h1 class="text-center">Create</h1>
+
+<h4>ArtworkCategory</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="ArtworkCategory.ArtworkId" class="form-label"></label>
+                <select asp-for="ArtworkCategory.ArtworkId" class="form-control">
+                    @foreach (var item in Model.Artworks)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+                <span asp-validation-for="ArtworkCategory.ArtworkId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ArtworkCategory.CategoryId" class="form-label"></label>
+                <select asp-for="ArtworkCategory.CategoryId" class="form-control">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+                <span asp-validation-for="ArtworkCategory.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center">
+    <a asp-page="Index" class="btn btn-link">Back to List</a>
+</div>
+

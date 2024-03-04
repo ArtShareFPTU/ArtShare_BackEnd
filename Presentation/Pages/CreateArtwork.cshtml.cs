@@ -13,9 +13,14 @@ public class CreateArtworkModel : PageModel
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
     private readonly string _accountManage = "https://localhost:7168/api/Account/";
+    private readonly string _tagManage = "https://localhost:7168/api/Tag/";
+    private readonly string _categoryManage = "https://localhost:7168/api/Category/";
+
 
     public List<Account> Accounts { get; set; }
     public ArtworkCreation Artwork { get; set; }
+    public List<Tag> Tags { get; set; }
+    public List<Category> Categories { get; set; }
 
     public CreateArtworkModel(IHttpClientFactory httpClientFactory)
     {
@@ -28,7 +33,8 @@ public class CreateArtworkModel : PageModel
         var key = HttpContext.Session.GetString("Token");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
-
+        Tags = await GetTag(client);
+        Categories = await GetCategory(client);
         //ViewData["AccountId"] = new SelectList(Accounts.Select(c => c.Id), "AccountId", "AccountId");
 
         return Page();
@@ -46,22 +52,31 @@ public class CreateArtworkModel : PageModel
 
         // Add artwork data as JSON string
 
-        var artworkData = new
+        var artworkData = new ArtworkCreation
         {
-            accountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
-            title = Request.Form["Artwork.Title"],
-            description = Request.Form["Artwork.Description"],
-            likes = int.Parse(Request.Form["Artwork.Likes"]),
-            fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            status = Request.Form["Artwork.Status"]
+            AccountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
+            Title = Request.Form["Artwork.Title"],
+            Description = Request.Form["Artwork.Description"],
+            Fee = decimal.Parse(Request.Form["Artwork.Fee"]),
+            ArtworkCategories = Request.Form["Artwork.ArtworkCategories"].Select(id => Guid.Parse(id)).ToList(),
+            ArtworkTags = Request.Form["Artwork.ArtworkTags"].Select(id => Guid.Parse(id)).ToList()
         };
 
-        multipartContent.Add(new StringContent(artworkData.accountId.ToString()), "AccountId");
-        multipartContent.Add(new StringContent(artworkData.title), "Title");
-        multipartContent.Add(new StringContent(artworkData.description), "Description");
-        multipartContent.Add(new StringContent(artworkData.likes.ToString()), "Likes");
-        multipartContent.Add(new StringContent(artworkData.fee.ToString()), "Fee");
-        multipartContent.Add(new StringContent(artworkData.status), "Status");
+        multipartContent.Add(new StringContent(artworkData.AccountId.ToString()), "AccountId");
+        multipartContent.Add(new StringContent(artworkData.Title), "Title");
+        multipartContent.Add(new StringContent(artworkData.Description), "Description");
+        multipartContent.Add(new StringContent("0"), "Likes");
+        multipartContent.Add(new StringContent(artworkData.Fee.ToString()), "Fee");
+        multipartContent.Add(new StringContent("Active"), "Status");
+        foreach (var categoryId in artworkData.ArtworkCategories)
+        {
+            multipartContent.Add(new StringContent(categoryId.ToString()), "ArtworkCategories");
+        }
+
+        foreach (var tagId in artworkData.ArtworkTags)
+        {
+            multipartContent.Add(new StringContent(tagId.ToString()), "ArtworkTags");
+        }
         if (Request.Form.Files.Count > 0)
         {
             var imageFile = Request.Form.Files[0];
@@ -113,6 +128,34 @@ public class CreateArtworkModel : PageModel
             var result = JsonConvert.DeserializeObject<List<Account>>(content);
 
             return result;
+        }
+
+        return null;
+    }
+    public async Task<List<Tag>> GetTag(HttpClient client)
+    {
+        var endpoint = _tagManage + "GetTags";
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var tag = JsonConvert.DeserializeObject<List<Tag>>(content);
+
+            return tag;
+        }
+
+        return null;
+    }
+    public async Task<List<Category>> GetCategory(HttpClient client)
+    {
+        var endpoint = _categoryManage + "GetCategorys";
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var categories = JsonConvert.DeserializeObject<List<Category>>(content);
+
+            return categories;
         }
 
         return null;

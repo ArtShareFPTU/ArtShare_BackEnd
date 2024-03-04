@@ -36,6 +36,7 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
+        var artworkId = Guid.NewGuid();
         if (artwork.Image == null) return new StatusCodeResult(500);
         if (artwork.Image != null)
         {
@@ -59,9 +60,29 @@ public class ArtworkRepository : IArtworkRepository
             c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
         if (imageExist != null) return new StatusCodeResult(409);
 
+        var categoriesGuid = artwork.ArtworkCategories;
+        if (categoriesGuid == null) return new StatusCodeResult(409);
+        foreach (var category in categoriesGuid)
+        {
+            if (await _context.Categories.AnyAsync(c => c.Id.Equals(category)) == null) return new StatusCodeResult(409);
+            ArtworkCategory artworkCategory = new ArtworkCategory
+            {
+                Id = Guid.NewGuid(),
+                ArtworkId = artworkId,
+                CategoryId = category
+            };
+            _context.ArtworkCategories.Add(artworkCategory);
+        }
+        var tagsGuid = artwork.ArtworkTags;
+        foreach (var tag in tagsGuid)
+        {
+            if (!await _context.Tags.AnyAsync(c => c.Id.Equals(tag)) == null) return new StatusCodeResult(409);
+            ArtworkTag artworkTag = new ArtworkTag { Id = Guid.NewGuid(), ArtworkId = artworkId, TagId = tag };
+        }
+
         var createArtwork = new Artwork
         {
-            Id = Guid.NewGuid(),
+            Id = artworkId,
             Title = artwork.Title,
             AccountId = artwork.AccountId,
             Description = artwork.Description,
@@ -77,11 +98,11 @@ public class ArtworkRepository : IArtworkRepository
     public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
         var imageExist = await _context.Artworks.FirstOrDefaultAsync(c =>
-            c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
+            c.Id.Equals(artwork.Id));
         if (imageExist == null) return new StatusCodeResult(409);
         imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(artwork.Id));
         if (!string.IsNullOrEmpty(artwork.Title)) imageExist.Title = artwork.Title;
-       if(artwork.Image != null)
+        if (artwork.Image != null)
         {
             var fileExtension = Path.GetExtension(artwork.Image.FileName)?.ToLower();
             if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
@@ -105,6 +126,36 @@ public class ArtworkRepository : IArtworkRepository
         if (artwork.Status != null) imageExist.Status = artwork.Status;
         if (artwork.Likes != null) artwork.Likes = artwork.Likes;
         if (artwork.AccountId != null) imageExist.AccountId = artwork.AccountId;
+
+        var categoriesArtworkCurrent = await _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(artwork.Id)).ToListAsync();
+        if (categoriesArtworkCurrent == null) return new StatusCodeResult(409);
+
+        var tagArtworkCurrent = await _context.ArtworkTags.Where(c => c.ArtworkId.Equals(artwork.Id)).ToListAsync();
+        if (tagArtworkCurrent == null) return new StatusCodeResult(409);
+
+        _context.ArtworkCategories.RemoveRange(categoriesArtworkCurrent);
+        _context.ArtworkTags.RemoveRange(tagArtworkCurrent);
+
+        var categoriesGuid = artwork.ArtworkCategories;
+        if (categoriesGuid == null) return new StatusCodeResult(409);
+        foreach (var category in categoriesGuid)
+        {
+            if (await _context.Categories.AnyAsync(c => c.Id.Equals(category)) == null) return new StatusCodeResult(409);
+            var artworkCategories = await _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(artwork.Id)).ToListAsync();
+            ArtworkCategory artworkCategory = new ArtworkCategory
+            {
+                Id = Guid.NewGuid(),
+                ArtworkId = artwork.Id,
+                CategoryId = category
+            };
+            _context.ArtworkCategories.Add(artworkCategory);
+        }
+        var tagsGuid = artwork.ArtworkTags;
+        foreach (var tag in tagsGuid)
+        {
+            if (!await _context.Tags.AnyAsync(c => c.Id.Equals(tag)) == null) return new StatusCodeResult(409);
+            ArtworkTag artworkTag = new ArtworkTag { Id = Guid.NewGuid(), ArtworkId = artwork.Id, TagId = tag };
+        }
 
         _context.Artworks.Update(imageExist);
 
@@ -194,7 +245,13 @@ public class ArtworkRepository : IArtworkRepository
         await _context.SaveChangesAsync();
         return new StatusCodeResult(204);
     }
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByArtworkId(Guid id) => await _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByCategoryId(Guid id) => await _context.ArtworkCategories.Where(c => c.CategoryId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkCategory>> GetArtworkCategories() => await _context.ArtworkCategories.ToListAsync();
 
+    public async Task<List<ArtworkTag>> GetArtworkTagByArtworkId(Guid id) => await _context.ArtworkTags.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id) => await _context.ArtworkTags.Where(c => c.TagId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkTag>> GetArtworkTags() => await _context.ArtworkTags.ToListAsync();
 
     private async Task<string?> UploadToImgBB(byte[] imageData, string title,
         CancellationToken cancellationToken = default)

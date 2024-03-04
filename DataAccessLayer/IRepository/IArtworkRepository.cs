@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
 
@@ -18,6 +19,14 @@ public interface IArtworkRepository
     Task<IActionResult> UpdateTag4Artwork(ArtworkTagUpdate artworkTagUpdate);
     Task<IActionResult> RemoveTag4Artwork(Guid id);
     Task<IActionResult> RemoveCategory4Artwork(Guid id);
+    Task<List<ArtworkCategory>> GetArtworkCategoryByArtworkId(Guid id);
+     Task<List<ArtworkCategory>> GetArtworkCategoryByCategoryId(Guid id);
+     Task<List<ArtworkCategory>> GetArtworkCategories();
+
+     Task<List<ArtworkTag>> GetArtworkTagByArtworkId(Guid id);
+     Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id);
+     Task<List<ArtworkTag>> GetArtworkTags();
+
     Task<List<Artwork>> GetArtworkFromSearch(string search);
 
 }

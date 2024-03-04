@@ -1,0 +1,51 @@
+﻿@page
+@model Presentation.Pages.ArtworkTags.EditModel
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Edit";
+}
+@if (TempData["AnnounceMessage"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["AnnounceMessage"]
+    </div>
+}
+<h1>Edit</h1>
+
+<h4>ArtworkTag</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ArtworkTag.Id" />
+            <div class="form-group">
+                <label asp-for="ArtworkTag.ArtworkId" class="control-label"></label>
+                <select asp-for="ArtworkTag.ArtworkId" class="form-control">
+                    @foreach (var item in Model.Artworks)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArtworkTag.TagId" class="control-label"></label>
+                <select asp-for="ArtworkTag.TagId" class="form-control">
+                    @foreach (var item in Model.Tags)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>
+
