@@ -18,4 +18,6 @@ public interface IArtworkRepository
     Task<IActionResult> UpdateTag4Artwork(ArtworkTagUpdate artworkTagUpdate);
     Task<IActionResult> RemoveTag4Artwork(Guid id);
     Task<IActionResult> RemoveCategory4Artwork(Guid id);
+    Task<List<Artwork>> GetArtworkFromSearch(string search);
+
 }

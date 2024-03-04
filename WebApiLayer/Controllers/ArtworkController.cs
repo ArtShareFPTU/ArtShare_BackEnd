@@ -1,6 +1,7 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
@@ -214,6 +215,12 @@ public class ArtworkController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+    }
+    [AllowAnonymous]
+    [HttpGet("resource")]
+    public async Task<ActionResult<List<Artwork>>> GetArtworkFromSearch([FromQuery] string search)
+    {
+        return await _artworkService.GetArtworkFromSearch(search);
     }
     /*// GET: api/Artwork/5
     [HttpGet("{id}")]

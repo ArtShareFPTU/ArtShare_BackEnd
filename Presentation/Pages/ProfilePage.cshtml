@@ -60,11 +60,19 @@
                         <h5 class="mb-0">Recent photos</h5><a href="#" class="btn btn-link text-muted">Show all</a>
                     </div>
                     <div class="row">
-                        @foreach(var art in Model.Artwork){
-                            <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
-                                <img
-                                src="@art.Url"
-                                alt="" class="img-fluid rounded shadow-sm"></div>
+
+                        @if (Model.Artwork != null)
+                        {
+                            @foreach (var art in Model.Artwork)
+                            {
+                                <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
+                                    <img src="@art.Url" alt="" class="img-fluid rounded shadow-sm">
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>No artwork available.</p>
                         }
                         
                     </div>

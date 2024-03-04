@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Response;
 using Newtonsoft.Json;
 
 namespace Presentation.Pages;
@@ -16,9 +17,9 @@ public class HomePage : PageModel
     {
         _httpClientFactory = httpClientFactory;
     }
-
+    [BindProperty]
     public List<Artwork> Artwork { get; set; } = default!;
-
+    
     public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
@@ -34,7 +35,19 @@ public class HomePage : PageModel
             if (search == null || search.Length == 0)
                 Artwork = artworks;
             else
-                Artwork = artworks.Where(c => c.Title.ToLower().Contains(search.ToLower())).ToList();
+            {
+                var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}" ;
+                var response = await client.GetAsync(endpoint);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<List<Artwork>>(content);
+
+                    Artwork = result;
+                }
+                
+            }
+               
         }
 
         return Page();

@@ -2,6 +2,8 @@ using BusinessLogicLayer.IService;
 using BusinessLogicLayer.Service;
 using DataAccessLayer.BussinessObject.IRepository;
 using DataAccessLayer.BussinessObject.Repository;
+using DataAccessLayer.IRepository;
+using DataAccessLayer.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogicLayer;
@@ -20,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IArtworkTagRepository, ArtworkTagRepository>();
         //Service
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IArtworkService, ArtworkService>();

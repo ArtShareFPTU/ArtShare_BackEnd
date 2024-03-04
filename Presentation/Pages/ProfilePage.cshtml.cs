@@ -31,7 +31,7 @@ public class ProfilePage : PageModel
         Guid id = Guid.Parse(GetIdFromJwt(key));
         var account = await GetAccountById(id,client);
         var artwork = await GetArtworkByArtistId(id,client);
-        if (account == null || artwork is null)
+        if (account == null)
         {
             return NotFound();
         }

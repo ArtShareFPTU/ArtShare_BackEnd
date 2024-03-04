@@ -274,10 +274,11 @@ footer a {
 		<form method="post" asp-page-handler="Login">
 			<h1>Sign in</h1>
 			<span>or use your account</span>
-			<input type="email" asp-for="accountResponse.Email" placeholder="Email" />
-			<input type="password" asp-for="accountResponse.Password" placeholder="Password" />
+			<input type="email" asp-for="accountResponse.Email" required placeholder="Email" />
+			<input type="password" asp-for="accountResponse.Password" required placeholder="Password" />
 			<a href="#">Forgot your password?</a>
 			<button type="submit">Sign In</button>
+			<div class="text-danger" style="color:red;">@ViewData["Message"]</div>
 		</form>
 	</div>
 	<div class="overlay-container">

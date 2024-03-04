@@ -19,4 +19,5 @@ public interface IArtworkService
     Task<IActionResult> RemoveTag4Artwork(Guid id);
     Task<IActionResult> RemoveCategory4Artwork(Guid id);
     Task<List<ArtworkRespone>> GetArtworkByArtistId(Guid artistId);
+    Task<List<Artwork>> GetArtworkFromSearch(string search);
 }
