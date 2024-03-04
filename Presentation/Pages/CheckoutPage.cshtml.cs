@@ -33,71 +33,71 @@ public class CheckoutPage : PageModel
         if (json != null) CartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
     }
     
-    public async Task<ActionResult> OnPostPayment(string Cancel = null, string blogId = "", string PayerID = "", string guid = "")
-        {
-            //getting the apiContext  
-            var ClientID = _configuration.GetValue<string>("PayPal:Key");
-            var ClientSecret = _configuration.GetValue<string>("PayPal:Secret");
-            var mode = _configuration.GetValue<string>("PayPal:mode");
-            APIContext apiContext = PaypalConfiguration.GetAPIContext(ClientID, ClientSecret, mode);
-            // apiContext.AccessToken="Bearer access_token$production$j27yms5fthzx9vzm$c123e8e154c510d70ad20e396dd28287";
-            try
-            {
-                //A resource representing a Payer that funds a payment Payment Method as paypal  
-                //Payer Id will be returned when payment proceeds or click to pay  
-                string payerId = PayerID;
-                if (string.IsNullOrEmpty(payerId))
-                {
-                    //this section will be executed first because PayerID doesn't exist  
-                    //it is returned by the create function call of the payment class  
-                    // Creating a payment  
-                    // baseURL is the url on which paypal sendsback the data.  
-                    string baseURI = this.Request.Scheme + "://" + this.Request.Host + "/Home/PaymentWithPayPal?";
-                    //here we are generating guid for storing the paymentID received in session  
-                    //which will be used in the payment execution  
-                    guid = GetIdFromJwt(_configuration["Tokens:Key"]);
-                    //CreatePayment function gives us the payment approval url  
-                    //on which payer is redirected for paypal account payment  
-                    var createdPayment = this.CreatePayment(apiContext, baseURI + "guid=" + guid, blogId);
-                    //get links returned from paypal in response to Create function call  
-                    var links = createdPayment.links.GetEnumerator();
-                    string paypalRedirectUrl = null;
-                    while (links.MoveNext())
-                    {
-                        Links lnk = links.Current;
-                        if (lnk.rel.ToLower().Trim().Equals("approval_url"))
-                        {
-                            //saving the payapalredirect URL to which user will be redirected for payment  
-                            paypalRedirectUrl = lnk.href;
-                        }
-                    }
-                    // saving the paymentID in the key guid  
-                    httpContextAccessor.HttpContext.Session.SetString("payment", createdPayment.id);
-                    return Redirect(paypalRedirectUrl);
-                }
-                else
-                {
-                    // This function exectues after receving all parameters for the payment  
+    //public async Task<ActionResult> OnPostPayment(string Cancel = null, string blogId = "", string PayerID = "", string guid = "")
+    //    {
+    //        //getting the apiContext  
+    //        var ClientID = _configuration.GetValue<string>("PayPal:Key");
+    //        var ClientSecret = _configuration.GetValue<string>("PayPal:Secret");
+    //        var mode = _configuration.GetValue<string>("PayPal:mode");
+    //        APIContext apiContext = PaypalConfiguration.GetAPIContext(ClientID, ClientSecret, mode);
+    //        // apiContext.AccessToken="Bearer access_token$production$j27yms5fthzx9vzm$c123e8e154c510d70ad20e396dd28287";
+    //        try
+    //        {
+    //            //A resource representing a Payer that funds a payment Payment Method as paypal  
+    //            //Payer Id will be returned when payment proceeds or click to pay  
+    //            string payerId = PayerID;
+    //            if (string.IsNullOrEmpty(payerId))
+    //            {
+    //                //this section will be executed first because PayerID doesn't exist  
+    //                //it is returned by the create function call of the payment class  
+    //                // Creating a payment  
+    //                // baseURL is the url on which paypal sendsback the data.  
+    //                string baseURI = this.Request.Scheme + "://" + this.Request.Host + "/Home/PaymentWithPayPal?";
+    //                //here we are generating guid for storing the paymentID received in session  
+    //                //which will be used in the payment execution  
+    //                guid = GetIdFromJwt(_configuration["Tokens:Key"]);
+    //                //CreatePayment function gives us the payment approval url  
+    //                //on which payer is redirected for paypal account payment  
+    //                var createdPayment = this.CreatePayment(apiContext, baseURI + "guid=" + guid, blogId);
+    //                //get links returned from paypal in response to Create function call  
+    //                var links = createdPayment.links.GetEnumerator();
+    //                string paypalRedirectUrl = null;
+    //                while (links.MoveNext())
+    //                {
+    //                    Links lnk = links.Current;
+    //                    if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+    //                    {
+    //                        //saving the payapalredirect URL to which user will be redirected for payment  
+    //                        paypalRedirectUrl = lnk.href;
+    //                    }
+    //                }
+    //                // saving the paymentID in the key guid  
+    //                httpContextAccessor.HttpContext.Session.SetString("payment", createdPayment.id);
+    //                return Redirect(paypalRedirectUrl);
+    //            }
+    //            else
+    //            {
+    //                // This function exectues after receving all parameters for the payment  
 
-                    var paymentId = httpContextAccessor.HttpContext.Session.GetString("payment");
-                    var executedPayment = ExecutePayment(apiContext, payerId, paymentId as string);
-                    //If executed payment failed then we will show payment failure message to user  
-                    if (executedPayment.state.ToLower() != "approved")
-                    {
+    //                var paymentId = httpContextAccessor.HttpContext.Session.GetString("payment");
+    //                var executedPayment = ExecutePayment(apiContext, payerId, paymentId as string);
+    //                //If executed payment failed then we will show payment failure message to user  
+    //                if (executedPayment.state.ToLower() != "approved")
+    //                {
 
-                        return RedirectToPage("PaymentFailed");
-                    }
-                    var blogIds = executedPayment.transactions[0].item_list.items[0].sku;
+    //                    return RedirectToPage("PaymentFailed");
+    //                }
+    //                var blogIds = executedPayment.transactions[0].item_list.items[0].sku;
 
 
-                    return RedirectToPage("PaymentSuccess");
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToPage("PaymentFailed");
-            }
-        }
+    //                return RedirectToPage("PaymentSuccess");
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            return RedirectToPage("PaymentFailed");
+    //        }
+    //    }
     
 
     public string GetIdFromJwt(string jwtToken)

@@ -19,38 +19,59 @@
     <div class="col-md-6">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Artwork.Id"/>
+            <input type="hidden" asp-for="ArtworkUpdate.Id" value="@Model.Artwork.Id"/>
             <div class="mb-3">
-                <label asp-for="Artwork.AccountId" class="form-label"></label>
-                <select asp-for="Artwork.AccountId" class="form-control">
+                <label asp-for="ArtworkUpdate.AccountId" class="form-label"></label>
+                <select asp-for="ArtworkUpdate.AccountId" class="form-control">
                     <option value="@Model.Artwork.AccountId">@Model.Artwork.AccountId</option>
                 </select>
-                <span asp-validation-for="Artwork.AccountId" class="text-danger"></span>
+                <span asp-validation-for="ArtworkUpdate.AccountId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Artwork.Title" class="form-label"></label>
-                <input asp-for="Artwork.Title" class="form-control"/>
-                <span asp-validation-for="Artwork.Title" class="text-danger"></span>
+                <label asp-for="ArtworkUpdate.Title" class="form-label"></label>
+                <input asp-for="ArtworkUpdate.Title" class="form-control"/>
+                <span asp-validation-for="ArtworkUpdate.Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Artwork.Description" class="form-label"></label>
-                <input asp-for="Artwork.Description" class="form-control"/>
-                <span asp-validation-for="Artwork.Description" class="text-danger"></span>
+                <label asp-for="ArtworkUpdate.Description" class="form-label"></label>
+                <input asp-for="ArtworkUpdate.Description" class="form-control"/>
+                <span asp-validation-for="ArtworkUpdate.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArtworkUpdate.Image" class="control-label">Image</label>
+                <input type="file" asp-for="ArtworkUpdate.Image" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf" />
+                <span asp-validation-for="ArtworkUpdate.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArtworkUpdate.ArtworkCategories" class="form-label">Category IDs</label>
+                <select asp-for="ArtworkUpdate.ArtworkCategories" class="form-control" multiple>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+                <span asp-validation-for="ArtworkUpdate.ArtworkCategories" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ArtworkUpdate.ArtworkTags" class="form-label">Tag IDs</label>
+                <select asp-for="ArtworkUpdate.ArtworkTags" class="form-control" multiple>
+                    @foreach (var item in Model.Tags)
+                    {
+                        <option value="@item.Id">@item.Id</option>
+                    }
+                </select>
+                <span asp-validation-for="ArtworkUpdate.ArtworkTags" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Artwork.Url" class="control-label">Image</label>
-                <input type="file" asp-for="Artwork.Url" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf" />
-                <span asp-validation-for="Artwork.Url" class="text-danger"></span>
+                <label asp-for="ArtworkUpdate.Fee" class="form-label"></label>
+                <input asp-for="ArtworkUpdate.Fee" class="form-control"/>
+                <span asp-validation-for="ArtworkUpdate.Fee" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Artwork.Fee" class="form-label"></label>
-                <input asp-for="Artwork.Fee" class="form-control"/>
-                <span asp-validation-for="Artwork.Fee" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Artwork.Status" class="form-label"></label>
-                <input asp-for="Artwork.Status" class="form-control"/>
-                <span asp-validation-for="Artwork.Status" class="text-danger"></span>
+                <label asp-for="ArtworkUpdate.Status" class="form-label"></label>
+                <input asp-for="ArtworkUpdate.Status" class="form-control"/>
+                <span asp-validation-for="ArtworkUpdate.Status" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary"/>
