@@ -59,7 +59,7 @@ public class AccountController : ControllerBase
                 .ToList();
             var response = new ServiceResponse<string>
             {
-                Success = false,
+                /*Success = false,*/
                 Message = "Invalid input data." + string.Join("; ", errorrMessages),
                 Data = null
             };
