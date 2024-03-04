@@ -1,0 +1,38 @@
+﻿@page
+@model Presentation.Pages.ArtworkCategories.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">ArtworkCategory</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ArtworkCategory.Artwork)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ArtworkCategory.Artwork.Id)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ArtworkCategory.Category)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ArtworkCategory.Category.Id)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-page="./Edit" asp-route-id="@Model.ArtworkCategory?.Id" class="btn btn-primary">Edit</a> |
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>

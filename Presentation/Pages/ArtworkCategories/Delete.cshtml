@@ -1,0 +1,50 @@
+﻿@page
+@model Presentation.Pages.ArtworkCategories.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@if (TempData["AnnounceMessage"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["AnnounceMessage"]
+    </div>
+}
+
+<h1 class="text-center">Delete</h1>
+
+<h3 class="text-center">Are you sure you want to delete this?</h3>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">ArtworkCategory</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ArtworkCategory.Artwork)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ArtworkCategory.Artwork.Id)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.ArtworkCategory.Category)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ArtworkCategory.Category.Id)
+                    </dd>
+                </dl>
+
+                <form method="post" class="text-center">
+                    <input type="hidden" asp-for="ArtworkCategory.Id" />
+                    <div class="mb-3">
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                    <a asp-page="./Index" class="btn btn-link">Back to List</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,4 +19,11 @@ public interface IArtworkService
     Task<IActionResult> RemoveTag4Artwork(Guid id);
     Task<IActionResult> RemoveCategory4Artwork(Guid id);
     Task<List<ArtworkRespone>> GetArtworkByArtistId(Guid artistId);
+    Task<List<ArtworkCategory>> GetArtworkCategoryByArtworkId(Guid id);
+    Task<List<ArtworkCategory>> GetArtworkCategoryByCategoryId(Guid id);
+    Task<List<ArtworkCategory>> GetArtworkCategories();
+
+    Task<List<ArtworkTag>> GetArtworkTagByArtworkId(Guid id);
+    Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id);
+    Task<List<ArtworkTag>> GetArtworkTags();
 }
