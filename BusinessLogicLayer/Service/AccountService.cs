@@ -102,9 +102,10 @@ public class AccountService : IAccountService
     public string CreateToken(Account ua)
     {
         var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, ua.Id.ToString())
-        };
+            {
+                new Claim("Id", ua.Id.ToString()),
+                new Claim("Username", ua.UserName.ToString()),
+            };
 
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 

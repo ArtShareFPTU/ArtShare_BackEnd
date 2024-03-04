@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelLayer.DTOS.Request.Account;
-
-public class LoginAccountResponse
+namespace ModelLayer.DTOS.Request.Account
 {
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public class LoginAccountResponse
+	{
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
+    }
 }
