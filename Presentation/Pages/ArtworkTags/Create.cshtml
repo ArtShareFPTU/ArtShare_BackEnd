@@ -2,6 +2,7 @@
 @model Presentation.Pages.ArtworkTags.CreateModel
 
 @{
+    Layout = "Shared/_Layout";
     ViewData["Title"] = "Create";
 }
 
@@ -12,46 +13,48 @@
     </div>
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create</h1>
 
 <h4>ArtworkTag</h4>
 <hr />
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="mb-3">
-                <label asp-for="ArtworkTag.Id" class="form-label"></label>
-                <input asp-for="ArtworkTag.Id" class="form-control" />
-                <span asp-validation-for="ArtworkTag.Id" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="ArtworkTag.Id" class="form-label">Artwork Tag ID</label>
+                    <input asp-for="ArtworkTag.Id" class="form-control" />
+                    <span asp-validation-for="ArtworkTag.Id" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="ArtworkTag.ArtworkId" class="form-label"></label>
-                <select asp-for="ArtworkTag.ArtworkId" class="form-control">
-                    @foreach (var item in Model.Artworks)
-                    {
-                        <option value="@item.Id">@item.Id</option>
-                    }
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="ArtworkTag.ArtworkId" class="form-label">Artwork ID</label>
+                    <select asp-for="ArtworkTag.ArtworkId" class="form-control">
+                        @foreach (var item in Model.Artworks)
+                        {
+                            <option value="@item.Id">@item.Id</option>
+                        }
+                    </select>
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="ArtworkTag.TagId" class="form-label"></label>
-                <select asp-for="ArtworkTag.TagId" class="form-control">
-                    @foreach (var item in Model.Tags)
-                    {
-                        <option value="@item.Id">@item.Id</option>
-                    }
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="ArtworkTag.TagId" class="form-label">Tag ID</label>
+                    <select asp-for="ArtworkTag.TagId" class="form-control">
+                        @foreach (var item in Model.Tags)
+                        {
+                            <option value="@item.Id">@item.Id</option>
+                        }
+                    </select>
+                </div>
 
-            <div class="mb-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="mb-3 text-center">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

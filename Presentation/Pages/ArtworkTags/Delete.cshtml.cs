@@ -24,6 +24,11 @@ namespace Presentation.Pages.ArtworkTags
         public List<Category> Categories { get; set; }
         public List<ArtworkTag> ArtworkTags { get; set; }
 
+        public DeleteModel(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         [BindProperty]
       public ArtworkTag ArtworkTag { get; set; } = default!;
 
