@@ -22,8 +22,8 @@ public class HomePage : PageModel
     public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);
         if (artworks == null)
         {
@@ -53,5 +53,10 @@ public class HomePage : PageModel
         }
 
         return null;
+    }
+    public IActionResult OnGetLogout()
+    {
+        HttpContext.Session.Remove("Token");
+        return RedirectToPage();
     }
 }
