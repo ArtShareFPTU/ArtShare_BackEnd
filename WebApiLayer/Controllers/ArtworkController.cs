@@ -20,12 +20,13 @@ public class ArtworkController : ControllerBase
     }
 
     // GET: api/Artwork
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Artwork>>> GetArtworks()
     {
         return await _artworkService.GetAllArtworkAsync();
     }
-
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<ArtworkRespone>> GetArtworkById(Guid id)
     {
