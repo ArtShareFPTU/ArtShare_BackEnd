@@ -33,5 +33,4 @@ public class CheckoutPage : PageModel
         if (json != null) CartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
     }
     
-    
 }
