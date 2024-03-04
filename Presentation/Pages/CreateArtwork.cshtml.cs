@@ -11,8 +11,8 @@ public class CreateArtworkModel : PageModel
 {
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _artworkManage = "https://localhost:44365/api/Artwork/";
-    private readonly string _accountManage = "https://localhost:44365/api/Account/";
+    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+    private readonly string _accountManage = "https://localhost:7168/api/Account/";
 
     public List<Account> Accounts { get; set; }
     public ArtworkCreation Artwork { get; set; }
@@ -25,8 +25,8 @@ public class CreateArtworkModel : PageModel
     public async Task<IActionResult> OnGet()
     {
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
 
         //ViewData["AccountId"] = new SelectList(Accounts.Select(c => c.Id), "AccountId", "AccountId");
