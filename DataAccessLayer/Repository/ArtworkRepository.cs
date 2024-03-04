@@ -77,11 +77,11 @@ public class ArtworkRepository : IArtworkRepository
     public async Task<IActionResult> UpdateArtworkAsync(ArtworkUpdate artwork)
     {
         var imageExist = await _context.Artworks.FirstOrDefaultAsync(c =>
-            c.AccountId.Equals(artwork.AccountId) && c.Title.ToLower().Equals(artwork.Title.ToLower()));
+            c.Id.Equals(artwork.Id));
         if (imageExist == null) return new StatusCodeResult(409);
         imageExist = await _context.Artworks.FirstOrDefaultAsync(c => c.Id.Equals(artwork.Id));
         if (!string.IsNullOrEmpty(artwork.Title)) imageExist.Title = artwork.Title;
-       if(artwork.Image != null)
+        if (artwork.Image != null)
         {
             var fileExtension = Path.GetExtension(artwork.Image.FileName)?.ToLower();
             if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
@@ -194,7 +194,13 @@ public class ArtworkRepository : IArtworkRepository
         await _context.SaveChangesAsync();
         return new StatusCodeResult(204);
     }
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByArtworkId(Guid id) => await _context.ArtworkCategories.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkCategory>> GetArtworkCategoryByCategoryId(Guid id) => await _context.ArtworkCategories.Where(c => c.CategoryId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkCategory>> GetArtworkCategories() => await _context.ArtworkCategories.ToListAsync();
 
+    public async Task<List<ArtworkTag>> GetArtworkTagByArtworkId(Guid id) => await _context.ArtworkTags.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id) => await _context.ArtworkTags.Where(c => c.TagId.Equals(id)).ToListAsync();
+    public async Task<List<ArtworkTag>> GetArtworkTags() => await _context.ArtworkTags.ToListAsync();
 
     private async Task<string?> UploadToImgBB(byte[] imageData, string title,
         CancellationToken cancellationToken = default)
