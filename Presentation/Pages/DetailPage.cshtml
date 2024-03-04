@@ -8,6 +8,20 @@
 }
 
 <link href="css/DetailStyle.css" rel="stylesheet"/>
+<style>
+    .like-content {
+        display: inline-block;
+    }
+
+        .like-content a {
+            text-decoration: none;
+            color: wheat; /* Màu mặc định */
+        }
+
+    .liked a {
+        color: #000; /* Màu đen */
+    }
+</style>
 <main class="detail-content">
     <div class="container-detail">
         <div class="cover">
@@ -44,7 +58,10 @@
                         </form>
                     </div>
 
-
+                    
+                    <div class="like-content">
+                        <a href="#" id="likeBtn"><i class="fa fa-solid fa-thumbs-up"></i></a> <span>3</span>
+                    </div>
                     <div class="comment-content" style="padding-bottom: 10px;">
                         <div class="">
                             <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Comments.Count)</span>
@@ -75,3 +92,15 @@
         </div>
     </div>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const likeBtn = document.getElementById('likeBtn');
+
+        likeBtn.addEventListener('click', function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+
+            // Toggle lớp liked
+            likeBtn.parentElement.classList.toggle('liked');
+        });
+    });
+</script>
