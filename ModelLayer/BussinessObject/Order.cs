@@ -9,6 +9,7 @@ public class Order
 
     public Guid Id { get; set; }
     public Guid? AccountId { get; set; }
+    public string? Token { get; set; }
     public decimal? TotalFee { get; set; }
     public string? PaymentMethod { get; set; }
     public DateTime? PaymentDate { get; set; }

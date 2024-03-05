@@ -13,6 +13,11 @@ public class OrderRepository : IOrderRepository
         _context = new ArtShareContext();
     }
 
+    public async Task<Order> GetOrderByTokenAsync(string token)
+    {
+        return await _context.Orders.FirstOrDefaultAsync(o => o.Token.Equals(token));
+    }
+
     public async Task<List<Order>> GetAllOrderAsync()
     {
         return await _context.Orders.ToListAsync();

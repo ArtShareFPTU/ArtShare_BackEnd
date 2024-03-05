@@ -2,6 +2,7 @@ using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS;
+using ModelLayer.DTOS.Request.Order;
 using ModelLayer.Enum;
 
 namespace BusinessLogicLayer.Service;
@@ -33,11 +34,11 @@ public class OrderService : IOrderService
         order.AccountId = customerId;
         order.PaymentMethod = "Paypal";
         order.Id = Guid.NewGuid();
-        order.Status = OderStatus.Unpaid.ToString();
+        order.Status = OrderStatus.Processing.ToString();
         foreach (var item in cartsList)
         {
             var orderDetails = new OrderDetail();
-            orderDetails.Id = new Guid();
+            orderDetails.Id = Guid.NewGuid();
             orderDetails.OrderId = order.Id;
             orderDetails.Price = item.Price;
             orderDetails.ArtworkId = item.Id;
@@ -46,6 +47,27 @@ public class OrderService : IOrderService
         await _OrderRepository.AddOrderAsync(order);
         return order;
     }
+    public async Task CreateTokenAsync(CreateToken token)
+    {
+        var order = await _OrderRepository.GetOrderByIdAsync(token.Id);
+        order.Token = token.Token;
+        await _OrderRepository.UpdateOrderAsync(order);
+    }
+
+    public async Task UpdateToken(string token, string result)
+    {
+        var order = await _OrderRepository.GetOrderByTokenAsync(token);
+        if (result.Equals("Success"))
+        {
+            order.Status = OrderStatus.Completed.ToString();            
+        }
+        else
+        {
+            order.Status = OrderStatus.Cancelled.ToString();           
+        }
+        await _OrderRepository.UpdateOrderAsync(order); 
+    }
+
 
     public async Task UpdateOrderAsync(Order Order)
     {

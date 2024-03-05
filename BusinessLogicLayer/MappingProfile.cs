@@ -13,12 +13,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<CreateOrder, Order>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
-            .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => DateTime.Now))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => OderStatus.Unpaid.ToString()))
-            .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => "PayPal"));
-
         CreateMap<Artwork, ArtworkRespone>()
             .ForMember(c => c.Id, opt => opt.MapFrom(a => a.Id))
             .ForMember(c => c.AccountId, opt => opt.MapFrom(a => a.AccountId))
