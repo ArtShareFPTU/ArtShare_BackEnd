@@ -1,4 +1,12 @@
+using ModelLayer.PayPal;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", false, true)
+    .Build();
 
 builder.Services.AddSession();
 
@@ -6,6 +14,8 @@ builder.Services.AddSession();
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.Configure<PayPalConfig>(configuration.GetSection("PayPalConfig"));
 
 //ADD SESSION
 builder.Services.AddSession(options =>

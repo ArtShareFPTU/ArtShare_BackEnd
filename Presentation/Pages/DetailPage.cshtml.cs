@@ -36,7 +36,6 @@ public class DetailPageModel : PageModel
     
     public async Task<IActionResult> OnPostAddToCart(Guid id)
     {
-        var check = false;
         List<Carts> cartsList = new();
         Carts newCart = new();
         var artwork = await _client.GetAsync($"https://localhost:7168/api/Artwork/GetArtworkById/{id}");
@@ -49,9 +48,22 @@ public class DetailPageModel : PageModel
         // get cart from session
         var json = HttpContext.Session.GetString("cart");
         // deserialize cart
-        if (json != null) cartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
-        // add book to cart
-        if (!cartsList.Any(c => c.Id == id))
+        if (json != null) 
+        {
+            cartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
+            // add book to cart
+            if (!cartsList.Any(c => c.Id == id))
+            {
+                newCart.Id = ArtworkRespone.Id;
+                newCart.Title = ArtworkRespone.Title;
+                newCart.Price = ArtworkRespone.Fee.Value;
+                newCart.ImageUrl = ArtworkRespone.Url;
+                cartsList.Add(newCart);
+            }
+            //Remove old Session
+            HttpContext.Session.Remove("cart");
+        }
+        else
         {
             newCart.Id = ArtworkRespone.Id;
             newCart.Title = ArtworkRespone.Title;
@@ -59,12 +71,57 @@ public class DetailPageModel : PageModel
             newCart.ImageUrl = ArtworkRespone.Url;
             cartsList.Add(newCart);
         }
-        //Remove old Session
-        HttpContext.Session.Remove("cart");
+        
         // serialize cart
         json = JsonConvert.SerializeObject(cartsList);
         HttpContext.Session.SetString("cart", json);
-        return  RedirectToPage();
+        return RedirectToPage(new { id });;
+    }
+
+
+    public async Task<IActionResult> OnPostPayment(Guid id)
+    {
+        List<Carts> cartsList = new();
+        Carts newCart = new();
+        var artwork = await _client.GetAsync($"https://localhost:7168/api/Artwork/GetArtworkById/{id}");
+        if (artwork.IsSuccessStatusCode)
+        {
+            var jsonString = await artwork.Content.ReadAsStringAsync();
+
+            ArtworkRespone = JsonConvert.DeserializeObject<ArtworkRespone>(jsonString);
+        }
+        // get cart from session
+        var json = HttpContext.Session.GetString("cart");
+        // deserialize cart
+        if (json != null) 
+        {
+            cartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
+            // add book to cart
+            if (!cartsList.Any(c => c.Id == id))
+            {
+                newCart.Id = ArtworkRespone.Id;
+                newCart.Title = ArtworkRespone.Title;
+                newCart.Price = ArtworkRespone.Fee.Value;
+                newCart.ImageUrl = ArtworkRespone.Url;
+                cartsList.Add(newCart);
+            }
+            //Remove old Session
+            HttpContext.Session.Remove("cart");
+        }
+        else
+        {
+            newCart.Id = ArtworkRespone.Id;
+            newCart.Title = ArtworkRespone.Title;
+            newCart.Price = ArtworkRespone.Fee.Value;
+            newCart.ImageUrl = ArtworkRespone.Url;
+            cartsList.Add(newCart);
+        }
+        
+        // serialize cart
+        json = JsonConvert.SerializeObject(cartsList);
+        HttpContext.Session.SetString("cart", json);
+        
+        return RedirectToPage("CheckoutPage");;
     }
     
 

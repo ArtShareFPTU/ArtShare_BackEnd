@@ -1,4 +1,5 @@
 ﻿@page
+@using ModelLayer.DTOS
 @model Presentation.Pages.CheckoutPage
 
 @{
@@ -79,7 +80,7 @@
                                         <hr class="my-4">
                                         <div class="d-flex justify-content-between mb-4">
                                             <p class="mb-2">Total</p>
-                                            <p class="mb-2">$@Html.DisplayFor(modle => modle.CartsList.Sum(c => c.Price))</p>
+                                            <p class="mb-2">$@Html.DisplayFor(modle => modle.Amount)</p>
                                         </div>
                                         <form method="post" asp-page-handler="Payment">
                                             <button type="submit" class="btn btn-info btn-block btn-lg">

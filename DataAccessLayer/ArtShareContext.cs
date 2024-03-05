@@ -214,6 +214,8 @@ public partial class ArtShareContext : DbContext
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
 
+            entity.Property(e => e.Token).HasMaxLength(100);
+
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
             entity.Property(e => e.PaymentDate).HasColumnType("datetime");
