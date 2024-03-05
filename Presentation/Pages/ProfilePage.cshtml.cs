@@ -31,7 +31,25 @@ public class ProfilePage : PageModel
         Guid id = Guid.Parse(GetIdFromJwt(key));
         var account = await GetAccountById(id,client);
         var artwork = await GetArtworkByArtistId(id,client);
-        if (account == null || artwork is null)
+        if (account == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            Accounts = account;
+            Artwork = artwork;
+        }
+        return Page();
+    }
+    public async Task<IActionResult> OnGetArtistProfile(Guid id)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var account = await GetAccountById(id, client);
+        var artwork = await GetArtworkByArtistId(id, client);
+        if (account == null)
         {
             return NotFound();
         }

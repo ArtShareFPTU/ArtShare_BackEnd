@@ -282,4 +282,15 @@ public class ArtworkRepository : IArtworkRepository
     {
         return await _context.Set<Artwork>().Where(c => c.AccountId.Equals(artistId)).ToListAsync();
     }
+
+    public async Task<List<Artwork>> GetArtworkFromSearch(string search)
+    {
+        var checklist = await _context.Set<Artwork>().Include(c => c.ArtworkTags).ThenInclude(c => c.Tag).Include(c => c.ArtworkCategories).ThenInclude(c => c.Category)
+        .Where(c => c.Title.Contains(search) || c.ArtworkCategories.Any(at => at.Category.Title.Contains(search)) || c.ArtworkTags.Any(at => at.Tag.Title.Contains(search)))
+        .ToListAsync();
+
+        return checklist;
+    }
+
+    
 }

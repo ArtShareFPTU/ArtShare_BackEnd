@@ -30,8 +30,8 @@ public class CreateArtworkModel : PageModel
     public async Task<IActionResult> OnGet()
     {
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
         Tags = await GetTag(client);
         Categories = await GetCategory(client);

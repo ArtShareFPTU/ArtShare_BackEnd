@@ -28,12 +28,19 @@
         <div class="header-container1-right">
 
                     <div class="search-header">
-                        <form action="" method="post">
-                            <input type="text" placeholder="Tìm kiếm..." name="txtsearch">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                    <form id="searchForm" asp-page-handler="HomePage" method="get">
+                        <input type="text" id="txtsearch" placeholder="Tìm kiếm..." name="search" required>
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+
+                    <script>
+                        document.getElementById("searchForm").addEventListener("submit", function () {
+                            var searchTerm = document.getElementById("txtsearch").value;
+                            document.getElementById("search").value = searchTerm;
+                        });
+                    </script>
                     </div>
-                </div>
+        </div>
                 
             <div class="menu-acc">
                 @if(Context.Session.GetString("Token") is null){
@@ -63,8 +70,8 @@
             <div class="cart-header">
                 <a href="#"><i style="    font-size: 30px;color: black;" class="fa fa-shopping-cart"></i><span>3</span></a>
             </div>
-            </div>
-        </nav>
+    </div>
+ </nav>
         
         @RenderBody()
         

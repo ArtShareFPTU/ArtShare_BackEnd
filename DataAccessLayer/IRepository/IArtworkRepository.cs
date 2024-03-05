@@ -27,4 +27,6 @@ public interface IArtworkRepository
      Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id);
      Task<List<ArtworkTag>> GetArtworkTags();
 
+    Task<List<Artwork>> GetArtworkFromSearch(string search);
+
 }

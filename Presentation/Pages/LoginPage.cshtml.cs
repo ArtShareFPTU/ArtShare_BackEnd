@@ -34,11 +34,19 @@ namespace Presentation.Pages
 			HttpResponseMessage response = await _client.PostAsync("https://localhost:7168/api/Account/Login", content);
 			if (response.IsSuccessStatusCode)
 			{
-				var data = await  response.Content.ReadAsStringAsync();
+				var data = await response.Content.ReadAsStringAsync();
 				var result = JsonConvert.DeserializeObject<ServiceResponse<string>>(data);
-				HttpContext.Session.SetString("Token", result.Data);
-				HttpContext.Session.SetString("Username", GetUsernameFromJwt(result.Data));
-				return RedirectToPage("/HomePage");
+				if(result.Data != null)
+				{
+                    HttpContext.Session.SetString("Token", result.Data);
+                    HttpContext.Session.SetString("Username", GetUsernameFromJwt(result.Data));
+                    return RedirectToPage("/HomePage");
+                }
+				else
+				{
+					ViewData["Message"] = result.Message;
+					return Page();
+				}
 			}
 			return Page();
 
