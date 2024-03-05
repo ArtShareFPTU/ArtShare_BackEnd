@@ -12,10 +12,12 @@ namespace WebApiLayer.Controllers;
 public class ArtworkController : ControllerBase
 {
     private readonly IArtworkService _artworkService;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public ArtworkController(IArtworkService artworkService)
+    public ArtworkController(IArtworkService artworkService, IHttpContextAccessor contextAccessor)
     {
         _artworkService = artworkService;
+        _contextAccessor = contextAccessor;
     }
 
     // GET: api/Artwork
@@ -30,6 +32,13 @@ public class ArtworkController : ControllerBase
     public async Task<ActionResult<ArtworkRespone>> GetArtworkById(Guid id)
     {
         return await _artworkService.GetArtworkByIdAsync(id);
+    }
+    [Authorize]
+    [HttpGet]
+    public async Task<IEnumerable<ArtworkRespone>> GetOwnArtworks()
+    {
+        var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+        return await _artworkService.GetArtworkByArtistId(Guid.Parse(customer));
     }
 
     [HttpPost("create")]
