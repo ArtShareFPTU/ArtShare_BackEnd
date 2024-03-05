@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-
 .detail-content {
     width: 100%;
     height: 100vh;
@@ -33,20 +32,13 @@
 
 .cover {
     grid-area: cover;
-    height: 80vh;
-    background-size: cover;
-    background-position: center center;
-    width: 491px;
-    display: flex;
-    height: 597px;
-    align-items: center; /* Canh gi?a theo chi?u d?c */
-    justify-content: center; /* Canh gi?a theo chi?u ngang */
-    overflow: hidden;
+    position: relative;
 }
 
 .cover img {
-    max-width: 100%; /* K�ch th??c t?i ?a l� 100% chi?u r?ng c?a th? div */
-    max-height: 100%; /* K�ch th??c t?i ?a l� 100% chi?u cao c?a th? div */
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
 }
 
 .content {
@@ -55,7 +47,6 @@
     display: flex;
     flex-direction: column;
     align-content: center;
-    /* justify-content: space-between; */
     height: 597px;
 }
 
@@ -89,20 +80,19 @@
     overflow: auto;
 }
 
-.pages span {
-    margin-top: 15px;
-}
+    .pages span {
+        margin-top: 15px;
+    }
 
 .black-label {
     width: 80%;
-    /* position: relative; */
 }
 
-.black-label p {
-    font-size: 13px;
-    color: gray;
-    width: 70%;
-}
+    .black-label p {
+        font-size: 13px;
+        color: gray;
+        width: 70%;
+    }
 
 .title {
     font-size: 64px;
@@ -116,9 +106,9 @@
     border-left: 4px solid rgb(255, 177, 33);
 }
 
-.prix span {
-    padding-left: 10px;
-}
+    .prix span {
+        padding-left: 10px;
+    }
 
 .crt {
     color: gray;
@@ -132,18 +122,18 @@
     transform: translateX(60px);
 }
 
-.active::before {
-    position: absolute;
-    content: "";
-    display: block;
-    width: 67px;
-    right: 117%;
-    top: 45%;
-    background-color: #555;
-    height: .2em;
-    min-height: 1px;
-    z-index: 1;
-}
+    .active::before {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 67px;
+        right: 117%;
+        top: 45%;
+        background-color: #555;
+        height: .2em;
+        min-height: 1px;
+        z-index: 1;
+    }
 
 .bdge {
     height: 21px;

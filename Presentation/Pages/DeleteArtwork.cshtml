@@ -20,7 +20,10 @@
 
     <div class="row">
         <div class="col-md-4">
-            <img src="@Model.Artwork.Url" class="img-fluid" alt="Artwork Image">
+            <div class="watermark-container">
+                <img src="@Model.Artwork.Url" class="img-fluid watermarked-image" alt="Artwork Image">
+                <div class="watermark">ARTOln</div>
+            </div>
         </div>
         <div class="col-md-8">
             <h4>Artwork</h4>
@@ -108,3 +111,31 @@
         <a asp-page="/HomePage" class="btn btn-secondary">Back to List</a>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var watermarkedImages = document.querySelectorAll(".watermarked-image");
+        watermarkedImages.forEach(function (image) {
+            image.addEventListener("contextmenu", function (event) {
+                event.preventDefault();
+                var watermarkText = "ARTOln";
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                var img = new Image();
+                img.crossOrigin = "anonymous"; 
+                img.src = this.src;
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0);
+                    context.font = "bold 20px Arial";
+                    context.fillStyle = "rgba(255, 255, 255, 0.5)";
+                    context.fillText(watermarkText, img.width - 250, img.height - 20);
+                    var link = document.createElement("a");
+                    link.download = "watermarked_image.png";
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                };
+            });
+        });
+    });
+</script>
