@@ -18,6 +18,43 @@
         <link href="css/profilestyle.css" rel="stylesheet">
     </head>
 <body>
+    <style>
+        .con1 {
+            display: flex;
+            position: relative;
+        }
+
+        .image1 {
+            display: block;
+        }
+
+        .overlay1 {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu đen với độ trong suốt 0.5 */
+            opacity: 0; /* Mặc định ẩn overlay */
+            transition: opacity 0.5s ease;
+        }
+
+        .con1:hover .overlay1 {
+            opacity: 1;
+        }
+
+        .text1 {
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 70%;
+            left: 12%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+        }
+    </style>
     <div>
         <div> <!-- Profile widget -->
             <div class="bg-white shadow rounded overflow-hidden">
@@ -57,14 +94,35 @@
                 </div>
                 <div class="py-4 px-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h5 class="mb-0">Recent photos</h5><a href="#" class="btn btn-link text-muted">Show all</a>
+                        <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
                     </div>
                     <div class="row">
-                        @foreach(var art in Model.Artwork){
-                            <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
-                                <img
-                                src="@art.Url"
-                                alt="" class="img-fluid rounded shadow-sm"></div>
+
+                        @if (Model.Artwork != null)
+                        {
+                            @foreach (var art in Model.Artwork)
+                            {
+                                <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
+                                    <img src="@art.Url" alt="" class="img-fluid rounded shadow-sm">
+                                    @if (HttpContext.Session.GetString("Username").Equals(art.Name))
+                                    {
+                                        <div class="overlay1">
+                                            <div class="text1">
+                                                <h4>
+                                                    <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="UpdateArtwork" asp-route-id="@art.Id">Edit</a>
+                                                </h4>
+                                                <h4>
+                                                    <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="./DetailPage" asp-route-id="@art.AccountId">Detail</a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>No artwork available.</p>
                         }
                         
                     </div>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,123 +7,40 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccessLayer;
 using ModelLayer.BussinessObject;
-using Newtonsoft.Json;
-using System.Net;
-using System.Text;
-using ModelLayer.DTOS.Request.Artwork;
 
-namespace Presentation.Pages.Artworks;
-
-public class CreateModel : PageModel
+namespace Presentation.Pages.Artworks
 {
-    private readonly ILogger _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
-    private readonly string _accountManage = "https://localhost:7168/api/Account/";
-
-    public List<Account> Accounts { get; set; }
-    public ArtworkCreation Artwork { get; set; }
-
-    public CreateModel(IHttpClientFactory httpClientFactory)
+    public class CreateModel : PageModel
     {
-        _httpClientFactory = httpClientFactory;
-    }
+        private readonly DataAccessLayer.ArtShareContext _context;
 
-    public async Task<IActionResult> OnGet()
-    {
-        var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-        Accounts = await GetAccounts(client);
-
-        //ViewData["AccountId"] = new SelectList(Accounts.Select(c => c.Id), "AccountId", "AccountId");
-
-        return Page();
-    }
-
-    public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid) return Page();
-
-        var client = _httpClientFactory.CreateClient();
-        var endpoint = _artworkManage + "CreateArtwork/create";
-
-        // Create multipart form data content
-        var multipartContent = new MultipartFormDataContent();
-
-        // Add artwork data as JSON string
-
-        var artworkData = new
+        public CreateModel(DataAccessLayer.ArtShareContext context)
         {
-            accountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
-            title = Request.Form["Artwork.Title"],
-            description = Request.Form["Artwork.Description"],
-            url = Request.Form["Artwork.Url"],
-            likes = int.Parse(Request.Form["Artwork.Likes"]),
-            fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            status = Request.Form["Artwork.Status"]
-        };
-
-        multipartContent.Add(new StringContent(artworkData.accountId.ToString()), "AccountId");
-        multipartContent.Add(new StringContent(artworkData.title), "Title");
-        multipartContent.Add(new StringContent(artworkData.description), "Description");
-        multipartContent.Add(new StringContent(artworkData.url), "Url");
-        multipartContent.Add(new StringContent(artworkData.likes.ToString()), "Likes");
-        multipartContent.Add(new StringContent(artworkData.fee.ToString()), "Fee");
-        multipartContent.Add(new StringContent(artworkData.status), "Status");
-        if (Request.Form.Files.Count > 0)
-        {
-            var imageFile = Request.Form.Files[0];
-            multipartContent.Add(new StreamContent(imageFile.OpenReadStream()), "Image", imageFile.FileName);
-        }
-        else
-        {
-            //multipartContent.Add(new StringContent(string.Empty), "Image");
+            _context = context;
         }
 
-        var response = await client.PostAsync(endpoint, multipartContent);
-        if (response.StatusCode != null)
+        public IActionResult OnGet()
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            if (response.StatusCode == HttpStatusCode.Created)
-            {
-                TempData["AnnounceMessage"] = "Artwork created success";
-            }
-            else if (response.StatusCode == HttpStatusCode.Conflict)
-            {
-                TempData["AnnounceMessage"] = "This artwork is existed";
-                return RedirectToPage();
-            }
-            else if (response.StatusCode == HttpStatusCode.UnsupportedMediaType)
-            {
-                TempData["AnnounceMessage"] = "This file is not supported, try another one";
-                return RedirectToPage();
-            }
-            else
-            {
-                TempData["AnnounceMessage"] = "Error when creating artwork";
-                return RedirectToPage();
-            }
-
-            ModelState.Clear();
-            return RedirectToPage();
+        ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            return Page();
         }
 
-        return Page();
-    }
+        [BindProperty]
+        public Artwork Artwork { get; set; } = default!;
+        
 
-    private async Task<List<Account>> GetAccounts(HttpClient client)
-    {
-        var endpoint = _accountManage + "GetAccount";
-        var response = await client.GetAsync(endpoint);
-        if (response.IsSuccessStatusCode)
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public async Task<IActionResult> OnPostAsync()
         {
-            var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<List<Account>>(content);
+          if (!ModelState.IsValid || _context.Artworks == null || Artwork == null)
+            {
+                return Page();
+            }
 
-            return result;
+            _context.Artworks.Add(Artwork);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
-
-        return null;
     }
 }

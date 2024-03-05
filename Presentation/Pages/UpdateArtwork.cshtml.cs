@@ -12,6 +12,8 @@ public class UpdateArtworkModel : PageModel
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+    private readonly string _tagManage = "https://localhost:7168/api/Tag/";
+    private readonly string _categoryManage = "https://localhost:7168/api/Category/";
 
     public UpdateArtworkModel(IHttpClientFactory httpClientFactory)
     {
@@ -19,14 +21,21 @@ public class UpdateArtworkModel : PageModel
     }
 
     [BindProperty] public Artwork Artwork { get; set; } = default!;
+    public List<Tag> Tags { get; set; }
+    public List<Category> Categories { get; set; }
+
+    public ArtworkUpdate ArtworkUpdate { get; set; }
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("key");
+        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
+        Tags = await GetTag(client);
+        Categories = await GetCategory(client);
 
         if (artwork == null)
             Artwork = null;
@@ -45,22 +54,34 @@ public class UpdateArtworkModel : PageModel
         //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworkUpdate = new ArtworkUpdate
         {
-            Id = Guid.Parse(Request.Form["Artwork.Id"]),
-            AccountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
-            Title = Request.Form["Artwork.Title"],
-            Description = Request.Form["Artwork.Description"],
-            Fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            Status = Request.Form["Artwork.Status"]
+            Id = Guid.Parse(Request.Form["ArtworkUpdate.Id"]),
+            AccountId = Guid.Parse(Request.Form["ArtworkUpdate.AccountId"]),
+            Title = Request.Form["ArtworkUpdate.Title"],
+            Description = Request.Form["ArtworkUpdate.Description"],
+            Fee = decimal.Parse(Request.Form["ArtworkUpdate.Fee"]),
+            Status = Request.Form["ArtworkUpdate.Status"],
+            ArtworkCategories = Request.Form["ArtworkUpdate.ArtworkCategories"].Select(id => Guid.Parse(id)).ToList(),
+            ArtworkTags = Request.Form["ArtworkUpdate.ArtworkTags"].Select(id => Guid.Parse(id)).ToList()
         };
 
         var endpoint = _artworkManage + "UpdateArtwork/update";
-        
+
         var multipartContent = new MultipartFormDataContent();
-        multipartContent.Add(new StringContent(artworkUpdate.Id.ToString()), "AccountId");
+        multipartContent.Add(new StringContent(artworkUpdate.Id.ToString()), "Id");
+        multipartContent.Add(new StringContent(artworkUpdate.AccountId.ToString()), "AccountId");
         multipartContent.Add(new StringContent(artworkUpdate.Title), "Title");
         multipartContent.Add(new StringContent(artworkUpdate.Description), "Description");
         multipartContent.Add(new StringContent(artworkUpdate.Fee.ToString()), "Fee");
         multipartContent.Add(new StringContent(artworkUpdate.Status), "Status");
+        foreach (var categoryId in artworkUpdate.ArtworkCategories)
+        {
+            multipartContent.Add(new StringContent(categoryId.ToString()), "ArtworkCategories");
+        }
+
+        foreach (var tagId in artworkUpdate.ArtworkTags)
+        {
+            multipartContent.Add(new StringContent(tagId.ToString()), "ArtworkTags");
+        }
         if (Request.Form.Files.Count > 0)
         {
             var imageFile = Request.Form.Files[0];
@@ -73,12 +94,21 @@ public class UpdateArtworkModel : PageModel
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 TempData["AnnounceMessage"] = "Update artwork success";
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
                 TempData["AnnounceMessage"] = "This artwork was removed or not existed before";
+                return RedirectToPage();
+            }else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToPage("./LogoutPage");
+            }
             else
+            {
                 TempData["AnnounceMessage"] = "Error when updating artwork";
+                return RedirectToPage();
+            }
         }
-
-        return Page();
+        ModelState.Clear();
+        return RedirectToPage();
     }
 
 
@@ -92,6 +122,34 @@ public class UpdateArtworkModel : PageModel
             var result = JsonConvert.DeserializeObject<Artwork>(content);
 
             return result;
+        }
+
+        return null;
+    }
+    public async Task<List<Tag>> GetTag(HttpClient client)
+    {
+        var endpoint = _tagManage + "GetTags";
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var tag = JsonConvert.DeserializeObject<List<Tag>>(content);
+
+            return tag;
+        }
+
+        return null;
+    }
+    public async Task<List<Category>> GetCategory(HttpClient client)
+    {
+        var endpoint = _categoryManage + "GetCategorys";
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var categories = JsonConvert.DeserializeObject<List<Category>>(content);
+
+            return categories;
         }
 
         return null;

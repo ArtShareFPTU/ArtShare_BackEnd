@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Response.Account;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -22,7 +23,7 @@ public class DeleteArtworkModel : PageModel
     }
 
     public Artwork Artwork { get; set; } = default!;
-    public Account Account { get; set; } = default!;
+    public AccountResponse Account { get; set; } = default!;
 
     public List<Tag> Tags { get; set; }
     public List<Category> Categories { get; set; }
@@ -32,8 +33,9 @@ public class DeleteArtworkModel : PageModel
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("key");
+        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
 
         if (artwork == null)
@@ -46,7 +48,7 @@ public class DeleteArtworkModel : PageModel
             Tags = await GetTag(client, artwork.Id);
             Categories = await GetCategory(client, artwork.Id);
             Likes = await GetLike(client, artwork.Id);
-            Account = await GetAccount(client, artwork.Id);
+            Account = await GetAccounts(client);
         }
 
         return Page();
@@ -112,22 +114,22 @@ public class DeleteArtworkModel : PageModel
         return null;
     }
 
-    public async Task<Account> GetAccount(HttpClient client, Guid id)
+    private async Task<AccountResponse> GetAccounts(HttpClient client)
     {
-        var endpoint = _accountManage + "GetAccountByArtworkId/" + id;
+        var endpoint = _accountManage + "GeCurrenttAccount";
         var response = await client.GetAsync(endpoint);
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
-            var account = JsonConvert.DeserializeObject<Account>(content);
+            var result = JsonConvert.DeserializeObject<AccountResponse>(content);
 
-            return account;
+            return result;
         }
 
         return null;
     }
 
-    private async Task<string> DeleteArtwork(HttpClient client, Guid id)
+    private async Task<ActionResult<string>> DeleteArtwork(HttpClient client, Guid id)
     {
         var endpoint = _artworkManage + "RemoveArtwork/remove/" + id;
         var response = await client.PostAsync(endpoint, null);
@@ -143,7 +145,7 @@ public class DeleteArtworkModel : PageModel
         }
         else if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            announce = "You do not have access";
+            return RedirectToPage("./LogoutPage");
         }
 
         return announce;

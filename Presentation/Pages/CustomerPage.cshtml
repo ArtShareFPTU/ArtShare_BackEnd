@@ -1,0 +1,64 @@
+﻿@page
+@model Presentation.Pages.CustomerPageModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <p>
+                <a asp-page="/CreateArtwork">Create New</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Image
+                        </th>
+                        <th>
+                            Likes
+                        </th>
+                        <th>
+                            Fee
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Artwork)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                <img src="@item.Url" alt="@item.Title" style="max-width: 100px;" />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Likes)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fee)
+                            </td>
+                            <td>
+                                <a asp-page="./UpdateArtwork" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./ArtworkDetails" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./DeleteArtwork" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -17,4 +17,6 @@ public class ArtworkUpdate
     public int? Likes { get; set; }
     public decimal? Fee { get; set; }
     public string? Status { get; set; }
+    public List<Guid> ArtworkCategories { get; set; }
+    public List<Guid> ArtworkTags { get; set; }
 }

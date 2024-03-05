@@ -84,15 +84,17 @@ public class AccountService : IAccountService
         if (user == null)
         {
             response.Success = false;
-            response.Message = "User not found";
+            response.Message = "User not found!";
         }
         else if (user.Password != password)
         {
             response.Success = false;
-            response.Message = "Wrong pass";
+            response.Message = "Wrong password!";
         }
         else
         {
+            response.Success = true;
+            response.Message = "Login Successfully";
             response.Data = CreateToken(user);
         }
 
