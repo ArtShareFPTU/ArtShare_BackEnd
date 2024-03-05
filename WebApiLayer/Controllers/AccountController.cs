@@ -33,6 +33,7 @@ public class AccountController : ControllerBase
     // GET: api/Account/5
     //[EnableQuery]
     //[HttpGet("{id}")]
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<AccountResponse>> GetAccount(Guid id)
     {

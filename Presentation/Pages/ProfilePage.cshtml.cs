@@ -42,6 +42,24 @@ public class ProfilePage : PageModel
         }
         return Page();
     }
+    public async Task<IActionResult> OnGetArtistProfile(Guid id)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var account = await GetAccountById(id, client);
+        var artwork = await GetArtworkByArtistId(id, client);
+        if (account == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            Accounts = account;
+            Artwork = artwork;
+        }
+        return Page();
+    }
     private async Task<AccountResponse> GetAccountById(Guid id, HttpClient client)
     {
         var endpoint = _accountManage + $"Account/GetAccount/{id}";

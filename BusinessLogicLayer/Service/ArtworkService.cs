@@ -1,7 +1,7 @@
 using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
-using DataAccessLayer.IRepository;
+
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
@@ -13,12 +13,12 @@ namespace BusinessLogicLayer.Service;
 public class ArtworkService : IArtworkService
 {
     private readonly IArtworkRepository _ArtworkRepository;
-    private readonly IArtworkTagRepository _ArtworkTagRepository;
+    /*private readonly IArtworkTagRepository _ArtworkTagRepository;*/
     private readonly IMapper _mapper;
-    public ArtworkService(IArtworkRepository ArtworkRepository, IArtworkTagRepository artworkTag, IMapper mapper)
+    public ArtworkService(IArtworkRepository ArtworkRepository, IMapper mapper)
     {
         _ArtworkRepository = ArtworkRepository;
-        _ArtworkTagRepository = artworkTag;
+        
         _mapper = mapper;
     }
 

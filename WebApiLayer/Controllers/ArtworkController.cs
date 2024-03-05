@@ -234,7 +234,13 @@ public class ArtworkController : ControllerBase
     {
         return await _artworkService.GetArtworkFromSearch(search);
     }
-    /*// GET: api/Artwork/5
+    [AllowAnonymous]
+	[HttpGet("{id}")]
+	public async Task<ActionResult<List<ArtworkRespone>>> GetArtworksByArtistId(Guid id)
+	{
+		return await _artworkService.GetArtworkByArtistId(id);
+	}
+	/*// GET: api/Artwork/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Artwork>> GetArtwork(Guid id)
     {
