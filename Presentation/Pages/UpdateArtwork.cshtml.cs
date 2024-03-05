@@ -30,8 +30,9 @@ public class UpdateArtworkModel : PageModel
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("key");
+        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
         Tags = await GetTag(client);
         Categories = await GetCategory(client);
@@ -96,6 +97,9 @@ public class UpdateArtworkModel : PageModel
             {
                 TempData["AnnounceMessage"] = "This artwork was removed or not existed before";
                 return RedirectToPage();
+            }else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToPage("./LogoutPage");
             }
             else
             {

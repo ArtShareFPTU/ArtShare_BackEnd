@@ -20,7 +20,7 @@
                             Description
                         </th>
                         <th>
-                            URL
+                            Image
                         </th>
                         <th>
                             Likes
@@ -42,7 +42,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Url)
+                                <img src="@item.Url" alt="@item.Title" style="max-width: 100px;" />
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Likes)
@@ -51,9 +51,9 @@
                                 @Html.DisplayFor(modelItem => item.Fee)
                             </td>
                             <td>
-                                <a asp-page="/UpdateArtwork" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-page="/ArtworkDetails" asp-route-id="@item.Id">Details</a> |
-                                <a asp-page="/DeleteArtwork" asp-route-id="@item.Id">Delete</a>
+                                <a asp-page="./UpdateArtwork" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./ArtworkDetails" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./DeleteArtwork" asp-route-id="@item.Id">Delete</a>
                             </td>
                         </tr>
                     }

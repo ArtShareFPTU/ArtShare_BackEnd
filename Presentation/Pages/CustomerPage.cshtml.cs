@@ -29,9 +29,6 @@ namespace Presentation.Pages
             _httpClientFactory = httpClientFactory;
         }
 
-        public void OnGet()
-        {
-        }
 
         public async Task OnGetAsync()
         {
@@ -47,7 +44,7 @@ namespace Presentation.Pages
         }
         private async Task<List<ArtworkRespone>> GetArtworks(HttpClient client)
         {
-            var endpoint = _artworkManage + "GetArtworks";
+            var endpoint = _artworkManage + "GetOwnArtworks";
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {

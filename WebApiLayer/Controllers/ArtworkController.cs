@@ -41,12 +41,14 @@ public class ArtworkController : ControllerBase
         var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
         return await _artworkService.GetArtworkByArtistId(Guid.Parse(customer));
     }
-
+    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateArtwork([FromForm] ArtworkCreation artworkCreation)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if(customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.AddArtworkAsync(artworkCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -68,12 +70,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> UpdateArtwork([FromForm]ArtworkUpdate artworkUpdate)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.UpdateArtworkAsync(artworkUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -94,12 +98,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPost("remove/{id}")]
     public async Task<IActionResult> RemoveArtwork(Guid id)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.DeleteArtworkAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -116,12 +122,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPost("createTag")]
     public async Task<IActionResult> CreateTag4Artwork([FromForm]ArtworkTagAddition artworkTagAddition)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.AddTag4Artwork(artworkTagAddition);
             if(result is StatusCodeResult statusCodeResult)
             {
@@ -135,11 +143,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPost("createCategory")]
     public async Task<IActionResult> CreateCategory4Artwork([FromForm] ArtworkCategoryAddition artworkCategoryAddition)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.AddCategory4Artwork(artworkCategoryAddition);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -153,11 +164,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPut("updateTag")]
     public async Task<IActionResult> UpdateTag4Artwork([FromForm] ArtworkTagUpdate artworkTagUpdate)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.UpdateTag4Artwork(artworkTagUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -171,11 +185,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPut("updateCategory")]
     public async Task<IActionResult> UpdateCategory4Artwork([FromForm] ArtworkCategoryUpdate artworkCategoryUpdate)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.UpdateCategory4Artwork(artworkCategoryUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -189,11 +206,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPost("removeTag")]
     public async Task<IActionResult> RemoveTag4Artwork(Guid id)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.RemoveTag4Artwork(id);
             if(result is StatusCodeResult statusCodeResult)
             {
@@ -207,11 +227,14 @@ public class ArtworkController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+    [Authorize]
     [HttpPost("removeCategory")]
     public async Task<IActionResult> RemoveCategory4Artwork(Guid id)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _artworkService.RemoveCategory4Artwork(id);
             if (result is StatusCodeResult statusCodeResult)
             {

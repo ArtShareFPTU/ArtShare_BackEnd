@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using ModelLayer.DTOS.Response.Account;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -17,7 +19,7 @@ public class CreateArtworkModel : PageModel
     private readonly string _categoryManage = "https://localhost:7168/api/Category/";
 
 
-    public List<Account> Accounts { get; set; }
+    public AccountResponse Accounts { get; set; }
     public ArtworkCreation Artwork { get; set; }
     public List<Tag> Tags { get; set; }
     public List<Category> Categories { get; set; }
@@ -31,6 +33,7 @@ public class CreateArtworkModel : PageModel
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
+        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
         Tags = await GetTag(client);
@@ -45,6 +48,9 @@ public class CreateArtworkModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("key");
+        if (key == null) return RedirectToPage("./LogoutPage");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var endpoint = _artworkManage + "CreateArtwork/create";
 
         // Create multipart form data content
@@ -105,6 +111,10 @@ public class CreateArtworkModel : PageModel
                 TempData["AnnounceMessage"] = "This file is not supported, try another one";
                 return RedirectToPage();
             }
+            else if(response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToPage("./LogoutPage");
+            }
             else
             {
                 TempData["AnnounceMessage"] = "Error when creating artwork";
@@ -118,14 +128,14 @@ public class CreateArtworkModel : PageModel
         return Page();
     }
 
-    private async Task<List<Account>> GetAccounts(HttpClient client)
+    private async Task<AccountResponse> GetAccounts(HttpClient client)
     {
-        var endpoint = _accountManage + "GetAccount";
+        var endpoint = _accountManage + "GetCurrentAccount";
         var response = await client.GetAsync(endpoint);
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<List<Account>>(content);
+            var result = JsonConvert.DeserializeObject<AccountResponse>(content);
 
             return result;
         }

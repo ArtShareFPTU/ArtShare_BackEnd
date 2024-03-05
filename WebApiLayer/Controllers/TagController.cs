@@ -13,10 +13,12 @@ namespace WebApiLayer.Controllers;
 public class TagController : ControllerBase
 {
     private readonly ITagService _tagService;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public TagController(ITagService tagService)
+    public TagController(ITagService tagService, IHttpContextAccessor contextAccessor)
     {
         _tagService = tagService;
+        _contextAccessor = contextAccessor;
     }
 
     // GET: api/Tag
@@ -37,12 +39,14 @@ public class TagController : ControllerBase
     {
         return await _tagService.GetTagByArtworkIdAsync(artworkId);
     }
-
+    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateTag([FromForm] TagCreation tagCreation)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _tagService.AddTagAsync(tagCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -59,12 +63,14 @@ public class TagController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> UpdateTag([FromForm] TagUpdate tagUpdate)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _tagService.UpdateTagAsync(tagUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -81,12 +87,14 @@ public class TagController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPost("remove")]
     public async Task<IActionResult> RemoveTag(Guid id)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _tagService.DeleteTagAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {

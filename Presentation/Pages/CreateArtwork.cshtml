@@ -30,10 +30,9 @@
                     <div class="form-group">
                         <label asp-for="Artwork.AccountId" class="control-label">Account ID</label>
                         <select asp-for="Artwork.AccountId" class="form-control">
-                            @foreach (var item in Model.Accounts)
-                            {
-                                <option value="@item.Id">@item.Id</option>
-                            }
+                            
+                                <option value="@Model.Accounts.Id">@Model.Accounts.Id</option>
+                            
                         </select>
                     </div>
                     <div class="form-group">

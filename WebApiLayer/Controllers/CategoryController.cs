@@ -11,10 +11,12 @@ namespace WebApiLayer.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public CategoryController(ICategoryService categoryService)
+    public CategoryController(ICategoryService categoryService, IHttpContextAccessor contextAccessor)
     {
         _categoryService = categoryService;
+        _contextAccessor = contextAccessor;
     }
 
     // GET: api/Category
@@ -35,12 +37,14 @@ public class CategoryController : ControllerBase
     {
         return await _categoryService.GetCategoryByArtworkId(artworkId);
     }
-
+    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateCategory([FromForm] CategoryCreation categoryCreation)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _categoryService.AddCategoryAsync(categoryCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -57,12 +61,14 @@ public class CategoryController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> UpdateCategory([FromForm] CategoryUpdate categoryUpdate)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _categoryService.UpdateCategoryAsync(categoryUpdate);
             if (result is StatusCodeResult statusCodeResult)
             {
@@ -79,12 +85,14 @@ public class CategoryController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
+    [Authorize]
     [HttpPost("remove")]
     public async Task<IActionResult> RemoveCategory(Guid id)
     {
         try
         {
+            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
             var result = await _categoryService.DeleteCategoryAsync(id);
             if (result is StatusCodeResult statusCodeResult)
             {

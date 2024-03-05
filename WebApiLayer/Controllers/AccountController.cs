@@ -17,10 +17,12 @@ public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
     private readonly UserLoginResponseValidator _loginValidations = new();
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public AccountController(IAccountService accountService)
+    public AccountController(IAccountService accountService, IHttpContextAccessor contextAccessor)
     {
         _accountService = accountService;
+        _contextAccessor = contextAccessor;
     }
 
     // GET: api/Account
@@ -88,6 +90,15 @@ public class AccountController : ControllerBase
     {
         var response = await _accountService.CreateNewAccount(account);
         return response;
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<AccountResponse>> GetCurrentAccount()
+    {
+        var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+        if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
+        else return await _accountService.GetAccountById(Guid.Parse(customer));
     }
 
     /*// DELETE: api/Account/5
