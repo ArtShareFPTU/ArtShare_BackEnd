@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using ModelLayer.DTOS.Request.Tags;
 using ModelLayer.DTOS.Response.Account;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace Presentation.Pages;
 
@@ -33,7 +35,7 @@ public class CreateArtworkModel : PageModel
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        if (key == null || key.Length == 0) return RedirectToPage("./Logout");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
         Tags = await GetTag(client);
@@ -49,7 +51,7 @@ public class CreateArtworkModel : PageModel
 
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("key");
-        if (key == null) return RedirectToPage("./LogoutPage");
+        if (key == null) return RedirectToPage("./Logout");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var endpoint = _artworkManage + "CreateArtwork/create";
 
@@ -169,5 +171,40 @@ public class CreateArtworkModel : PageModel
         }
 
         return null;
+    }
+    public async Task<IActionResult> CreateTagAsync(TagCreation tagCreation)
+    {
+        try
+        {
+            var client = _httpClientFactory.CreateClient();
+            var key = HttpContext.Session.GetString("Token");
+            if (key == null) return StatusCode(StatusCodes.Status401Unauthorized);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+
+
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(new StringContent(tagCreation.Title), "Title");
+
+            var response = await client.PostAsync(_tagManage + "CreateTag/create", multipartContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    return StatusCode(StatusCodes.Status201Created, "Tag created successfully");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "This tag is already existed");
+                }
+            }
+
+            return BadRequest("Error when creating tag");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
