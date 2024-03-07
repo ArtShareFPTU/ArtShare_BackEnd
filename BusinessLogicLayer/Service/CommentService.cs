@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Comment;
 
 namespace BusinessLogicLayer.Service;
 
@@ -23,9 +25,9 @@ public class CommentService : ICommentService
         return await _CommentRepository.GetCommentByIdAsync(id);
     }
 
-    public async Task AddCommentAsync(Comment Comment)
+    public async Task<IActionResult> AddCommentAsync(CommentCreation comment)
     {
-        await _CommentRepository.AddCommentAsync(Comment);
+        return await _CommentRepository.AddCommentAsync(comment);
     }
 
     public async Task UpdateCommentAsync(Comment Comment)

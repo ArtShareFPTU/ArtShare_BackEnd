@@ -1,6 +1,9 @@
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Category;
+using ModelLayer.DTOS.Request.Comment;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -23,10 +26,20 @@ public class CommentRepository : ICommentRepository
         return await _context.Comments.FindAsync(id);
     }
 
-    public async Task AddCommentAsync(Comment comment)
+    public async Task<IActionResult> AddCommentAsync(CommentCreation comment)
     {
-        _context.Comments.Add(comment);
+        var commentToAdd = new Comment
+        {
+            Id = Guid.NewGuid(),
+            AccountId = comment.AccountId,
+            ArtworkId = comment.ArtworkId,
+            Content = comment.Content,
+            CreateDate = DateTime.Now
+        };
+        _context.Comments.Add(commentToAdd);
         await _context.SaveChangesAsync();
+        return new StatusCodeResult(201);
+
     }
 
     public async Task UpdateCommentAsync(Comment comment)
