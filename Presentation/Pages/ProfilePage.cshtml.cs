@@ -68,6 +68,8 @@ public class ProfilePage : PageModel
         }
         return null;
     }
+
+
     public string GetIdFromJwt(string jwtToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

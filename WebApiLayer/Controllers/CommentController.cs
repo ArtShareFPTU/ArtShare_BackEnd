@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Comment;
 
 namespace WebApiLayer.Controllers;
 
@@ -22,6 +24,23 @@ public class CommentController : ControllerBase
         return await _commentService.GetAllCommentAsync();
     }
 
+    //POST: api/Comment
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost("create")]
+    public async Task<ActionResult> PostComment([FromForm]CommentCreation comment)
+    {
+        try
+        {
+           await _commentService.AddCommentAsync(comment);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+
+            return BadRequest(e);
+        }
+    }
     /*// GET: api/Comment/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Comment>> GetComment(Guid id)
@@ -71,8 +90,8 @@ public class CommentController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Comment
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+     POST: api/Comment
+     To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Comment>> PostComment(Comment comment)
     {

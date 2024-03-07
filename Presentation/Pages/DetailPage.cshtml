@@ -69,9 +69,20 @@
                         </div>
 
                         <div style="display: table-caption; margin: 10px 0; ">
-                            <textarea style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
-                            <button class="btn btn-primary" type="button" style="padding: 5px;cursor: pointer;">Comment</button>
+                            
+                            <form method="post" asp-page-handler="CreateComment">
+                                <!-- Trường ẩn để chứa AccountId -->
+                                <input type="hidden" name="commentCreation.AccountId"  />
+
+                                <!-- Trường ẩn để chứa ArtworkId -->
+                                <input type="hidden" name="commentCreation.ArtworkId"  />
+
+                                <textarea name="commentCreation.Content" style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
+                                <button class="btn btn-primary" type="submit" style="padding: 5px; cursor: pointer;">Comment</button>
+                            </form>
+
                         </div>
+
                         @foreach (var comment in Model.ArtworkRespone.Comments)
                         {
                             <div>
