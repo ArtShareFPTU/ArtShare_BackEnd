@@ -7,16 +7,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet">
 
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" rel="stylesheet">
-       
-        <link href="css/profilestyle.css" rel="stylesheet">
-    </head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" rel="stylesheet">
+
+    <link href="css/profilestyle.css" rel="stylesheet">
+</head>
 <body>
     <style>
         .con1 {
@@ -56,14 +56,16 @@
         }
     </style>
     <div>
-        <div> <!-- Profile widget -->
+        <div>
+            <!-- Profile widget -->
             <div class="bg-white shadow rounded overflow-hidden">
                 <div class="px-4 pt-0 pb-4 cover">
                     <div class="media align-items-end profile-head">
-                        <div class="profile mr-3"><img
-                                src="@Model.Accounts.Avatar"
-                                alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#"
-                                class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                        <div class="profile mr-3">
+                            <img src="@Model.Accounts.Avatar"
+                                 alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#"
+                                                                                             class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                        </div>
                         <div class="media-body mb-5 text-white">
                             <h4 class="mt-0 mb-0">@Model.Accounts.UserName</h4>
                             <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>@Model.Accounts.FullName</p>
@@ -73,16 +75,19 @@
                 <div class="bg-light p-4 d-flex justify-content-end text-center">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumArtwork</h5><small class="text-muted"> <i
-                                    class="fas fa-image mr-1"></i>Photos</small>
+                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumArtwork</h5><small class="text-muted">
+                                <i class="fas fa-image mr-1"></i>Photos
+                            </small>
                         </li>
                         <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowers</h5><small class="text-muted"> <i
-                                    class="fas fa-user mr-1"></i>Followers</small>
+                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowers</h5><small class="text-muted">
+                                <i class="fas fa-user mr-1"></i>Followers
+                            </small>
                         </li>
                         <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowings</h5><small class="text-muted"> <i
-                                    class="fas fa-user mr-1"></i>Following</small>
+                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowings</h5><small class="text-muted">
+                                <i class="fas fa-user mr-1"></i>Following
+                            </small>
                         </li>
                     </ul>
                 </div>
@@ -95,6 +100,9 @@
                 <div class="py-4 px-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
+                        <a href="/CreateTag" class="btn btn-link text-muted">Create Tag</a>
+                        <a href="/CreateCategory" class="btn btn-link text-muted">Create Category</a>
+
                     </div>
                     <div class="row">
 
@@ -124,7 +132,7 @@
                         {
                             <p>No artwork available.</p>
                         }
-                        
+
                     </div>
                 </div>
             </div>

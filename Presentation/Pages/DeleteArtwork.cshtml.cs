@@ -33,8 +33,8 @@ public class DeleteArtworkModel : PageModel
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        var key = HttpContext.Session.GetString("key");
-        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        var key = HttpContext.Session.GetString("Token");
+        if (key == null || key.Length == 0) return RedirectToPage("./Logout");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
 
@@ -145,7 +145,7 @@ public class DeleteArtworkModel : PageModel
         }
         else if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return RedirectToPage("./LogoutPage");
+            return RedirectToPage("./Logout");
         }
 
         return announce;
@@ -155,8 +155,8 @@ public class DeleteArtworkModel : PageModel
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var result = await DeleteArtwork(client, id);
 
         TempData["AnnounceMessage"] = result;

@@ -30,8 +30,8 @@ public class UpdateArtworkModel : PageModel
     {
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
-        var key = HttpContext.Session.GetString("key");
-        if (key == null || key.Length == 0) return RedirectToPage("./LogoutPage");
+        var key = HttpContext.Session.GetString("Token");
+        if (key == null || key.Length == 0) return RedirectToPage("./Logout");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
         Tags = await GetTag(client);
@@ -50,8 +50,8 @@ public class UpdateArtworkModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
         var client = _httpClientFactory.CreateClient();
-        //var key = HttpContext.Session.GetString("key");
-        //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var key = HttpContext.Session.GetString("Token");
+       client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworkUpdate = new ArtworkUpdate
         {
             Id = Guid.Parse(Request.Form["ArtworkUpdate.Id"]),
@@ -99,7 +99,7 @@ public class UpdateArtworkModel : PageModel
                 return RedirectToPage();
             }else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                return RedirectToPage("./LogoutPage");
+                return RedirectToPage("./Logout");
             }
             else
             {

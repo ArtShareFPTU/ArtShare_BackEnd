@@ -57,10 +57,11 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Artwork.ArtworkCategories" class="form-label">Category IDs</label>
-                        <select asp-for="Artwork.ArtworkCategories" class="form-control" multiple>
+                        <a asp-page="/CreateCategory" class="btn btn-link">Create New Category</a>
+                        <select asp-for="Artwork.ArtworkCategories" class="form-control">
                             @foreach (var item in Model.Categories)
                             {
-                                <option value="@item.Id">@item.Id</option>
+                                <option value="@item.Id">@item.Title</option>
                             }
                         </select>
                         <span asp-validation-for="Artwork.ArtworkCategories" class="text-danger"></span>
@@ -68,6 +69,7 @@
 
                     <div class="form-group">
                         <label asp-for="Artwork.ArtworkTags" class="form-label">Tag IDs</label>
+                        <a asp-page="/CreateTag" class="btn btn-link">Create New Tag</a>
                         <select asp-for="Artwork.ArtworkTags" class="form-control" multiple>
                             @foreach (var item in Model.Tags)
                             {
@@ -75,6 +77,8 @@
                             }
                         </select>
                         <span asp-validation-for="Artwork.ArtworkTags" class="text-danger"></span>
+                        
+
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary"/>

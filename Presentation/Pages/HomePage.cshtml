@@ -71,6 +71,13 @@
         position: relative;
     }
 
+        .con1 img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
     .image1 {
         display: block;
     }
@@ -101,14 +108,44 @@
         padding: 0 10px;
         transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
+        padding: 10px;
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var images = document.querySelectorAll(".con1 img");
+        images.forEach(function (image) {
+            image.addEventListener("contextmenu", function (e) {
+                e.preventDefault(); 
+                var watermarkText = "ARTOln"; 
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                var img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.src = this.src;
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0);
+                    context.font = "bold 30px Arial";
+                    context.fillStyle = "rgba(255, 255, 255, 0.5)";
+                    context.fillText(watermarkText, img.width - 200, img.height - 20);
+                    var link = document.createElement("a");
+                    link.download = "watermarked_image.png"; 
+                    link.href = canvas.toDataURL("image/png");
+                    link.click(); 
+                };
+            });
+        });
+    });
+</script>
 
 <body>
 <div class="flexbin flexbin-margin">
     @foreach (var item in Model.Artwork)
     {
         <div class="con1" >
+            <div class="watermark">ARToln</div>
             <img src="@Html.DisplayFor(modelItem => item.Url)"/>
             <div class="overlay1">
                 <div class="text1">

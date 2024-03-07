@@ -6,12 +6,36 @@
     Layout = "Shared/_Layout";
     ViewData["Title"] = "DetaiPage";
 }
+<script>
+    document.addEventListener('contextmenu', function (e) {
+      
+        var target = e.target;
 
+        
+        if (target.tagName.toLowerCase() === 'img') {
+            
+            var watermark = document.createElement('div');
+            watermark.classList.add('watermark');
+            watermark.innerText = 'ARTOln';
+
+            document.body.appendChild(watermark);
+
+          
+            watermark.style.position = 'fixed';
+            watermark.style.top = e.clientY + 'px';
+            watermark.style.left = e.clientX + 'px';
+
+            
+            e.preventDefault();
+        }
+    });
+</script>
 <link href="css/DetailStyle.css" rel="stylesheet"/>
 <main class="detail-content">
     <div class="container-detail">
-        <div class="cover">
-            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
+        <div class="cover watermark-container">
+            <div class="watermark">ARTOln</div>
+            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt=""> 
         </div>
         <div class="content">
             <div class="content-body">
