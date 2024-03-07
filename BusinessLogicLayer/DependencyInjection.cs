@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IInboxRepository, InboxRepository>();
 
         //Service
         services.AddScoped<IAccountService, AccountService>();
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<ILikeService, LikeService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ITagService, TagService>();
+        services.AddScoped<IInboxService, InboxService>();
 
 
         //AUTOMAPPER

@@ -5,6 +5,7 @@ using ModelLayer.DTOS.Request.Order;
 using ModelLayer.DTOS.Response;
 using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Comment;
+using ModelLayer.DTOS.Response.Inbox;
 using ModelLayer.Enum;
 
 namespace BusinessLogicLayer;
@@ -13,6 +14,19 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        
+        CreateMap<Inbox, InboxReceiverResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Sender, opt => opt.MapFrom(src => src.Sender.UserName));
+        
+        CreateMap<Inbox, InboxSenderResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Receiver, opt => opt.MapFrom(src => src.Receiver.UserName));
+
+        CreateMap<Inbox, InboxDetailResponse>();
+        
         CreateMap<Artwork, ArtworkRespone>()
             .ForMember(c => c.Id, opt => opt.MapFrom(a => a.Id))
             .ForMember(c => c.AccountId, opt => opt.MapFrom(a => a.AccountId))
