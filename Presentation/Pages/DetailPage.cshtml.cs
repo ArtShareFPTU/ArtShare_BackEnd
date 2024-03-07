@@ -75,7 +75,7 @@ public class DetailPageModel : PageModel
         // serialize cart
         json = JsonConvert.SerializeObject(cartsList);
         HttpContext.Session.SetString("cart", json);
-        return RedirectToPage(new { id });;
+        return RedirectToPage(new { id });
     }
 
 
