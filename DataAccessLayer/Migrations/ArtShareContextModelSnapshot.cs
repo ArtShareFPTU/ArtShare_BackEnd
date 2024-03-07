@@ -82,6 +82,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int?>("Likes")
                         .HasColumnType("int");
 
+                    b.Property<string>("PremiumUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
