@@ -60,7 +60,7 @@
                         <select asp-for="Artwork.ArtworkCategories" class="form-control" multiple>
                             @foreach (var item in Model.Categories)
                             {
-                                <option value="@item.Id">@item.Id</option>
+                                <option value="@item.Id">@item.Title</option>
                             }
                         </select>
                         <span asp-validation-for="Artwork.ArtworkCategories" class="text-danger"></span>
@@ -71,7 +71,7 @@
                         <select asp-for="Artwork.ArtworkTags" class="form-control" multiple>
                             @foreach (var item in Model.Tags)
                             {
-                                <option value="@item.Id">@item.Id</option>
+                                <option value="@item.Id">@item.Title</option>
                             }
                         </select>
                         <span asp-validation-for="Artwork.ArtworkTags" class="text-danger"></span>
