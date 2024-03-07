@@ -72,7 +72,7 @@
                             
                             <form method="post" asp-page-handler="CreateComment">
                                 <!-- Trường ẩn để chứa AccountId -->
-                                <input type="hidden" name="commentCreation.AccountId"  />
+                                <input type="hidden" asp-for="ArtworkRespone.Id"  />
 
                                 <!-- Trường ẩn để chứa ArtworkId -->
                                 <input type="hidden" name="commentCreation.ArtworkId"  />

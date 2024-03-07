@@ -27,7 +27,7 @@ public class CommentController : ControllerBase
     //POST: api/Comment
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost("create")]
-    public async Task<ActionResult> PostComment([FromForm]CommentCreation comment)
+    public async Task<ActionResult> PostComment(CommentCreation comment)
     {
         try
         {

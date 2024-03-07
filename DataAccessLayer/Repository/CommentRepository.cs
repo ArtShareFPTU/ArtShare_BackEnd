@@ -30,7 +30,7 @@ public class CommentRepository : ICommentRepository
     {
         var commentToAdd = new Comment
         {
-            Id = new Guid(),
+            Id = Guid.NewGuid(),
             AccountId = comment.AccountId,
             ArtworkId = comment.ArtworkId,
             Content = comment.Content,

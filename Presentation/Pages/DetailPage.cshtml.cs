@@ -85,10 +85,9 @@ public class DetailPageModel : PageModel
 
 
     
-    public async Task<IActionResult> OnPostCreateComment(Guid id)
+    public async Task<IActionResult> OnPostCreateComment()
     {
-        try
-        {
+        
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
@@ -108,24 +107,15 @@ public class DetailPageModel : PageModel
             commentCreation.AccountId = Guid.Parse(accountId);
 
             // Gán ArtworkId vào commentCreation
-            commentCreation.ArtworkId = id;
-
-            var response = await client.PostAsJsonAsync("https://localhost:7168/api/Comment/create", commentCreation);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToPage("DetailPage");
-            }
-            else
-            {
-                ModelState.AddModelError("", "error");
-                return Page();
-            }
-        }
-        catch (Exception e)
-        {
-            ModelState.AddModelError("", "error");
-            throw;
-        }
+            //commentCreation.ArtworkId = id;
+            commentCreation.ArtworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
+            var response = await client.PostAsJsonAsync("https://localhost:7168/api/Comment/PostComment/create", commentCreation);
+            
+                
+                return RedirectToPage(new { commentCreation.ArtworkId });
+            
+            
+        
     }
 
     
