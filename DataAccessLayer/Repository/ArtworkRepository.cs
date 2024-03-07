@@ -40,6 +40,7 @@ public class ArtworkRepository : IArtworkRepository
     {
         var artworkId = Guid.NewGuid();
         string? imgbbURL = string.Empty;
+        string? imgbbURL_Premium = string.Empty;
         if (artwork.Image == null) return new StatusCodeResult(500);
         if (artwork.Image != null)
         {
@@ -54,6 +55,9 @@ public class ArtworkRepository : IArtworkRepository
                 await artwork.Image.CopyToAsync(memoryStream);
                 imageData = memoryStream.ToArray();
             }
+
+            imgbbURL_Premium = await UploadToImgBB(imageData, artwork.Title + "(Paid version)");
+            if (imgbbURL_Premium == null) return new StatusCodeResult(500);
 
             using var image = SixLabors.ImageSharp.Image.Load(imageData);
             image.Mutate(x => x.Resize(640, 360)); 
@@ -100,6 +104,7 @@ public class ArtworkRepository : IArtworkRepository
             Description = artwork.Description,
             Likes = artwork.Likes,
             Url = imgbbURL,
+            PremiumUrl = imgbbURL_Premium,
             Fee = artwork.Fee,
             Status = artwork.Status
         };
@@ -128,11 +133,26 @@ public class ArtworkRepository : IArtworkRepository
                 await artwork.Image.CopyToAsync(memoryStream);
                 imageData = memoryStream.ToArray();
             }
+            var imgbbPremiumURL = await UploadToImgBB(imageData, artwork.Title + "(Paid version)");
+            if (imgbbPremiumURL == null) return new StatusCodeResult(500);
 
+            // Resize the image using ImageSharp
+            using var image = SixLabors.ImageSharp.Image.Load(imageData);
+            image.Mutate(x => x.Resize(640, 360));
+
+            // Convert the image back to a byte array
+            using (var outputStream = new MemoryStream())
+            {
+                image.SaveAsJpeg(outputStream);
+                imageData = outputStream.ToArray();
+            }
+
+            // Save resized image to ImgBB
             var imgbbURL = await UploadToImgBB(imageData, artwork.Title);
             if (imgbbURL == null) return new StatusCodeResult(500);
 
             imageExist.Url = imgbbURL;
+            imageExist.PremiumUrl = imgbbPremiumURL;
         }
         if (!string.IsNullOrEmpty(artwork.Description)) imageExist.Description = artwork.Description;
         if (artwork.Fee != null) imageExist.Fee = artwork.Fee;

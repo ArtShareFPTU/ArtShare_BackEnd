@@ -272,7 +272,19 @@ public class ArtworkController : ControllerBase
 	{
 		return await _artworkService.GetArtworkByArtistId(id);
 	}
-	/*// GET: api/Artwork/5
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> DownloadImage(string url)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            var imageData = await httpClient.GetByteArrayAsync(url);
+            var fileName = Path.GetFileName(new Uri(url).LocalPath);
+            return File(imageData, "image/jpg", fileName);
+        }
+    }
+
+    /*// GET: api/Artwork/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Artwork>> GetArtwork(Guid id)
     {
