@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Artwork;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -37,6 +39,7 @@ public class ArtworkRepository : IArtworkRepository
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation artwork)
     {
         var artworkId = Guid.NewGuid();
+        string? imgbbURL = string.Empty;
         if (artwork.Image == null) return new StatusCodeResult(500);
         if (artwork.Image != null)
         {
@@ -52,7 +55,16 @@ public class ArtworkRepository : IArtworkRepository
                 imageData = memoryStream.ToArray();
             }
 
-            var imgbbURL = await UploadToImgBB(imageData, artwork.Title);
+            using var image = SixLabors.ImageSharp.Image.Load(imageData);
+            image.Mutate(x => x.Resize(640, 360)); 
+
+            using (var outputStream = new MemoryStream())
+            {
+                image.SaveAsJpeg(outputStream);
+                imageData = outputStream.ToArray();
+            }
+
+            imgbbURL = await UploadToImgBB(imageData, artwork.Title);
             if (imgbbURL == null) return new StatusCodeResult(500);
         }
 
@@ -87,6 +99,7 @@ public class ArtworkRepository : IArtworkRepository
             AccountId = artwork.AccountId,
             Description = artwork.Description,
             Likes = artwork.Likes,
+            Url = imgbbURL,
             Fee = artwork.Fee,
             Status = artwork.Status
         };

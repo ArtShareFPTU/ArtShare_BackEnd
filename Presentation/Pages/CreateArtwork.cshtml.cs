@@ -50,7 +50,7 @@ public class CreateArtworkModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         var client = _httpClientFactory.CreateClient();
-        var key = HttpContext.Session.GetString("key");
+        var key = HttpContext.Session.GetString("Token");
         if (key == null) return RedirectToPage("./Logout");
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var endpoint = _artworkManage + "CreateArtwork/create";
