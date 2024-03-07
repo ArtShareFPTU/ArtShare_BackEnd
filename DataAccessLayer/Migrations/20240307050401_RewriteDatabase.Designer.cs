@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ArtShareContext))]
-    [Migration("20240305112713_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240307050401_RewriteDatabase")]
+    partial class RewriteDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,9 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<int?>("Likes")
                         .HasColumnType("int");
+
+                    b.Property<string>("PremiumUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasMaxLength(30)
