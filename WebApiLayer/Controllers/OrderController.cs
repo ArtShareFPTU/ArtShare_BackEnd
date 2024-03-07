@@ -8,7 +8,7 @@ namespace WebApiLayer.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public abstract class OrderController : ControllerBase
+public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
 

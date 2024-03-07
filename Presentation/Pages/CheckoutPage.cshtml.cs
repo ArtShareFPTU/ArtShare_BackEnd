@@ -47,6 +47,12 @@ public class CheckoutPage : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        var accessToken = HttpContext.Session.GetString("Token");
+        if (accessToken == null)
+        {
+            return RedirectToPage("LoginPage");
+        }
+        
         // get cart from session
         var jsonCart = HttpContext.Session.GetString("cart");
 
@@ -81,7 +87,7 @@ public class CheckoutPage : PageModel
         //get id token and update to DB
         JObject jsonObject = JObject.Parse(responseContent);
         string id = (string)jsonObject["id"];
-        CreateTokenInOrder(id);
+        await CreateTokenInOrder(id);
         return Redirect($"{link}");
     }
 
@@ -115,8 +121,7 @@ public class CheckoutPage : PageModel
         
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _client.PostAsync($"https://localhost:7168/api/Order/PostOrder/CreateTokenOrder",
-            content);
+        var response = await _client.PutAsync($"https://localhost:7168/api/Order/CreateTokenOrder", content);
     }
 
 
