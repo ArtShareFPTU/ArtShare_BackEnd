@@ -25,7 +25,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.Receiver, opt => opt.MapFrom(src => src.Receiver.UserName));
 
-        CreateMap<Inbox, InboxDetailResponse>();
+        CreateMap<Inbox, InboxDetailResponse>()
+            .ForMember(dest => dest.Receiver, opt => opt.MapFrom(src => src.Receiver.UserName))
+            .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => src.CreateDate))
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         
         CreateMap<Artwork, ArtworkRespone>()
             .ForMember(c => c.Id, opt => opt.MapFrom(a => a.Id))

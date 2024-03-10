@@ -45,7 +45,7 @@ public class InboxController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<Inbox>> CreateAccount(Inbox inbox)
+    public async Task<ActionResult<Inbox>> CreateInbox(Inbox inbox)
     {
         return await _inboxService.CreateInboxAsync(inbox);
     }

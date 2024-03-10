@@ -49,6 +49,12 @@ public class AccountController : ControllerBase
     {
         return await _accountService.GetAccountByArtworkId(artworkId);
     }
+    
+    [HttpGet("{username}")]
+    public async Task<ActionResult<Guid>> GetAccountByUserName(string username)
+    {
+        return await _accountService.GetIdByUserName(username);
+    }
 
     [AllowAnonymous]
     [HttpPost]

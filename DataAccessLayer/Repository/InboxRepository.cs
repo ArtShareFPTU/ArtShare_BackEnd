@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.BussinessObject.IRepository;
+﻿using System.Runtime.CompilerServices;
+using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
 
@@ -28,10 +29,11 @@ public class InboxRepository : IInboxRepository
         return await _context.Inboxes.FirstOrDefaultAsync(i => i.Id == id);
     }
 
-    public Task<Inbox> CreateInboxAsync(Inbox item)
-    { 
+    public async Task<Inbox> CreateInboxAsync(Inbox item)
+    {
+        var id = item.ReceiverId;
         _context.Inboxes.Add(item);
         _context.SaveChanges();
-        return GetInboxByIdAsync(item.Id);
+        return await GetInboxByIdAsync(item.Id);
     }
 }
