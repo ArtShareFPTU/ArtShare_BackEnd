@@ -1,0 +1,188 @@
+﻿@page
+@model Presentation.Pages.TransactionPageModel
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <meta charset="utf-8">
+
+
+    <title>latest transactions - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin-top: 50px;
+            background: #FFF5EE;
+        }
+
+        .card {
+            box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+        }
+
+        .avatar.sm {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: .818125rem;
+        }
+
+        .table-nowrap .table td,
+        .table-nowrap .table th {
+            white-space: nowrap;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 0.75rem 1.25rem;
+            border-bottom-width: 1px;
+        }
+
+        table th {
+            font-weight: 600;
+            background-color: #eeecfd !important;
+        }
+
+        .fa-arrow-up {
+            color: #00CED1;
+        }
+
+        .fa-arrow-down {
+            color: #FF00FF;
+        }
+    </style>
+</head>
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <hr/>
+    <div class="container">
+        <div style="width: 100%;">
+            <h1 style=" text-align: center;">Transaction History</h1>
+        </div>
+        <div class="row">
+            @if (@Model.orders != null)
+            {
+            <div class="col-12 mb-3 mb-lg-5">
+                <div class="position-relative card table-nowrap table-card">
+                    <div class="card-header align-items-center">
+                        <h5 class="mb-0">Latest Transactions</h5>
+                        <p class="mb-0 small text-muted">@Model.orders.Where(c => c.Status.Equals("Processing")).Count() Processing</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead class="small text-uppercase bg-body text-muted">
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Transaction Date</th>
+                                    <th>Total Fee</th>
+                                    <th>Payment Method</th>
+                                    <th>Payment Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    @foreach (var ord in Model.orders)
+                                    {
+                                    <tr class="align-middle">
+                                        <td>
+                                            #@ord.Id
+                                        </td>
+                                        <td>@ord.CreateDate</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span><i class="" aria-hidden="true"></i></span>
+                                                <span>$@ord.TotalFee</span>
+                                            </div>
+                                        </td>
+                                        <td>@ord.PaymentMethod</td>
+                                        <td>
+                                            @ord.PaymentDate
+                                        </td>
+                                        <td>
+                                            <span class="badge fs-6 fw-normal bg-tint-success text-success">@ord.Status</span>
+                                        </td>
+                                    </tr>
+                                    }
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-end">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            }
+            else
+            {
+                <p>No artwork available.</p>
+            }
+        </div>
+    </div>
+
+
+    <hr />
+    <div class="container">
+        <div style="width: 100%;">
+            <h1 style=" text-align: center;">Sold Items</h1>
+        </div>
+        <div class="row">
+            @if (@Model.orderdetail != null)
+            {
+                <div class="col-12 mb-3 mb-lg-5">
+                    <div class="position-relative card table-nowrap table-card">
+                        <div class="card-header align-items-center">
+                            <h5 class="mb-0">Latest Transactions</h5>
+                            <p class="mb-0 small text-muted">Processing</p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="small text-uppercase bg-body text-muted">
+                                    <tr>
+                                        <th>Artwork Title</th>
+                                        <th>From</th>
+                                        <th>Date</th>
+                                        <th>Payment Method</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        decimal totalPrice = 0; // Khởi tạo biến tổng giá
+
+                                        foreach (var ord in Model.orderdetail)
+                                        {
+                                            totalPrice += ord.Price; // Cộng giá của mỗi mục vào tổng giá
+                                            <tr class="align-middle">
+                                                <td>
+                                                    @ord.Artwork.Title
+                                                </td>
+                                                <td>@ord.Order.Account.UserName</td>
+                                                <td>@ord.Order.PaymentDate</td>
+                                                <td>
+                                                    PayPal
+                                                </td>
+                                                <td>$@ord.Price </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-end">
+                        <p class="btn btn-gray">Total: $@totalPrice</p>
+                    </div>
+                </div>
+                </div>
+            }
+            else
+            {
+                <p>No artwork available.</p>
+            }
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>

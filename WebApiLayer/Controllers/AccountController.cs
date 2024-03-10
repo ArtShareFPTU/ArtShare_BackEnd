@@ -26,6 +26,7 @@ public class AccountController : ControllerBase
     }
 
     // GET: api/Account
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<List<AccountResponse>>> GetAccount()
     {
@@ -81,7 +82,7 @@ public class AccountController : ControllerBase
 
     // PUT: api/Account/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<ServiceResponse<AccountResponse>> UpdateAccount([FromBody] UpdateAccountRequest account, Guid id)
     {
         var response = await _accountService.UpdateAccount(id, account);
