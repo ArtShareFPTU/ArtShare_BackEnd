@@ -44,6 +44,12 @@ public class AccountService : IAccountService
         return _mapper.Map<AccountResponse>(response);
     }
 
+    public async Task<Guid> GetIdByUserName(string UserName)
+    {
+        var response = await _accountRepository.GetByUserName(UserName);
+        return response.Id;
+    }
+
     public async Task AddAccountAsync(Account account)
     {
         await _accountRepository.AddAccountAsync(account);

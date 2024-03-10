@@ -60,10 +60,12 @@ public class OrderService : IOrderService
         var order = await _OrderRepository.GetOrderByTokenAsync(token);
         if (result.Equals("Success"))
         {
+            order.PaymentDate = DateTime.Now;
             order.Status = OrderStatus.Completed.ToString();            
         }
         else
         {
+            order.PaymentDate = DateTime.Now;
             order.Status = OrderStatus.Cancelled.ToString();           
         }
         await _OrderRepository.UpdateOrderAsync(order); 
