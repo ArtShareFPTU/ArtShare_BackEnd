@@ -56,6 +56,16 @@ public class CheckoutPage : PageModel
         // get cart from session
         var jsonCart = HttpContext.Session.GetString("cart");
 
+        JArray jsonArray = JArray.Parse(jsonCart);
+
+        // Lấy đối tượng JSON đầu tiên từ mảng
+        JObject firstObject = (JObject)jsonArray[0];
+
+        // Lấy giá trị của trường "Id" từ đối tượng JSON
+        Guid idValue = Guid.Parse(firstObject["Id"].ToString());
+
+        HttpContext.Session.SetString("imageId", idValue.ToString());
+
         //set request
         if (jsonCart != null) CartsList = JsonConvert.DeserializeObject<List<Carts>>(jsonCart);
 

@@ -274,9 +274,11 @@ public class ArtworkController : ControllerBase
 	}
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> DownloadImage(string url)
+    public async Task<IActionResult> DownloadImage(Guid id)
     {
-        if (!url.StartsWith("https://i.ibb.co/"))
+        var list = await _artworkService.GetAllArtworkAsync();
+        var url = list.FirstOrDefault(c => c.Id.Equals(id)).PremiumUrl;
+        if (!url.StartsWith("https://i.ibb.co/") || url == null || url.Length == 0)
         {
             return BadRequest("Invalid image URL");
         }

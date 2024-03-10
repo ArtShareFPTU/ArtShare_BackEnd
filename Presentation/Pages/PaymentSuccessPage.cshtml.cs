@@ -30,7 +30,24 @@ public class PaymentSuccessPage : PageModel
         var respone = await _client.PutAsync("https://localhost:7168/api/Order/UpdateStatusOrder", content);
         if (respone.IsSuccessStatusCode)
         {
+        }  
+    }
+    public async Task<IActionResult> OnPost()
+    {
+        var imageId = HttpContext.Session.GetString("imageId");
+        if (!Guid.TryParse(imageId, out Guid id))
+        {
+            // Handle invalid imageId
+            return BadRequest("Invalid imageId");
         }
-        
+        string url = "https://localhost:7168/api/Artwork/DownloadImage?id=" + id;
+        var downloadImage = await _client.GetAsync(url);
+        if (downloadImage.IsSuccessStatusCode)
+        {
+            var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
+            var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
+            return File(fileData, "image/jpg", fileName);
+        }
+        return Page();
     }
 }
