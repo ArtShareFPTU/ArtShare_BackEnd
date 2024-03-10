@@ -62,7 +62,7 @@ public class CheckoutPage : PageModel
         var token = await GetToken();
         var json = await GetJson(CartsList);
 
-        await CreateOrder(CartsList);
+        var orderId = await CreateOrder(CartsList);
 
         _client.DefaultRequestHeaders.Add("PayPal-Partner-Attribution-Id", Guid.NewGuid().ToString());
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -87,11 +87,11 @@ public class CheckoutPage : PageModel
         //get id token and update to DB
         JObject jsonObject = JObject.Parse(responseContent);
         string id = (string)jsonObject["id"];
-        await CreateTokenInOrder(id);
+        await CreateTokenInOrder(id, orderId);
         return Redirect($"{link}");
     }
 
-    public async Task CreateOrder(List<Carts> cartsList)
+    public async Task<Guid> CreateOrder(List<Carts> cartsList)
     {
         var accessToken = HttpContext.Session.GetString("Token");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -103,17 +103,24 @@ public class CheckoutPage : PageModel
 
         var response = await _client.PostAsync($"https://localhost:7168/api/Order/PostOrder?customerId={id}",
             content);
+        if (response.IsSuccessStatusCode)
+        {
+            var order = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Order>(order);
+            return result.Id;
+        }
+        return Guid.Empty;
     }
     
     
-    public async Task CreateTokenInOrder(string token)
+    public async Task CreateTokenInOrder(string token, Guid orderId)
     {
         var accessToken = HttpContext.Session.GetString("Token");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
         var createToken = new CreateToken()
         {
-            Id = Guid.Parse(GetIdFromJwt(accessToken)),
+            Id = orderId,
             Token = token
         };
         

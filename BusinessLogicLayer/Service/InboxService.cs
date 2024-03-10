@@ -37,6 +37,7 @@ public class InboxService : IInboxService
 
     public async Task<Inbox> CreateInboxAsync(Inbox item)
     {
-        return _mapper.Map<Inbox>(await _inboxRepository.CreateInboxAsync(item));
+        var inbox = await _inboxRepository.CreateInboxAsync(item);
+        return _mapper.Map<Inbox>(inbox);
     }
 }
