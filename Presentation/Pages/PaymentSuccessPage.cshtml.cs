@@ -45,9 +45,23 @@ public class PaymentSuccessPage : PageModel
         if (downloadImage.IsSuccessStatusCode)
         {
             var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
+            fileName = RemovePaidVersionFromFileName(fileName);
             var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
             return File(fileData, "image/jpg", fileName);
         }
         return Page();
+    }
+    private string RemovePaidVersionFromFileName(string fileName)
+    {
+        const string paidVersion = "-Paid-version";
+
+        int paidVersionIndex = fileName.IndexOf(paidVersion);
+        if (paidVersionIndex != -1)
+        {
+            // Loại bỏ phần "Paid version" và khoảng trắng phía sau nếu có
+            fileName = fileName.Remove(paidVersionIndex, paidVersion.Length).TrimEnd();
+        }
+
+        return fileName;
     }
 }

@@ -1,60 +1,65 @@
 ﻿@page
 @model Presentation.Pages.PaymentSuccessPage
 
-@{
-  Layout = "Shared/_Layout";
-}
-
 <!DOCTYPE html>
-
 <html>
-  <head>
+<head>
+    <title>Payment Success</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
-  </head>
     <style>
-      body {
-        text-align: center;
-        padding: 40px 0;
-        background: #EBF0F5;
-      }
-        h1 {
-          color: #88B04B;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-weight: 900;
-          font-size: 40px;
-          margin-bottom: 10px;
+        body {
+            text-align: center;
+            padding: 40px 0;
+            background: #EBF0F5;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
         }
-        p {
-          color: #404F5E;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-size:20px;
-          margin: 0;
+
+        .checkmark {
+            color: #88B04B;
+            font-size: 100px;
         }
-      i {
-        color: #9ABC66;
-        font-size: 100px;
-        line-height: 200px;
-        margin-left:-15px;
-      }
-      .card {
-        background: white;
-        padding: 60px;
-        border-radius: 4px;
-        box-shadow: 0 2px 3px #C8D0D8;
-        display: inline-block;
-        margin: 0 auto;
-      }
+
+        .message {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #404F5E;
+        }
+
+        .download-form {
+            margin-top: 20px;
+        }
+
+            .download-form button {
+                padding: 10px 20px;
+                font-size: 18px;
+                background-color: #88B04B;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .download-form button:hover {
+                    background-color: #6C9035;
+                }
     </style>
-    <body>
-      <div class="card">
-      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
-      </div>
-        <h1>Success</h1> 
-        <p>We received your purchase request;<br/> You can download the file here</p>
-      </div>
-    <form method="post">
-        <button type="submit">Get file</button>
-    </form>
-    </body>
+</head>
+<body>
+    <div class="card">
+        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+        </div>
+        <div class="message">
+            <p>Success!</p>
+            <p>We received your purchase request.</p>
+            <p>You can download the file here.</p>
+        </div>
+        <div class="download-form">
+            <form method="post">
+                <button type="submit">Download</button>
+            </form>
+        </div>
+    </div>
+</body>
 </html>
