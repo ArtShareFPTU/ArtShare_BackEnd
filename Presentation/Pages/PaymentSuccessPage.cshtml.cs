@@ -34,6 +34,9 @@ public class PaymentSuccessPage : PageModel
     }
     public async Task<IActionResult> OnPost()
     {
+        var key = HttpContext.Session.GetString("Token");
+        if (key == null || key.Length == 0) return RedirectToPage("./Logout");
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var imageId = HttpContext.Session.GetString("imageId");
         if (!Guid.TryParse(imageId, out Guid id))
         {

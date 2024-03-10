@@ -140,8 +140,19 @@ public class DetailPageModel : PageModel
         return RedirectToPage("CheckoutPage");;
     }
 
+    public async Task<IActionResult> OnPostDownload(Guid id)
+    {
+        string url = "https://localhost:7168/api/Artwork/DownloadReduceImage?id=" + id;
+        var downloadImage = await _client.GetAsync(url);
+        if (downloadImage.IsSuccessStatusCode)
+        {
+            var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
+            var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
+            return File(fileData, "image/jpg", fileName);
+        }
+        return Page();
+    }
 
-    
     public async Task<IActionResult> OnPostCreateComment()
     {
         
