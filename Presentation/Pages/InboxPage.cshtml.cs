@@ -3,10 +3,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.IdentityModel.Tokens;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Response.Inbox;
 using Newtonsoft.Json;
+using ErrorEventArgs = Microsoft.AspNetCore.Components.Web.ErrorEventArgs;
 
 namespace Presentation.Pages
 {
@@ -52,6 +54,10 @@ namespace Presentation.Pages
             
             //Get Id by Username
             var responseID = await _client.GetAsync($"https://localhost:7168/api/Account/GetAccountByUserName/{inbox.Receiver.UserName}");
+            if (!responseID.IsSuccessStatusCode)
+            {
+                return new EmptyResult();
+            }
             var receiverId = await responseID.Content.ReadAsStringAsync();
             
             // Match
