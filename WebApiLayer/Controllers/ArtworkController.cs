@@ -276,6 +276,11 @@ public class ArtworkController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> DownloadImage(string url)
     {
+        if (!url.StartsWith("https://i.ibb.co/"))
+        {
+            return BadRequest("Invalid image URL");
+        }
+
         using (var httpClient = new HttpClient())
         {
             var imageData = await httpClient.GetByteArrayAsync(url);
@@ -283,6 +288,7 @@ public class ArtworkController : ControllerBase
             return File(imageData, "image/jpg", fileName);
         }
     }
+
 
     /*// GET: api/Artwork/5
     [HttpGet("{id}")]
