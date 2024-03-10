@@ -57,10 +57,15 @@
                 }
                 else{
                     <div class="header_Login-img">
-                        <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login" />
+                        @if(Context.Session.GetString("Avatar") == null)
+                        {
+                            <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" />
+                        }else{
+                            <img style="width: 36px;height: 36px; border-radius: 50%;" src="@Context.Session.GetString("Avatar")" alt="login" />
+                        }
                         <div class="header-Login header_Login-ht">
                             <p style="margin-top: 5px;" class="header-Login-p"><a asp-page="/ProfilePage" >My Profile</a></p>
-                            <p class="header-Login-p"><a href="#" class="address-button">Transaction History</a></p>
+                            <p class="header-Login-p"><a asp-page="TransactionPage" class="address-button">Transaction History</a></p>
                             <p class="header-Login-p"><a asp-page="/InboxPage" class="address-button">Inbox</a></p>
                             <p style="" class="header-Login-p"><a asp-page="HomePage" asp-page-handler="logout">Logout</a></p>
 
@@ -71,7 +76,7 @@
                 }   
             </div>
             <div class="cart-header">
-                <a href="#"><i style="    font-size: 30px;color: black;" class="fa fa-shopping-cart"></i><span>3</span></a>
+                <a asp-page="CheckoutPage"><i style="    font-size: 30px;color: black;" class="fa fa-shopping-cart"></i></a>
             </div>
     </div>
  </nav>

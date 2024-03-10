@@ -25,23 +25,18 @@ public class OrderController : ControllerBase
     }
 
     // // GET: api/Order/5
-    // [HttpGet("{id}")]
-    // public async Task<ActionResult<Order>> GetOrder(Guid id)
-    // {
-    //   if (_context.Orders == null)
-    //   {
-    //       return NotFound();
-    //   }
-    //     var order = await _context.Orders.FindAsync(id);
-    //
-    //     if (order == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     return order;
-    // }
+    [HttpGet("{id}")]
+    public async Task<List<Order>> GetOrderByAccountId(Guid id)
+    {
+        return await _orderService.GetOrderByAccountId(id);
+    
+    }
 
+    [HttpGet("{id}")]
+    public async Task<List<OrderDetail>> GetOrderDetailByAccountId(Guid id)
+    {
+        return await _orderService.GetOrderDetailByAccountId(id);
+    }
     // PUT: api/Order/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut]

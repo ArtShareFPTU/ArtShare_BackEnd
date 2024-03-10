@@ -47,11 +47,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Account.UserName))
             .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
             .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => src.CreateDate));
-        
+
         CreateMap<UpdateAccountRequest, Account>()
             .ForMember(c => c.FullName, opt => opt.MapFrom(a => a.FullName))
-            .ForMember(c => c.Description, opt => opt.MapFrom(a => a.Description))
-            .ForMember(c => c.UserName, opt => opt.MapFrom(a => a.UserName));
+            .ForMember(c => c.Description, opt => opt.MapFrom(a => a.Description));
 
         CreateMap<Account, AccountResponse>()
             .ForMember(c => c.Id, opt => opt.MapFrom(a => a.Id))

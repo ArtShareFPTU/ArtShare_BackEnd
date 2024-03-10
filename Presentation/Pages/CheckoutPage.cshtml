@@ -80,7 +80,11 @@
                                         <hr class="my-4">
                                         <div class="d-flex justify-content-between mb-4">
                                             <p class="mb-2">Total</p>
-                                            <p class="mb-2">$@Html.DisplayFor(modle => modle.Amount)</p>
+                                                @if(Model.Amount != null)
+                                                {
+                                                    <p class="mb-2">$@Html.DisplayFor(modle => modle.Amount)</p>
+                                                }
+                                                
                                         </div>
                                         <form method="post" asp-page-handler="Payment">
                                             <button type="submit" class="btn btn-info btn-block btn-lg">

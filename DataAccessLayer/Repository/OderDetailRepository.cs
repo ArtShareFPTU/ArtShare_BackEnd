@@ -41,4 +41,10 @@ public class OderDetailRepository : IOrderDetailRepository
         _context.OrderDetails.Remove(orderDetails);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<OrderDetail>> GetOrderDetailByAccountId(Guid accountId)
+    {
+        var orderdetail = await _context.OrderDetails.Include(c => c.Order).ThenInclude(a => a.Account).Include(c => c.Artwork).Where(c => c.Artwork.AccountId == accountId).ToListAsync();
+        return orderdetail;
+    }
 }
