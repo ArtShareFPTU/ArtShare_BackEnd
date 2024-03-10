@@ -31,9 +31,8 @@ public class InboxRepository : IInboxRepository
 
     public async Task<Inbox> CreateInboxAsync(Inbox item)
     {
-        var id = item.ReceiverId;
         _context.Inboxes.Add(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return await GetInboxByIdAsync(item.Id);
     }
 }
