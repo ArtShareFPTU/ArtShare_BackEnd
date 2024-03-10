@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
 
@@ -29,21 +29,33 @@ public class ArtworkService : IArtworkService
 
     public async Task<ArtworkRespone> GetArtworkByIdAsync(Guid id)
     {
-        var artwork = await _ArtworkRepository.GetArtworkByIdAsync(id);    
-        var respone = _mapper.Map<ArtworkRespone>(artwork);
-        respone.Comments = _mapper.Map<List<CommentResponse>>(artwork.Comments);
-        respone.Tags = new List<string>();
+        var artwork = await _ArtworkRepository.GetArtworkByIdAsync(id);
+        var response = _mapper.Map<ArtworkRespone>(artwork);
+        response.Tags = new List<string>();
+        response.Categorys = new List<string>();
+
+        if (artwork.Comments != null && artwork.Comments.Any())
+        {
+            response.Comments = _mapper.Map<List<CommentResponse>>(artwork.Comments);
+        }
+        else
+        {
+            response.Comments = new List<CommentResponse>(); // Gán danh sách trống nếu không có comment
+        }
+
         foreach (var item in artwork.ArtworkTags)
         {
-            respone.Tags.Add(item.Tag.Title);
+            response.Tags.Add(item.Tag.Title);
         }
-        respone.Categorys = new List<string>();
+
         foreach (var item in artwork.ArtworkCategories)
         {
-            respone.Tags.Add(item.Category.Title);
+            response.Categorys.Add(item.Category.Title);
         }
-        return respone;
+
+        return response;
     }
+
 
     public async Task<IActionResult> AddArtworkAsync(ArtworkCreation Artwork)
     {
