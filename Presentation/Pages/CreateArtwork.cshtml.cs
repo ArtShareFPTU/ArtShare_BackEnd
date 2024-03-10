@@ -124,7 +124,7 @@ public class CreateArtworkModel : PageModel
             }
 
             ModelState.Clear();
-            return RedirectToPage();
+            return RedirectToPage("ProfilePage");
         }
 
         return Page();

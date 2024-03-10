@@ -10,4 +10,5 @@ public interface IOrderRepository
     Task AddOrderAsync(Order order);
     Task UpdateOrderAsync(Order order);
     Task DeleteOrderAsync(Guid id);
+    Task<List<Order>> GetOrderByAccountId(Guid accountId);
 }

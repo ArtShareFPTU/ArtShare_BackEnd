@@ -81,10 +81,17 @@ public class AccountService : IAccountService
     {
         var response = new ServiceResponse<string>();
         var user = await _accountRepository.GetAccountByEmail(email);
-        if (user == null)
+        var admin = await _accountRepository.GetAdminAccount(email, password);
+        if (user == null && admin == null)
         {
             response.Success = false;
             response.Message = "User not found!";
+        }
+        else if (admin != null)
+        {
+            response.Success = true;
+            response.Message = "Admin login Successfully";
+            response.Data = CreateTokenForAdmin(admin);
         }
         else if (user.Password != password)
         {
@@ -107,7 +114,19 @@ public class AccountService : IAccountService
             {
                 new Claim("Id", ua.Id.ToString()),
                 new Claim("Username", ua.UserName.ToString()),
+                new Claim("Role", "User")
+                
             };
+        if (ua.Avatar != null)
+        {
+            claims = new List<Claim>
+            {
+                new Claim("Id", ua.Id.ToString()),
+                new Claim("Username", ua.UserName.ToString()),
+                new Claim("Avatar", ua.Avatar.ToString()),
+                new Claim(ClaimTypes.Role, "User")
+            };
+        }
 
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 
@@ -120,7 +139,24 @@ public class AccountService : IAccountService
             signingCredentials: credentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    public string CreateTokenForAdmin(string email)
+    {
+        var claims = new List<Claim>()
+        {
+            new Claim("Email", email, SecurityAlgorithms.HmacSha256),
+            new Claim(ClaimTypes.Role, "Admin")
+        };
+        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
 
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(_configuration["Tokens:Issuer"],
+            _configuration["Tokens:Issuer"],
+            claims,
+            expires: DateTime.Now.AddHours(3),
+            signingCredentials: credentials);
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
     public async Task<ServiceResponse<AccountResponse>> CreateNewAccount(CreateAccountRequest userAccount)
     {
         var respone = new ServiceResponse<AccountResponse>();
@@ -151,4 +187,5 @@ public class AccountService : IAccountService
 
         return respone;
     }
+
 }

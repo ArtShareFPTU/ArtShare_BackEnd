@@ -40,6 +40,10 @@ namespace Presentation.Pages
 				{
                     HttpContext.Session.SetString("Token", result.Data);
                     HttpContext.Session.SetString("Username", GetUsernameFromJwt(result.Data));
+                    if (GetAvatarFromJwt(result.Data) != null)
+                    {
+                        HttpContext.Session.SetString("Avatar", GetAvatarFromJwt(result.Data));
+                    }
                     return RedirectToPage("/HomePage");
                 }
 				else
@@ -72,7 +76,7 @@ namespace Presentation.Pages
 				return RedirectToPage("/LoginPage");
 			}
 		}
-        public string GetUsernameFromJwt(string jwtToken)
+        private string GetUsernameFromJwt(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
@@ -91,6 +95,26 @@ namespace Presentation.Pages
             string userName = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Username")?.Value;
 
             return userName;
+        }
+        private string GetAvatarFromJwt(string jwtToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
+
+            tokenHandler.ValidateToken(jwtToken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            }, out SecurityToken validatedToken);
+
+            var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
+
+            // Truy cập vào các thông tin trong payload
+            string ava = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Avatar")?.Value;
+
+            return ava;
         }
     }
 }

@@ -41,6 +41,7 @@ public class CheckoutPage : PageModel
         // deserialize cart
         if (json != null) CartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
 
+        if(json != null)
         Amount = CartsList.Sum(c => c.Price);
     }
 
