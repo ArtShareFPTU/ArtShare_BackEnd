@@ -15,7 +15,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order> GetOrderByTokenAsync(string token)
     {
-        return await _context.Orders.Include(o => o.OrderDetails).ThenInclude(o => o.Artwork).FirstOrDefaultAsync(o => o.Token.Equals(token));
+        return await _context.Orders.FirstOrDefaultAsync(o => o.Token.Equals(token));
     }
 
     public async Task<List<Order>> GetAllOrderAsync()
@@ -48,5 +48,9 @@ public class OrderRepository : IOrderRepository
         _context.Orders.Remove(order);
         await _context.SaveChangesAsync();
     }
-    
+
+    public async Task<List<Order>> GetOrderByAccountId(Guid accountId)
+    {
+        return await _context.Orders.Include(c => c.Account).Where(c => c.AccountId == accountId).ToListAsync();
+    }
 }
