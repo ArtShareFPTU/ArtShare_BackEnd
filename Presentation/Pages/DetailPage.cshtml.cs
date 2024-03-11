@@ -9,6 +9,7 @@ using ModelLayer.BussinessObject;
 using ModelLayer.DTOS;
 using ModelLayer.DTOS.Request.Account;
 using ModelLayer.DTOS.Request.Comment;
+using ModelLayer.DTOS.Request.Like;
 using ModelLayer.DTOS.Response;
 using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
@@ -33,6 +34,8 @@ public class DetailPageModel : PageModel
     
     [BindProperty]
     public CommentCreation commentCreation { get; set; }
+    [BindProperty]
+    public LikeCreation likeCreation { get; set; }
     public ArtworkRespone ArtworkRespone { get; set; } = default!;
     private readonly string _accountManage = "https://localhost:7168/api/";
 
@@ -140,6 +143,39 @@ public class DetailPageModel : PageModel
         return RedirectToPage("CheckoutPage");;
     }
 
+    public async Task<IActionResult> OnPostAddLike()
+    {
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        if (key == null)
+        {
+            // Thông báo l?i n?u không tìm th?y AccountId t? token
+            ModelState.AddModelError("", "AccountId not found in JWT token.");
+            return RedirectToPage("/LoginPage");
+        }
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+
+        // Th?c hi?n m?t s? logic ?? l?y accountId t? token JWT
+        var accountId = GetIdFromJwt(key);
+
+        // Ki?m tra accountId có giá tr? không
+
+
+        // Gán AccountId vào commentCreation
+        likeCreation.AccountId = Guid.Parse(accountId);
+
+        // Gán ArtworkId vào commentCreation
+        //commentCreation.ArtworkId = id;
+        likeCreation.ArtworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
+        var response = await client.PostAsJsonAsync("https://localhost:7168/api/Like/addLike/create", likeCreation);
+        var routeValues = new RouteValueDictionary
+            {
+                { "id", likeCreation.ArtworkId }
+            };
+        return RedirectToPage("/DetailPage", routeValues);
+    }
+
+
     public async Task<IActionResult> OnPostDownload(Guid id)
     {
         string url = "https://localhost:7168/api/Artwork/DownloadReduceImage?id=" + id;
@@ -158,18 +194,19 @@ public class DetailPageModel : PageModel
         
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            if (key == null)
+            {
+                // Thông báo l?i n?u không tìm th?y AccountId t? token
+                ModelState.AddModelError("", "AccountId not found in JWT token.");
+                return RedirectToPage("/LoginPage");
+            }
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
             // Th?c hi?n m?t s? logic ?? l?y accountId t? token JWT
             var accountId = GetIdFromJwt(key);
 
             // Ki?m tra accountId có giá tr? không
-            if (accountId == null)
-            {
-                // Thông báo l?i n?u không tìm th?y AccountId t? token
-                ModelState.AddModelError("", "AccountId not found in JWT token.");
-                return Page();
-            }
+            
 
             // Gán AccountId vào commentCreation
             commentCreation.AccountId = Guid.Parse(accountId);
@@ -178,12 +215,16 @@ public class DetailPageModel : PageModel
             //commentCreation.ArtworkId = id;
             commentCreation.ArtworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
             var response = await client.PostAsJsonAsync("https://localhost:7168/api/Comment/PostComment/create", commentCreation);
-            
-                
-                return RedirectToPage(new { commentCreation.ArtworkId });
-            
-            
-        
+
+
+        var routeValues = new RouteValueDictionary
+            {
+                { "id", commentCreation.ArtworkId }
+            };
+        return RedirectToPage("/DetailPage", routeValues);
+
+
+
     }
 
     

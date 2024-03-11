@@ -33,6 +33,9 @@
 .cover {
     grid-area: cover;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cover img {

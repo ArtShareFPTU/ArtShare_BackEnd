@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Like;
 
 namespace BusinessLogicLayer.Service;
 
@@ -28,9 +30,9 @@ public class LikeService : ILikeService
         return await _LikeRepository.GetLikeByIdAsync(id);
     }
 
-    public async Task AddLikeAsync(Like Like)
+    public async Task<IActionResult> AddLikeAsync(LikeCreation likeCreation)
     {
-        await _LikeRepository.AddLikeAsync(Like);
+        return await _LikeRepository.AddLikeAsync(likeCreation);
     }
 
     public async Task UpdateLikeAsync(Like Like)

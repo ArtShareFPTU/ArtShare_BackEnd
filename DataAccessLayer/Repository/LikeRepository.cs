@@ -1,6 +1,8 @@
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Like;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -28,10 +30,18 @@ public class LikeRepository : ILikeRepository
         return await _context.Likes.Where(c => c.ArtworkId.Equals(id)).ToListAsync();
     }
 
-    public async Task AddLikeAsync(Like like)
+    public async Task<IActionResult> AddLikeAsync(LikeCreation likeCreation)
     {
-        _context.Likes.Add(like);
+        var likeToAdd = new Like
+        {
+            Id = Guid.NewGuid(),
+            AccountId = likeCreation.AccountId,
+            ArtworkId = likeCreation.ArtworkId,
+            CreateDate = DateTime.Now
+        };
+        _context.Likes.Add(likeToAdd);
         await _context.SaveChangesAsync();
+        return new StatusCodeResult(201);
     }
 
     public async Task UpdateLikeAsync(Like like)
