@@ -1,4 +1,6 @@
-﻿using ModelLayer.BussinessObject;
+﻿using Microsoft.AspNetCore.Mvc;
+using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Inbox;
 
 namespace DataAccessLayer.BussinessObject.IRepository;
 
@@ -9,5 +11,5 @@ public interface IInboxRepository
 
     public Task<Inbox> GetInboxByIdAsync(Guid id);
 
-    public Task<Inbox> CreateInboxAsync(Inbox item);
+    public Task<IActionResult> CreateInboxAsync(InboxCreation item);
 }
