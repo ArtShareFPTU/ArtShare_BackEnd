@@ -33,7 +33,8 @@
 <link href="css/DetailStyle.css" rel="stylesheet"/>
 <style>
     .like-content {
-        display: inline-block;
+        display: flex;
+        align-items: center;
     }
 
         .like-content a {
@@ -60,10 +61,10 @@
                     <span></span>
                 </div>
                 <div class="black-label">
-                    <span class="title">
+                    <span style="margin-left:-4px;" class="title">
                         <b>@Html.DisplayFor(modle => modle.ArtworkRespone.Title)</b>
                     </span>
-                    <p>
+                    <p >
                         @Html.DisplayFor(modle => modle.ArtworkRespone.Name)
                     </p>
                     <p>
@@ -83,8 +84,13 @@
                     </div>
 
                     
-                    <div class="like-content">
-                        <a href="#" id="likeBtn"><i class="fa fa-solid fa-thumbs-up"></i></a> <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Likes)</span>
+                    <div  class="like-content">
+                        <form method="post" asp-page-handler="AddLike">
+                            <input type="hidden" asp-for="ArtworkRespone.Id"/>
+                            <button style="border:none;" type="submit"><i class="fa fa-solid fa-thumbs-up"></i></button>
+                            
+                        </form>
+                        <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Likes)</span>
                     </div>
                     <div class="comment-content" style="padding-bottom: 10px;">
                         <div class="">

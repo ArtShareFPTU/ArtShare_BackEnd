@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Like;
 
 namespace WebApiLayer.Controllers;
 
@@ -27,6 +29,23 @@ public class LikeController : ControllerBase
     {
         return await _likeService.GetLikeByArtworkId(artworkId);
     }
+
+    [HttpPost("create")]
+    public async Task<ActionResult> addLike(LikeCreation likeCreation)
+    {
+        try
+        {
+            await _likeService.AddLikeAsync(likeCreation);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+
+            return BadRequest(e);
+        }
+    }
+    
+
 
     /*// GET: api/Like/5
     [HttpGet("{id}")]
