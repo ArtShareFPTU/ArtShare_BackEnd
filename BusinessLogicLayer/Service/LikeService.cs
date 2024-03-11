@@ -40,8 +40,18 @@ public class LikeService : ILikeService
         await _LikeRepository.UpdateLikeAsync(Like);
     }
 
-    public async Task DeleteLikeAsync(Guid id)
+    public async Task DeleteLikeAsync(Guid id,Guid artWorkId)
     {
-        await _LikeRepository.DeleteLikeAsync(id);
+        await _LikeRepository.DeleteLikeAsync(id, artWorkId);
+    }
+
+    public async Task<bool> CheckIfLikeExists(Guid accountId, Guid artworkId)
+    {
+        return await _LikeRepository.CheckIfLikeExists(accountId,artworkId);
+    }
+
+    public async Task<Guid?> GetLikeId(Guid accountId, Guid artworkId)
+    {
+        return await _LikeRepository.GetLikeId(accountId,artworkId);
     }
 }
