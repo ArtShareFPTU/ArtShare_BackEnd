@@ -60,11 +60,6 @@ public class OrderController : ControllerBase
     {
         return await _orderService.AddOrderAsync(cartsList, customerId);
     }
-    
-    [HttpGet("{token}")]
-    public async Task<ActionResult<Order>> GetOrderByToken(string token)
-    {
-        return await _orderService.GetOrderByTokenAsync(token);
-    }
+
     
 }

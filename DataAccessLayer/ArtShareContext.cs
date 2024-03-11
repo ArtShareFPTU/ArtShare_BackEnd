@@ -182,6 +182,8 @@ public partial class ArtShareContext : DbContext
 
             entity.Property(e => e.Title).HasMaxLength(50);
 
+            entity.Property(e => e.file).HasMaxLength(200);
+
             entity.HasOne(d => d.Receiver)
                 .WithMany(p => p.InboxReceivers)
                 .HasForeignKey(d => d.ReceiverId)

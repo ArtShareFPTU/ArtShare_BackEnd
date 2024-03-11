@@ -6,6 +6,7 @@ public class Inbox
     public Guid SenderId { get; set; }
     public Guid ReceiverId { get; set; }
     public string? Title { get; set; }
+    public string? file { get; set; }
     public string? Content { get; set; }
     public DateTime? CreateDate { get; set; }
 
