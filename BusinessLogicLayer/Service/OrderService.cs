@@ -22,6 +22,11 @@ public class OrderService : IOrderService
         return await _OrderRepository.GetAllOrderAsync();
     }
 
+    public async Task<Order> GetOrderByTokenAsync(string token)
+    {
+        return await _OrderRepository.GetOrderByTokenAsync(token);
+    }
+
     public async Task<Order> GetOrderByIdAsync(Guid id)
     {
         return await _OrderRepository.GetOrderByIdAsync(id);

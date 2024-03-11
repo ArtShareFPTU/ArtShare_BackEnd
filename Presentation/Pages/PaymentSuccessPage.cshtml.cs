@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ModelLayer.BussinessObject;
 using ModelLayer.DTOS.Request.Order;
 using ModelLayer.Enum;
 using Newtonsoft.Json;
@@ -10,6 +12,9 @@ namespace Presentation.Pages;
 public class PaymentSuccessPage : PageModel
 {
     private readonly HttpClient _client = new HttpClient();
+    
+    [BindProperty]
+    public OrderDetail OrderDetail { get; set; }
     public async void OnGet(string token, string PayerID)
     {
         var result = new UpdateToken()
@@ -23,7 +28,7 @@ public class PaymentSuccessPage : PageModel
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var respone = await _client.PutAsync("https://localhost:7168/api/Order/UpdateStatusOrder", content);
-        if (!respone.IsSuccessStatusCode)
+        if (respone.IsSuccessStatusCode)
         {
         }
         
