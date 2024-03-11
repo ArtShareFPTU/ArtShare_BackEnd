@@ -77,32 +77,39 @@
                                     <th>Payment Method</th>
                                     <th>Payment Date</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach (var ord in Model.orders)
-                                    {
-                                    <tr class="align-middle">
-                                        <td>
-                                            #@ord.Id
-                                        </td>
-                                        <td>@ord.CreateDate</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span><i class="" aria-hidden="true"></i></span>
-                                                <span>$@ord.TotalFee</span>
-                                            </div>
-                                        </td>
-                                        <td>@ord.PaymentMethod</td>
-                                        <td>
-                                            @ord.PaymentDate
-                                        </td>
-                                        <td>
-                                            <span class="badge fs-6 fw-normal bg-tint-success text-success">@ord.Status</span>
-                                        </td>
-                                    </tr>
+                                    @{
+                                        int total = 0;
+                                        foreach (var ord in Model.orders)
+                                        {
+                                            total += 1;
+                                            <tr class="align-middle">
+                                                <td>
+                                                    @total
+                                                </td>
+                                                <td>@ord.CreateDate</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <span><i class="" aria-hidden="true"></i></span>
+                                                        <span>$@ord.TotalFee</span>
+                                                    </div>
+                                                </td>
+                                                <td>@ord.PaymentMethod</td>
+                                                <td>
+                                                    @ord.PaymentDate
+                                                </td>
+                                                <td>
+                                                    <span class="badge fs-6 fw-normal bg-tint-success text-success">@ord.Status</span>
+                                                </td>
+                                                <td>
+                                                    <a asp-page="#">Detail</a>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
-                                
                             </tbody>
                         </table>
                     </div>
