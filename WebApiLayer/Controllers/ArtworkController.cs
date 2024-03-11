@@ -272,10 +272,19 @@ public class ArtworkController : ControllerBase
 	{
 		return await _artworkService.GetArtworkByArtistId(id);
 	}
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet]
-    public async Task<IActionResult> DownloadImage(string url)
+    public async Task<IActionResult> DownloadImage(Guid id)
     {
+        var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+        if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
+        var list = await _artworkService.GetAllArtworkAsync();
+        var url = list.FirstOrDefault(c => c.Id.Equals(id)).PremiumUrl;
+        if (!url.StartsWith("https://i.ibb.co/") || url == null || url.Length == 0)
+        {
+            return BadRequest("Invalid image URL");
+        }
+
         using (var httpClient = new HttpClient())
         {
             var imageData = await httpClient.GetByteArrayAsync(url);
@@ -283,6 +292,26 @@ public class ArtworkController : ControllerBase
             return File(imageData, "image/jpg", fileName);
         }
     }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> DownloadReduceImage(Guid id)
+    {
+        var list = await _artworkService.GetAllArtworkAsync();
+        var url = list.FirstOrDefault(c => c.Id.Equals(id)).Url;
+        if (!url.StartsWith("https://i.ibb.co/") || url == null || url.Length == 0)
+        {
+            return BadRequest("Invalid image URL");
+        }
+
+        using (var httpClient = new HttpClient())
+        {
+            var imageData = await httpClient.GetByteArrayAsync(url);
+            var fileName = Path.GetFileName(new Uri(url).LocalPath);
+            return File(imageData, "image/jpg", fileName);
+        }
+    }
+
 
     /*// GET: api/Artwork/5
     [HttpGet("{id}")]

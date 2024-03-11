@@ -9,10 +9,12 @@ namespace BusinessLogicLayer.Service;
 public class InboxService : IInboxService
 {
     private readonly IInboxRepository _inboxRepository;
+    private readonly IAccountRepository _accountRepository;
     private readonly IMapper _mapper;
     
-    public InboxService(IInboxRepository inboxRepository, IMapper mapper)
+    public InboxService(IInboxRepository inboxRepository, IAccountRepository accountRepository ,IMapper mapper)
     {
+        _accountRepository = accountRepository;
         _mapper = mapper;
         _inboxRepository = inboxRepository;
     }
@@ -37,6 +39,8 @@ public class InboxService : IInboxService
 
     public async Task<Inbox> CreateInboxAsync(Inbox item)
     {
-        return _mapper.Map<Inbox>(await _inboxRepository.CreateInboxAsync(item));
+        item.Receiver = null;
+        var inbox = await _inboxRepository.CreateInboxAsync(item);
+        return _mapper.Map<Inbox>(inbox);
     }
 }

@@ -12,9 +12,10 @@ public class OrderService : IOrderService
     private readonly IOrderRepository _OrderRepository;
     private readonly IOrderDetailRepository _orderDetailRepository;
 
-    public OrderService(IOrderRepository OrderRepository)
+    public OrderService(IOrderRepository OrderRepository, IOrderDetailRepository orderDetailRepository)
     {
         _OrderRepository = OrderRepository;
+        _orderDetailRepository = orderDetailRepository;
     }
 
     public async Task<List<Order>> GetAllOrderAsync()
@@ -22,9 +23,9 @@ public class OrderService : IOrderService
         return await _OrderRepository.GetAllOrderAsync();
     }
 
-    public async Task<Order> GetOrderByIdAsync(Guid id)
+    public async Task<List<Order>> GetOrderByAccountId(Guid id)
     {
-        return await _OrderRepository.GetOrderByIdAsync(id);
+        return await _OrderRepository.GetOrderByAccountId(id);
     }
 
     public async Task<Order> AddOrderAsync(List<Carts> cartsList, Guid customerId)
@@ -59,10 +60,12 @@ public class OrderService : IOrderService
         var order = await _OrderRepository.GetOrderByTokenAsync(token);
         if (result.Equals("Success"))
         {
+            order.PaymentDate = DateTime.Now;
             order.Status = OrderStatus.Completed.ToString();            
         }
         else
         {
+            order.PaymentDate = DateTime.Now;
             order.Status = OrderStatus.Cancelled.ToString();           
         }
         await _OrderRepository.UpdateOrderAsync(order); 
@@ -77,5 +80,11 @@ public class OrderService : IOrderService
     public async Task DeleteOrderAsync(Guid id)
     {
         await _OrderRepository.DeleteOrderAsync(id);
+    }
+
+    public async Task<List<OrderDetail>> GetOrderDetailByAccountId(Guid id)
+    {
+        var ord = await _orderDetailRepository.GetOrderDetailByAccountId(id);
+        return ord;
     }
 }

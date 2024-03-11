@@ -54,17 +54,42 @@
             transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
         }
+
+        .pt-6 {
+            padding-top: 6rem !important;
+        }
     </style>
     <div>
         <div>
             <!-- Profile widget -->
             <div class="bg-white shadow rounded overflow-hidden">
-                <div class="px-4 pt-0 pb-4 cover">
+                <div class="px-4 pt-6 pb-4 cover">
                     <div class="media align-items-end profile-head">
                         <div class="profile mr-3">
-                            <img src="@Model.Accounts.Avatar"
-                                 alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#"
-                                                                                             class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                            @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
+                            {
+                                @if(Model.Accounts.Avatar != null)
+                                {
+                                    <img src="@Model.Accounts.Avatar"
+                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                }else{
+                                    <img src="~/assets/img/avatar1.png"
+                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                }
+                                <a asp-page="EditProfilePage" asp-route-id="@Model.Accounts.Id" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                            }else{
+                                @if (Model.Accounts.Avatar != null)
+                                {
+                                    <img src="@Model.Accounts.Avatar"
+                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                }
+                                else
+                                {
+                                    <img src="~/assets/img/avatar1.png"
+                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                }
+                            }
+                            
                         </div>
                         <div class="media-body mb-5 text-white">
                             <h4 class="mt-0 mb-0">@Model.Accounts.UserName</h4>
@@ -98,12 +123,15 @@
                     </div>
                 </div>
                 <div class="py-4 px-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
-                        <a href="/CreateTag" class="btn btn-link text-muted">Create Tag</a>
-                        <a href="/CreateCategory" class="btn btn-link text-muted">Create Category</a>
+                    @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
+                    {
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
+                            @*<a href="/CreateTag" class="btn btn-link text-muted">Create Tag</a>
+                        <a href="/CreateCategory" class="btn btn-link text-muted">Create Category</a>*@
 
-                    </div>
+                        </div>
+                    }
                     <div class="row">
 
                         @if (Model.Artwork != null)

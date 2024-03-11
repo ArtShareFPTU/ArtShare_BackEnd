@@ -1,14 +1,12 @@
 ﻿@page
-@model Presentation.Pages.InBoxPageModel
+@model Presentation.Pages.InboxPageModel
 @{
     Layout = null;
+    ViewData["Title"] = "InboxPage";
 }
 
 
-
 <style>
-    
-
     .w3-bar-block .w3-bar-item {
         padding: 16px
     }
@@ -18,144 +16,122 @@
 <link href='https://fonts.googleapis.com/css?family=RobotoDraft' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-    
-        <!-- Side Navigation -->
-        <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;"
-             id="mySidebar">
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom w3-large" style="    display: flex;justify-content: center;align-items: center;background-color: silver;"><img src="~/assets/img/home.png" style="width:13%;"></a>
-            <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu"
-            class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a> 
-            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align"
-               onclick="document.getElementById('id01').style.display='block'">
-                New Message <i class="w3-padding fa fa-pencil"></i>
-            </a>
-            <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button">
-                <i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i>
-            </a>
-            <div id="Demo1" class="w3-hide w3-animate-left" style="    max-height: 464px; overflow-y: auto;">
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                   onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                    <span class="w3-opacity w3-large">Borge Refsnes</span>
-                    <h6>Subject: <span>Remember Me</span></h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a>
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                   onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                        <img class="w3-round w3-margin-right" src="/w3images/avatar3.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
-                        <h6>Subject: davie</h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a><a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                       onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                        <h6>Subject: Remember Me</h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a>
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                   onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                        <img class="w3-round w3-margin-right" src="/w3images/avatar3.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
-                        <h6>Subject: davie</h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a>
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                   onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                        <h6>Subject: Remember Me</h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a>
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey"
-                   onclick="openMail('Borge');w3_close();" id="firstTab">
-                    <div class="w3-container">
-                        <img class="w3-round w3-margin-right" src="/w3images/avatar3.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
-                        <h6>Subject: davie</h6>
-                        <p>Hello, i just wanted to let you know that i'll be home at...</p>
-                    </div>
-                </a>
 
-            </div>
-            <a onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button">
-                <i class="fa fa-paper-plane w3-margin-right"></i>Sent
-            </a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Drafts</a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Trash</a>
-        </nav>
-
-        <!-- Modal that pops up when you click on "New Message" -->
-        <div id="id01" class="w3-modal" style="z-index:4">
-            <div class="w3-modal-content w3-animate-zoom">
-                <div class="w3-container w3-padding w3-red">
-                    <span onclick="document.getElementById('id01').style.display='none'"
-                          class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
-                    <h2>Send Mail</h2>
-                </div>
-                <div class="w3-panel">
-                    <label>To</label>
-                    <input class="w3-input w3-border w3-margin-bottom" type="text">
-                    <label>From</label>
-                    <input class="w3-input w3-border w3-margin-bottom" type="text">
-                    <label>Subject</label>
-                    <input class="w3-input w3-border w3-margin-bottom" type="text">
-                    <input class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="What's on your mind?">
-                    <div class="w3-section">
-                        <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">
-                            Cancel  <i class="fa fa-remove"></i>
-                        </a>
-                        <a class="w3-button w3-light-grey w3-right"
-                           onclick="document.getElementById('id01').style.display='none'">Send  <i class="fa fa-paper-plane"></i></a>
+<!-- Side Navigation -->
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;"
+     id="mySidebar">
+    <a asp-page="HomePage" class="w3-bar-item w3-button w3-border-bottom w3-large" style="    display: flex;justify-content: center;align-items: center;background-color: silver;">
+        <img src="~/assets/img/home.png" style="width:13%;">
+    </a>
+    <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu"
+       class="w3-bar-item w3-button w3-hide-large w3-large">
+        Close <i class="fa fa-remove"></i>
+    </a>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align"
+       onclick="document.getElementById('id01').style.display='block'">
+        New Message <i class="w3-padding fa fa-pencil"></i>
+    </a>
+    <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button">
+        <i class="fa fa-inbox w3-margin-right"></i>Inbox<i class="fa fa-caret-down w3-margin-left"></i>
+    </a>
+    <div id="Demo1" class="w3-hide w3-animate-left" style="    max-height: 464px; overflow-y: auto;">
+        @if (Model.InboxReceiverResponses != null)
+        {
+            @foreach (var item in Model.InboxReceiverResponses)
+            {
+                <a asp-page-handler="Send" asp-route-id="@item.Id">
+                    <div class="w3-container">
+                        <span class="w3-opacity w3-large">@item.Sender</span>
+                        <h6>Subject: <span>@item.Title</span></h6>
                     </div>
+                </a>
+            }
+        }
+    </div>
+
+    <a id="myBtn" onclick="myFunc('Demo2')" href="javascript:void(0)" class="w3-bar-item w3-button">
+        <i class="fa fa-inbox w3-margin-right"></i>Send<i class="fa fa-caret-down w3-margin-left"></i>
+    </a>
+    <div id="Demo2" class="w3-hide w3-animate-left" style="    max-height: 464px; overflow-y: auto;">
+        @if (Model.InboxSenderResponses != null)
+        {
+            @foreach (var item in Model.InboxSenderResponses)
+            {
+                <a asp-page-handler="Send" asp-route-id="@item.Id">
+                    <div class="w3-container">
+                        <span class="w3-opacity w3-large">@item.Receiver</span>
+                        <h6>Subject: <span>@item.Title</span></h6>
+                    </div>
+                </a>
+            }
+        }
+    </div>
+</nav>
+
+<!-- Modal that pops up when you click on "New Message" -->
+<div id="id01" class="w3-modal" style="z-index:4">
+    <div class="w3-modal-content w3-animate-zoom">
+        <div class="w3-container w3-padding w3-red">
+            <span onclick="document.getElementById('id01').style.display='none'"
+                  class="w3-button w3-red w3-right w3-xxlarge">
+                <i class="fa fa-remove"></i>
+            </span>
+            <h2>Send Mail</h2>
+        </div>
+        <form asp-page="InBoxPage" asp-page-handler="send" method="post">
+            <div class="w3-panel">
+                <label>To</label>
+                <input asp-for="inbox.Receiver.UserName" class="w3-input w3-border w3-margin-bottom" type="text">
+                <label>Subject</label>
+                <input asp-for="inbox.Title" class="w3-input w3-border w3-margin-bottom" type="text">
+                <input asp-for="inbox.Content" class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="What's on your mind?">
+                <div class="w3-section">
+                    <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">
+                        Cancel <i class="fa fa-remove"></i>
+                    </a>
+                    <button type="submit" class="w3-button w3-light-grey w3-right"
+                            onclick="document.getElementById('id01').style.display='none'">
+                        Send <i class="fa fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
+        </form>
+    </div>
+</div>
+
+<!-- Overlay effect when opening the side navigation on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+     title="Close Sidemenu" id="myOverlay">
+</div>
+
+<!-- Page content -->
+<div class="w3-main" style="margin-left:320px;">
+    <i class="fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top"
+       onclick="w3_open()">
+    </i>
+    <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right">
+        <i class="fa fa-pencil"></i>
+    </a>
+    @if (Model.InboxDetailResponse != null)
+    {
+        <div id="Borge" class="w3-container person">
+            <br>
+            <h5 class="w3-opacity">Subject: @Html.DisplayFor(modle => modle.InboxDetailResponse.Title)</h5>
+            <h4>
+                <i class="fa fa-clock-o"></i> @Html.DisplayFor(modle => modle.InboxDetailResponse.CreateDate)
+            </h4>
+            <a class="w3-button w3-light-grey" href="#">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
+            <a class="w3-button w3-light-grey" href="#">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
+            <hr>
+            <p>
+                @Html.DisplayFor(modle => modle.InboxDetailResponse.Content)
+            </p>
         </div>
+    }
 
-        <!-- Overlay effect when opening the side navigation on small screens -->
-        <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
-             title="Close Sidemenu" id="myOverlay"></div>
+</div>
 
-        <!-- Page content -->
-        <div class="w3-main" style="margin-left:320px;">
-            <i class="fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top"
-               onclick="w3_open()"></i>
-            <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right"
-               onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a>
-
-            <div id="Borge" class="w3-container person">
-                <br>
-
-                <h5 class="w3-opacity">Subject: Remember Me</h5>
-                <h4><i class="fa fa-clock-o"></i> From Borge Refsnes, Sep 27, 2015.</h4>
-                <a class="w3-button w3-light-grey" href="#">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
-                <a class="w3-button w3-light-grey" href="#">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
-                <hr>
-                <p>
-                    Hello, i just wanted to let you know that i'll be home at lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                    laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>Best Regards, <br>Borge Refsnes</p>
-            </div>
-
-
-
-        </div>
-
-        <script>
+<script>
             var openInbox = document.getElementById("myBtn");
             openInbox.click();
 
@@ -197,13 +173,10 @@
             }
         </script>
 
-        <script>
+<script>
             var openTab = document.getElementById("firstTab");
             openTab.click();
         </script>
 
-    
 
-    
 </body>
-

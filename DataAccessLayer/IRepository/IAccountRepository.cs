@@ -14,4 +14,5 @@ public interface IAccountRepository
     Task<Account> CreateAccount(Account userAccount);
     Task<Account> isExistedByMail(string email);
     Task<Account> GetByUserName(string username);
+    Task<string> GetAdminAccount(string email, string password);
 }

@@ -25,7 +25,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order> GetOrderByIdAsync(Guid id)
     {
-        return await _context.Orders.FindAsync(id);
+        return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
     }
 
     public async Task AddOrderAsync(Order order)
@@ -36,7 +36,9 @@ public class OrderRepository : IOrderRepository
 
     public async Task UpdateOrderAsync(Order order)
     {
-        _context.Entry(order).State = EntityState.Modified;
+        var old = await GetOrderByIdAsync(order.Id);
+        old.Token = order.Token;
+        _context.Orders.Update(old);
         await _context.SaveChangesAsync();
     }
 
@@ -45,5 +47,10 @@ public class OrderRepository : IOrderRepository
         var order = await _context.Orders.FindAsync(id);
         _context.Orders.Remove(order);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<Order>> GetOrderByAccountId(Guid accountId)
+    {
+        return await _context.Orders.Include(c => c.Account).Where(c => c.AccountId == accountId).ToListAsync();
     }
 }

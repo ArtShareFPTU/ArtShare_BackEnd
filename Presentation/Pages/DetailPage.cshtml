@@ -76,6 +76,10 @@
                             <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
                             <button type="submit">Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></button>
                         </form>
+                        <form method="post" asp-page-handler="Download">
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id" />
+                            <button type="submit">Download <strong>free</strong></button>
+                        </form>
 
                         <form method="post" asp-page-handler="AddToCart">
                             <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
