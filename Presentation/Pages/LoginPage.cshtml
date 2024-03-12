@@ -1,7 +1,7 @@
 ﻿@page
 @model Presentation.Pages.LoginPageModel
 @{
-	Layout = null;
+    Layout = null;
 }
 <style>
 	
@@ -258,43 +258,43 @@ footer a {
 }
 </style>
 <div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form method="post" asp-page-handler="Register">
-			<h1>Create Account</h1>
-			<input type="email" asp-for="createAccountRequest.Email" required placeholder="Email" />
-			<input type="text" asp-for="createAccountRequest.UserName" minlength="3" maxlength="12" required placeholder="Username"  />
-			@*<span style="text-align:left; font-size:20px;" asp-validation-for="createAccountRequest.Birthday" class="text-danger">Birthday</span>*@
-			<input type="date" id="birthdayInput" asp-for="createAccountRequest.Birthday" required placeholder="Birthday" />
-			<input type="password" asp-for="createAccountRequest.Password" maxlength="12" minlength="6" required placeholder="Password" />
-			<button type="submit">Register</button>
-			<div class="text-danger" style="color:red;">@ViewData["Notification"]</div>
-		</form>
-	</div>
-	<div class="form-container sign-in-container">
-		<form method="post" asp-page-handler="Login">
-			<h1>Sign in</h1>
-			<span>or use your account</span>
-			<input type="email" asp-for="accountResponse.Email" required placeholder="Email" />
-			<input type="password" asp-for="accountResponse.Password" required placeholder="Password" />
-			<a href="#">Forgot your password?</a>
-			<button type="submit">Sign In</button>
-			<div class="text-danger" style="color:red;">@ViewData["Message"]</div>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-				<h1>Welcome Back!</h1>
-				<p>To keep connected with us please login with your personal info</p>
-				<button class="ghost" id="signIn">Sign In</button>
-			</div>
-			<div class="overlay-panel overlay-right">
-				<h1>Hello, Friend!</h1>
-				<p>Enter your personal details and start journey with us</p>
-				<button class="ghost" id="signUp">Register</button>
-			</div>
-		</div>
-	</div>
+    <div class="form-container sign-up-container">
+        <form method="post" asp-page-handler="Register">
+            <h1>Create Account</h1>
+            <input type="email" asp-for="createAccountRequest.Email" required placeholder="Email"/>
+            <input type="text" asp-for="createAccountRequest.UserName" minlength="3" maxlength="12" required placeholder="Username"/>
+            @*<span style="text-align:left; font-size:20px;" asp-validation-for="createAccountRequest.Birthday" class="text-danger">Birthday</span>*@
+            <input type="date" id="birthdayInput" asp-for="createAccountRequest.Birthday" required placeholder="Birthday"/>
+            <input type="password" asp-for="createAccountRequest.Password" maxlength="12" minlength="6" required placeholder="Password"/>
+            <button type="submit">Register</button>
+            <div class="text-danger" style="color:red;">@ViewData["Notification"]</div>
+        </form>
+    </div>
+    <div class="form-container sign-in-container">
+        <form method="post" asp-page-handler="Login">
+            <h1>Sign in</h1>
+            <span>or use your account</span>
+            <input type="email" asp-for="accountResponse.Email" required placeholder="Email"/>
+            <input type="password" asp-for="accountResponse.Password" required placeholder="Password"/>
+            <a href="#">Forgot your password?</a>
+            <button type="submit">Sign In</button>
+            <div class="text-danger" style="color:red;">@ViewData["Message"]</div>
+        </form>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>To keep connected with us please login with your personal info</p>
+                <button class="ghost" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Hello, Friend!</h1>
+                <p>Enter your personal details and start journey with us</p>
+                <button class="ghost" id="signUp">Register</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
 	const signUpButton = document.getElementById('signUp');
@@ -320,10 +320,10 @@ footer a {
 	});
 </script>
 <footer>
-	<p>
-		Created with <i class="fa fa-heart"></i> by
-		<a target="_blank" href="https://florin-pop.com">Florin Pop</a>
-		- Read how I created this and how you can join the challenge
-		<a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
-	</p>
+    <p>
+        Created with <i class="fa fa-heart"></i> by
+        <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
+        - Read how I created this and how you can join the challenge
+        <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+    </p>
 </footer>

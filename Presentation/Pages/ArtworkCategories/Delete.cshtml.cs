@@ -24,8 +24,7 @@ namespace Presentation.Pages.ArtworkCategories
         public List<Category> Categories { get; set; }
         public List<ArtworkCategory> ArtworkCategories { get; set; }
 
-        [BindProperty]
-        public ArtworkCategory ArtworkCategory { get; set; } = default!;
+        [BindProperty] public ArtworkCategory ArtworkCategory { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -33,6 +32,7 @@ namespace Presentation.Pages.ArtworkCategories
             {
                 return NotFound();
             }
+
             var client = _httpClientFactory.CreateClient();
             Tags = await GetTag(client);
             Categories = await GetCategory(client);
@@ -47,6 +47,7 @@ namespace Presentation.Pages.ArtworkCategories
             {
                 ArtworkCategory = artworkcategory;
             }
+
             return Page();
         }
 
@@ -56,11 +57,13 @@ namespace Presentation.Pages.ArtworkCategories
             {
                 return NotFound();
             }
+
             var client = _httpClientFactory.CreateClient();
             var result = await DeleteArtworkCategory(client, (Guid)id);
             TempData["AnnounceMessage"] = result;
             return Page();
         }
+
         private async Task<string> DeleteArtworkCategory(HttpClient client, Guid id)
         {
             var endpoint = _artworkManage + "RemoveCategory4Artwork/removeCategory/" + id;
@@ -80,6 +83,7 @@ namespace Presentation.Pages.ArtworkCategories
 
             return announce;
         }
+
         public async Task<List<Tag>> GetTag(HttpClient client)
         {
             var endpoint = _tagManage + "GetTags";
@@ -109,6 +113,7 @@ namespace Presentation.Pages.ArtworkCategories
 
             return null;
         }
+
         public async Task<List<ArtworkCategory>> GetArtworkCategory(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworkCategories";

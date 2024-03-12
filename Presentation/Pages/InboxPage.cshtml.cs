@@ -17,34 +17,38 @@ namespace Presentation.Pages
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
-        
+
         [BindProperty] public InboxCreation inbox { get; set; }
-        [BindProperty]public InboxDetailResponse InboxDetailResponse { get; set; }  = default!;
+        [BindProperty] public InboxDetailResponse InboxDetailResponse { get; set; } = default!;
         [BindProperty] public List<InboxReceiverResponse> InboxReceiverResponses { get; set; } = default!;
         [BindProperty] public List<InboxSenderResponse> InboxSenderResponses { get; set; } = default!;
+
         public InboxPageModel(IConfiguration configuration)
         {
             _configuration = configuration;
             _client = new HttpClient();
         }
-        
+
         public async Task OnGet()
-        { 
+        {
             var accessToken = HttpContext.Session.GetString("Token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var id = GetIdFromJwt(accessToken);
-            var responseReceiver = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxReceiverResponses/{id}");
+            var responseReceiver =
+                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxReceiverResponses/{id}");
             if (responseReceiver.IsSuccessStatusCode)
             {
                 var contentReceiver = await responseReceiver.Content.ReadAsStringAsync();
-                InboxReceiverResponses = JsonConvert.DeserializeObject<List<InboxReceiverResponse>>(contentReceiver);              
+                InboxReceiverResponses = JsonConvert.DeserializeObject<List<InboxReceiverResponse>>(contentReceiver);
             }
-            var responseSender = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxSenderResponses/{id}");
+
+            var responseSender =
+                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxSenderResponses/{id}");
             if (responseSender.IsSuccessStatusCode)
             {
                 var contentReceiver = await responseSender.Content.ReadAsStringAsync();
-                InboxSenderResponses = JsonConvert.DeserializeObject<List<InboxSenderResponse>>(contentReceiver);              
+                InboxSenderResponses = JsonConvert.DeserializeObject<List<InboxSenderResponse>>(contentReceiver);
             }
         }
 
@@ -55,25 +59,34 @@ namespace Presentation.Pages
                 var accessToken = HttpContext.Session.GetString("Token");
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-               
-                var responseID = await _client.GetAsync($"https://localhost:7168/api/Account/GetAccountByUserName/{Request.Form["inbox.ReceiverId"]}");
+
+                var responseID = await _client.GetAsync(
+                    $"https://localhost:7168/api/Account/GetAccountByUserName/{Request.Form["inbox.ReceiverId"]}");
                 if (!responseID.IsSuccessStatusCode)
                 {
-                    return new EmptyResult();
+                    ModelState.AddModelError(string.Empty, "Can Not find User Name.");
+                    return Page();
                 }
+
                 var receiverId = await responseID.Content.ReadAsStringAsync();
 
-                
+
                 inbox.ReceiverId = Guid.Parse(JsonConvert.DeserializeObject(receiverId).ToString());
                 inbox.SenderId = Guid.Parse(GetIdFromJwt(accessToken));
-                
+
+                if (inbox.ReceiverId == inbox.SenderId)
+                {
+                    ModelState.AddModelError(string.Empty, "You can not sand to you.");
+                    return Page();
+                }
 
                 // Prepare multipart form data
                 using var formData = new MultipartFormDataContent();
                 formData.Add(new StringContent(inbox.SenderId.ToString()), "SenderId");
                 formData.Add(new StringContent(inbox.ReceiverId.ToString()), "ReceiverId");
                 formData.Add(new StringContent(inbox.Title), "Title");
-                formData.Add(new StreamContent(Request.Form.Files[0].OpenReadStream()), "file", Request.Form.Files[0].FileName);
+                formData.Add(new StreamContent(Request.Form.Files[0].OpenReadStream()), "file",
+                    Request.Form.Files[0].FileName);
                 formData.Add(new StringContent(inbox.Content), "Content");
 
                 // Send the message
@@ -98,7 +111,6 @@ namespace Presentation.Pages
                 return BadRequest("An error occurred: " + ex.Message);
             }
         }
-
 
 
         public string GetIdFromJwt(string jwtToken)
@@ -126,15 +138,15 @@ namespace Presentation.Pages
         {
             var accessToken = HttpContext.Session.GetString("Token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            
+
             var response = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxDetail/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
             }
+
             return Page();
         }
-        
     }
 }

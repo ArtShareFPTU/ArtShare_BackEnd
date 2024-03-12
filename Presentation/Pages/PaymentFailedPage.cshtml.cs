@@ -10,6 +10,7 @@ namespace Presentation.Pages;
 public class PaymentFailedPage : PageModel
 {
     private readonly HttpClient _client = new HttpClient();
+
     public async void OnGet(string token, string PayerID)
     {
         var result = new UpdateToken()
@@ -18,13 +19,13 @@ public class PaymentFailedPage : PageModel
             result = OrderStatus.Cancelled.ToString()
         };
         var json = JsonConvert.SerializeObject(result);
-        
+
         var key = HttpContext.Session.GetString("Token");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var respone = await _client.PutAsync("https://localhost:7168/api/Order/UpdateStatusOrder", content);
         if (!respone.IsSuccessStatusCode)
         {
-        }  
+        }
     }
 }

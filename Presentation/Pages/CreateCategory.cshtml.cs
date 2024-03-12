@@ -15,8 +15,7 @@ namespace Presentation.Pages
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        [BindProperty]
-        public CategoryCreation Category { get; set; }
+        [BindProperty] public CategoryCreation Category { get; set; }
 
         public CreateCategoryModel(IHttpClientFactory httpClientFactory)
         {

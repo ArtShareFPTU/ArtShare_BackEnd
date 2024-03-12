@@ -19,7 +19,7 @@ namespace Presentation.Pages.Artworks
             _context = context;
         }
 
-      public Artwork Artwork { get; set; } = default!; 
+        public Artwork Artwork { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -33,10 +33,11 @@ namespace Presentation.Pages.Artworks
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Artwork = artwork;
             }
+
             return Page();
         }
     }

@@ -39,8 +39,7 @@ namespace Presentation.Pages.ArtworkTags
             return Page();
         }
 
-        [BindProperty]
-        public ArtworkTag ArtworkTag { get; set; } = default!;
+        [BindProperty] public ArtworkTag ArtworkTag { get; set; } = default!;
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -82,8 +81,10 @@ namespace Presentation.Pages.ArtworkTags
                 ModelState.Clear();
                 return RedirectToPage();
             }
+
             return Page();
         }
+
         public async Task<List<Tag>> GetTag(HttpClient client)
         {
             var endpoint = _tagManage + "GetTags";
@@ -113,6 +114,7 @@ namespace Presentation.Pages.ArtworkTags
 
             return null;
         }
+
         private async Task<List<Artwork>> GetArtworks(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworks";

@@ -32,7 +32,8 @@ public class UpdateArtworkModel : PageModel
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
         if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
         Tags = await GetTag(client);
         Categories = await GetCategory(client);
@@ -51,7 +52,8 @@ public class UpdateArtworkModel : PageModel
         if (!ModelState.IsValid) return Page();
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-       client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworkUpdate = new ArtworkUpdate
         {
             Id = Guid.Parse(Request.Form["ArtworkUpdate.Id"]),
@@ -82,6 +84,7 @@ public class UpdateArtworkModel : PageModel
         {
             multipartContent.Add(new StringContent(tagId.ToString()), "ArtworkTags");
         }
+
         if (Request.Form.Files.Count > 0)
         {
             var imageFile = Request.Form.Files[0];
@@ -97,7 +100,8 @@ public class UpdateArtworkModel : PageModel
             {
                 TempData["AnnounceMessage"] = "This artwork was removed or not existed before";
                 return RedirectToPage();
-            }else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return RedirectToPage("./Logout");
             }
@@ -107,6 +111,7 @@ public class UpdateArtworkModel : PageModel
                 return RedirectToPage();
             }
         }
+
         ModelState.Clear();
         return RedirectToPage();
     }
@@ -126,6 +131,7 @@ public class UpdateArtworkModel : PageModel
 
         return null;
     }
+
     public async Task<List<Tag>> GetTag(HttpClient client)
     {
         var endpoint = _tagManage + "GetTags";
@@ -140,6 +146,7 @@ public class UpdateArtworkModel : PageModel
 
         return null;
     }
+
     public async Task<List<Category>> GetCategory(HttpClient client)
     {
         var endpoint = _categoryManage + "GetCategorys";

@@ -20,7 +20,7 @@ namespace Presentation.Pages;
 public class DetailPageModel : PageModel
 {
     private readonly HttpClient _client = new HttpClient();
-    
+
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory _httpClientFactory;
 
@@ -31,11 +31,9 @@ public class DetailPageModel : PageModel
         _configuration = configuration;
         _httpClientFactory = httpClientFactory;
     }
-    
-    [BindProperty]
-    public CommentCreation commentCreation { get; set; }
-    [BindProperty]
-    public LikeCreation likeCreation { get; set; }
+
+    [BindProperty] public CommentCreation commentCreation { get; set; }
+    [BindProperty] public LikeCreation likeCreation { get; set; }
     public ArtworkRespone ArtworkRespone { get; set; } = default!;
     private readonly string _accountManage = "https://localhost:7168/api/";
 
@@ -43,7 +41,7 @@ public class DetailPageModel : PageModel
     {
         //var accessToken = HttpContext.Session.GetString("account");
         //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        
+
         var artwork = await _client.GetAsync($"https://localhost:7168/api/Artwork/GetArtworkById/{id}");
         if (artwork.IsSuccessStatusCode)
         {
@@ -52,7 +50,7 @@ public class DetailPageModel : PageModel
             ArtworkRespone = JsonConvert.DeserializeObject<ArtworkRespone>(jsonString);
         }
     }
-    
+
     public async Task<IActionResult> OnPostAddToCart(Guid id)
     {
         List<Carts> cartsList = new();
@@ -64,10 +62,11 @@ public class DetailPageModel : PageModel
 
             ArtworkRespone = JsonConvert.DeserializeObject<ArtworkRespone>(jsonString);
         }
+
         // get cart from session
         var json = HttpContext.Session.GetString("cart");
         // deserialize cart
-        if (json != null) 
+        if (json != null)
         {
             cartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
             // add book to cart
@@ -79,6 +78,7 @@ public class DetailPageModel : PageModel
                 newCart.ImageUrl = ArtworkRespone.Url;
                 cartsList.Add(newCart);
             }
+
             //Remove old Session
             HttpContext.Session.Remove("cart");
         }
@@ -90,7 +90,7 @@ public class DetailPageModel : PageModel
             newCart.ImageUrl = ArtworkRespone.Url;
             cartsList.Add(newCart);
         }
-        
+
         // serialize cart
         json = JsonConvert.SerializeObject(cartsList);
         HttpContext.Session.SetString("cart", json);
@@ -109,10 +109,11 @@ public class DetailPageModel : PageModel
 
             ArtworkRespone = JsonConvert.DeserializeObject<ArtworkRespone>(jsonString);
         }
+
         // get cart from session
         var json = HttpContext.Session.GetString("cart");
         // deserialize cart
-        if (json != null) 
+        if (json != null)
         {
             cartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
             // add book to cart
@@ -124,6 +125,7 @@ public class DetailPageModel : PageModel
                 newCart.ImageUrl = ArtworkRespone.Url;
                 cartsList.Add(newCart);
             }
+
             //Remove old Session
             HttpContext.Session.Remove("cart");
         }
@@ -135,12 +137,13 @@ public class DetailPageModel : PageModel
             newCart.ImageUrl = ArtworkRespone.Url;
             cartsList.Add(newCart);
         }
-        
+
         // serialize cart
         json = JsonConvert.SerializeObject(cartsList);
         HttpContext.Session.SetString("cart", json);
-        
-        return RedirectToPage("CheckoutPage");;
+
+        return RedirectToPage("CheckoutPage");
+        ;
     }
 
     public async Task<IActionResult> OnPostAddLike()
@@ -149,17 +152,19 @@ public class DetailPageModel : PageModel
         var key = HttpContext.Session.GetString("Token");
         if (key == null)
         {
-            // ThÙng b·o l?i n?u khÙng tÏm th?y AccountId t? token
+            // Th√¥ng b√°o l?i n?u kh√¥ng t√¨m th?y AccountId t? token
             ModelState.AddModelError("", "AccountId not found in JWT token.");
             return RedirectToPage("/LoginPage");
         }
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
         // Th?c hi?n m?t s? logic ?? l?y accountId t? token JWT
         //var accountId = GetIdFromJwt(key);
         var accountId = Guid.Parse(GetIdFromJwt(key));
 
-        // Ki?m tra xem t‡i kho?n ?„ thÌch t·c ph?m n‡y ch?a
+        // Ki?m tra xem t√†i kho?n ?√£ th√≠ch t√°c ph?m n√†y ch?a
         var artworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
         var likeExist = await CheckIfLikeExists(accountId, artworkId);
         if (likeExist)
@@ -167,19 +172,19 @@ public class DetailPageModel : PageModel
             var likeId = await GetLikeId(accountId, artworkId);
             if (likeId != null)
             {
-                // Sau khi cÛ likeId, g?i API ?? xÛa like thay vÏ thÍm m?i
+                // Sau khi c√≥ likeId, g?i API ?? x√≥a like thay v√¨ th√™m m?i
                 var apiUrl = $"https://localhost:7168/api/Like/DeleteLike/deleteLike?id={likeId}&artworkId={artworkId}";
                 var response = await client.DeleteAsync(apiUrl);
             }
             else
             {
-                // X? l˝ khi khÙng tÏm th?y likeId
-                // VÌ d?: thÙng b·o l?i, log l?i, ...
+                // X? l√Ω khi kh√¥ng t√¨m th?y likeId
+                // V√≠ d?: th√¥ng b√°o l?i, log l?i, ...
             }
         }
         else
         {
-            // N?u t‡i kho?n ch?a thÌch t·c ph?m n‡y, g?i API ?? thÍm like m?i
+            // N?u t√†i kho?n ch?a th√≠ch t√°c ph?m n√†y, g?i API ?? th√™m like m?i
             var likeCreation = new LikeCreation
             {
                 AccountId = accountId,
@@ -190,9 +195,9 @@ public class DetailPageModel : PageModel
         }
 
         var routeValues = new RouteValueDictionary
-    {
-        { "id", artworkId }
-    };
+        {
+            { "id", artworkId }
+        };
         return RedirectToPage("/DetailPage", routeValues);
     }
 
@@ -207,51 +212,52 @@ public class DetailPageModel : PageModel
             var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
             return File(fileData, "image/jpg", fileName);
         }
+
         return Page();
     }
 
     public async Task<IActionResult> OnPostCreateComment()
     {
-        
-            var client = _httpClientFactory.CreateClient();
-            var key = HttpContext.Session.GetString("Token");
-            if (key == null)
-            {
-                // ThÙng b·o l?i n?u khÙng tÏm th?y AccountId t? token
-                ModelState.AddModelError("", "AccountId not found in JWT token.");
-                return RedirectToPage("/LoginPage");
-            }
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        if (key == null)
+        {
+            // Th√¥ng b√°o l?i n?u kh√¥ng t√¨m th?y AccountId t? token
+            ModelState.AddModelError("", "AccountId not found in JWT token.");
+            return RedirectToPage("/LoginPage");
+        }
 
-            // Th?c hi?n m?t s? logic ?? l?y accountId t? token JWT
-            var accountId = GetIdFromJwt(key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
-            // Ki?m tra accountId cÛ gi· tr? khÙng
-            
+        // Th?c hi?n m?t s? logic ?? l?y accountId t? token JWT
+        var accountId = GetIdFromJwt(key);
 
-            // G·n AccountId v‡o commentCreation
-            commentCreation.AccountId = Guid.Parse(accountId);
+        // Ki?m tra accountId c√≥ gi√° tr? kh√¥ng
 
-            // G·n ArtworkId v‡o commentCreation
-            //commentCreation.ArtworkId = id;
-            commentCreation.ArtworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
-            var response = await client.PostAsJsonAsync("https://localhost:7168/api/Comment/PostComment/create", commentCreation);
+
+        // G√°n AccountId v√†o commentCreation
+        commentCreation.AccountId = Guid.Parse(accountId);
+
+        // G√°n ArtworkId v√†o commentCreation
+        //commentCreation.ArtworkId = id;
+        commentCreation.ArtworkId = Guid.Parse(Request.Form["ArtworkRespone.Id"]);
+        var response =
+            await client.PostAsJsonAsync("https://localhost:7168/api/Comment/PostComment/create", commentCreation);
 
 
         var routeValues = new RouteValueDictionary
-            {
-                { "id", commentCreation.ArtworkId }
-            };
+        {
+            { "id", commentCreation.ArtworkId }
+        };
         return RedirectToPage("/DetailPage", routeValues);
-
-
-
     }
 
 
     private async Task<bool> CheckIfLikeExists(Guid accountId, Guid artworkId)
     {
-        var apiUrl = $"https://localhost:7168/api/Like/CheckLikeExists/checkLikeExists?accountId={accountId}&artworkId={artworkId}";
+        var apiUrl =
+            $"https://localhost:7168/api/Like/CheckLikeExists/checkLikeExists?accountId={accountId}&artworkId={artworkId}";
         var client = _httpClientFactory.CreateClient();
 
         var response = await client.GetAsync(apiUrl);
@@ -262,8 +268,8 @@ public class DetailPageModel : PageModel
         }
         else
         {
-            // X? l˝ khi request khÙng th‡nh cÙng
-            // VÌ d?: log l?i, tr? v? false, ...
+            // X? l√Ω khi request kh√¥ng th√†nh c√¥ng
+            // V√≠ d?: log l?i, tr? v? false, ...
             return false;
         }
     }
@@ -281,26 +287,22 @@ public class DetailPageModel : PageModel
             var content = await response.Content.ReadAsStringAsync();
             if (!string.IsNullOrEmpty(content))
             {
-                
-                    return Guid.Parse(content);
-                
+                return Guid.Parse(content);
             }
             else
             {
-                // X? l˝ khi n?i dung r?ng
-                // VÌ d?: log l?i, tr? v? null, ...
+                // X? l√Ω khi n?i dung r?ng
+                // V√≠ d?: log l?i, tr? v? null, ...
                 return null;
             }
         }
         else
         {
-            // X? l˝ khi request khÙng th‡nh cÙng
-            // VÌ d?: log l?i, tr? v? null, ...
+            // X? l√Ω khi request kh√¥ng th√†nh c√¥ng
+            // V√≠ d?: log l?i, tr? v? null, ...
             return null;
         }
     }
-
-
 
 
     public string GetIdFromJwt(string jwtToken)
@@ -318,10 +320,9 @@ public class DetailPageModel : PageModel
 
         var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
 
-        // Truy c?p v‡o c·c thÙng tin trong payload
+        // Truy c?p v√†o c√°c th√¥ng tin trong payload
         string userId = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
 
         return userId;
     }
-
 }

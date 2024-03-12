@@ -12,33 +12,34 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Url)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Likes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Fee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Artwork[0].Account)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Likes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Fee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artwork[0].Account)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Artwork) {
+    @foreach (var item in Model.Artwork)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -67,6 +68,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

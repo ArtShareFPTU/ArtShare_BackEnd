@@ -11,7 +11,9 @@ namespace Presentation.Pages
     {
         private readonly ILogger _logger;
         private readonly IHttpClientFactory _httpClientFactory;
+
         private readonly string _artworkManage = "https://localhost:7168/api/Artwork/";
+
         //private readonly string _tagManage = "https://localhost:7168/api/Tag/";
         //private readonly string _categoryManage = "https://localhost:7168/api/Category/";
         //private readonly string _likeManage = "https://localhost:7168/api/Like/";
@@ -34,7 +36,8 @@ namespace Presentation.Pages
         {
             var client = _httpClientFactory.CreateClient();
             string token = HttpContext.Session.GetString("Token");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
 
             Artwork = await GetArtworks(client);
@@ -42,6 +45,7 @@ namespace Presentation.Pages
             //Categories = await GetCategory(client, artwork.Id);
             //Likes = await GetLike(client, artwork.Id);
         }
+
         private async Task<List<ArtworkRespone>> GetArtworks(HttpClient client)
         {
             var endpoint = _artworkManage + "GetOwnArtworks";

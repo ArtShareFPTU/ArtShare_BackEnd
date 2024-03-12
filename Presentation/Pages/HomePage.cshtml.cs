@@ -17,14 +17,15 @@ public class HomePage : PageModel
     {
         _httpClientFactory = httpClientFactory;
     }
-    [BindProperty]
-    public List<Artwork> Artwork { get; set; } = default!;
-    
+
+    [BindProperty] public List<Artwork> Artwork { get; set; } = default!;
+
     public async Task<IActionResult> OnGetAsync(string? search)
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);
         if (artworks == null)
         {
@@ -36,7 +37,7 @@ public class HomePage : PageModel
                 Artwork = artworks;
             else
             {
-                var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}" ;
+                var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}";
                 var response = await client.GetAsync(endpoint);
                 if (response.IsSuccessStatusCode)
                 {
@@ -45,9 +46,7 @@ public class HomePage : PageModel
 
                     Artwork = result;
                 }
-                
             }
-               
         }
 
         return Page();
@@ -67,6 +66,7 @@ public class HomePage : PageModel
 
         return null;
     }
+
     public IActionResult OnGetLogout()
     {
         HttpContext.Session.Remove("Token");

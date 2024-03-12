@@ -32,8 +32,7 @@ namespace Presentation.Pages.ArtworkTags
             _httpClientFactory = httpClientFactory;
         }
 
-        [BindProperty]
-        public ArtworkTag ArtworkTag { get; set; } = default!;
+        [BindProperty] public ArtworkTag ArtworkTag { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -41,6 +40,7 @@ namespace Presentation.Pages.ArtworkTags
             {
                 return NotFound();
             }
+
             var client = _httpClientFactory.CreateClient();
             Tags = await GetTag(client);
             Categories = await GetCategory(client);
@@ -56,6 +56,7 @@ namespace Presentation.Pages.ArtworkTags
             {
                 ArtworkTag = artworkcategory;
             }
+
             return Page();
         }
 
@@ -67,6 +68,7 @@ namespace Presentation.Pages.ArtworkTags
             {
                 return Page();
             }
+
             var client = _httpClientFactory.CreateClient();
             var endpoint = _artworkManage + "UpdateTag4Artwork/updateTag";
 
@@ -104,6 +106,7 @@ namespace Presentation.Pages.ArtworkTags
                 ModelState.Clear();
                 return RedirectToPage();
             }
+
             return Page();
         }
 
@@ -136,6 +139,7 @@ namespace Presentation.Pages.ArtworkTags
 
             return null;
         }
+
         public async Task<List<ArtworkTag>> GetArtworkTag(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworkTags";
@@ -150,6 +154,7 @@ namespace Presentation.Pages.ArtworkTags
 
             return null;
         }
+
         private async Task<List<Artwork>> GetArtworks(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworks";

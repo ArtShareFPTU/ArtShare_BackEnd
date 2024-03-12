@@ -21,18 +21,17 @@ namespace Presentation.Pages.Artworks
 
         public IActionResult OnGet()
         {
-        ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return Page();
         }
 
-        [BindProperty]
-        public Artwork Artwork { get; set; } = default!;
-        
+        [BindProperty] public Artwork Artwork { get; set; } = default!;
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Artworks == null || Artwork == null)
+            if (!ModelState.IsValid || _context.Artworks == null || Artwork == null)
             {
                 return Page();
             }

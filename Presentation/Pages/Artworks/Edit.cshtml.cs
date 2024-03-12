@@ -20,8 +20,7 @@ namespace Presentation.Pages.Artworks
             _context = context;
         }
 
-        [BindProperty]
-        public Artwork Artwork { get; set; } = default!;
+        [BindProperty] public Artwork Artwork { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -30,13 +29,14 @@ namespace Presentation.Pages.Artworks
                 return NotFound();
             }
 
-            var artwork =  await _context.Artworks.FirstOrDefaultAsync(m => m.Id == id);
+            var artwork = await _context.Artworks.FirstOrDefaultAsync(m => m.Id == id);
             if (artwork == null)
             {
                 return NotFound();
             }
+
             Artwork = artwork;
-           ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return Page();
         }
 
@@ -72,7 +72,7 @@ namespace Presentation.Pages.Artworks
 
         private bool ArtworkExists(Guid id)
         {
-          return (_context.Artworks?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Artworks?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
