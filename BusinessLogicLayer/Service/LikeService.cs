@@ -1,6 +1,8 @@
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Like;
 
 namespace BusinessLogicLayer.Service;
 
@@ -28,9 +30,9 @@ public class LikeService : ILikeService
         return await _LikeRepository.GetLikeByIdAsync(id);
     }
 
-    public async Task AddLikeAsync(Like Like)
+    public async Task<IActionResult> AddLikeAsync(LikeCreation likeCreation)
     {
-        await _LikeRepository.AddLikeAsync(Like);
+        return await _LikeRepository.AddLikeAsync(likeCreation);
     }
 
     public async Task UpdateLikeAsync(Like Like)
@@ -38,8 +40,18 @@ public class LikeService : ILikeService
         await _LikeRepository.UpdateLikeAsync(Like);
     }
 
-    public async Task DeleteLikeAsync(Guid id)
+    public async Task DeleteLikeAsync(Guid id,Guid artWorkId)
     {
-        await _LikeRepository.DeleteLikeAsync(id);
+        await _LikeRepository.DeleteLikeAsync(id, artWorkId);
+    }
+
+    public async Task<bool> CheckIfLikeExists(Guid accountId, Guid artworkId)
+    {
+        return await _LikeRepository.CheckIfLikeExists(accountId,artworkId);
+    }
+
+    public async Task<Guid?> GetLikeId(Guid accountId, Guid artworkId)
+    {
+        return await _LikeRepository.GetLikeId(accountId,artworkId);
     }
 }
