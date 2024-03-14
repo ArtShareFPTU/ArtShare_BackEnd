@@ -36,7 +36,7 @@ namespace Presentation.Pages
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
                 var multipartContent = new MultipartFormDataContent();
-                multipartContent.Add(new StringContent(Tag.Title), "Title");
+                multipartContent.Add(new StringContent(Request.Form["Tag.Title"]), "Title");
 
                 var response = await client.PostAsync(_tagManage + "CreateTag/create", multipartContent);
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -46,7 +46,7 @@ namespace Presentation.Pages
                     if (response.StatusCode == System.Net.HttpStatusCode.Created)
                     {
                         TempData["AnnounceMessage"] = "Tag created successfully";
-                        return RedirectToPage("./Index");
+                        return Page();
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
                     {
