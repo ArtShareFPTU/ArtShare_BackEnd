@@ -28,7 +28,13 @@ public class ArtworkController : ControllerBase
     {
         return await _artworkService.GetAllArtworkAsync();
     }
-	[AllowAnonymous]
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Artwork>>> GetArtworksForAdmin()
+    {
+        return await _artworkService.GetAllArtworkAsync();
+    }
+    [AllowAnonymous]
 	[HttpGet("{id}")]
     public async Task<ActionResult<ArtworkRespone>> GetArtworkById(Guid id)
     {

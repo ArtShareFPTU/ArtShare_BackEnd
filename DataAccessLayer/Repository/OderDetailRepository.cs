@@ -15,7 +15,7 @@ public class OderDetailRepository : IOrderDetailRepository
 
     public async Task<List<OrderDetail>> GetAllOrderDetailAsync()
     {
-        return await _context.OrderDetails.ToListAsync();
+        return await _context.OrderDetails.Include(c => c.Artwork).Include(c => c.Order).ThenInclude(c => c.Account).ToListAsync();
     }
 
     public async Task<OrderDetail> GetOrderDetailByIdAsync(Guid id)

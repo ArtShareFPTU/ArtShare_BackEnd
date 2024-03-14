@@ -107,25 +107,11 @@ public class AccountController : ControllerBase
         if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
         else return await _accountService.GetAccountById(Guid.Parse(customer));
     }
-
-    /*// DELETE: api/Account/5
+    [Authorize(Roles = "Admin")]
+    // DELETE: api/Account/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAccount(Guid id)
+    public async Task DeleteAccount(Guid id)
     {
-        if (_context.Accounts == null)
-        {
-            return NotFound();
-        }
-
-        var account = await _context.Accounts.FindAsync(id);
-        if (account == null)
-        {
-            return NotFound();
-        }
-
-        _context.Accounts.Remove(account);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }*/
+        await _accountService.DeleteAccountAsync(id);
+    }
 }

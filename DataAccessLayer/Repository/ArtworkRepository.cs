@@ -22,7 +22,7 @@ public class ArtworkRepository : IArtworkRepository
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
     {
-        return await _context.Artworks.Include(a => a.Account).ToListAsync();
+        return await _context.Artworks.Include(a => a.Account).OrderByDescending(c => c.Fee).ToListAsync();
     }
 
     public async Task<Artwork> GetArtworkByIdAsync(Guid id)
