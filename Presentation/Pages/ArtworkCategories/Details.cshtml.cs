@@ -28,7 +28,7 @@ namespace Presentation.Pages.ArtworkCategories
             _httpClientFactory = httpClientFactory;
         }
 
-        public ArtworkCategory ArtworkCategory { get; set; } = default!; 
+        public ArtworkCategory ArtworkCategory { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -36,6 +36,7 @@ namespace Presentation.Pages.ArtworkCategories
             {
                 return NotFound();
             }
+
             var client = _httpClientFactory.CreateClient();
             Tags = await GetTag(client);
             Categories = await GetCategory(client);
@@ -50,8 +51,10 @@ namespace Presentation.Pages.ArtworkCategories
             {
                 ArtworkCategory = artworkcategory;
             }
+
             return Page();
         }
+
         public async Task<List<Tag>> GetTag(HttpClient client)
         {
             var endpoint = _tagManage + "GetTags";
@@ -81,6 +84,7 @@ namespace Presentation.Pages.ArtworkCategories
 
             return null;
         }
+
         public async Task<List<ArtworkCategory>> GetArtworkCategory(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworkCategories";

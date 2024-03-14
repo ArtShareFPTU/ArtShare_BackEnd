@@ -28,10 +28,8 @@ namespace Presentation.Pages.Shared
             _configuration = configuration;
         }
 
-        [BindProperty]
-        public AccountResponse Account { get; set; }
-        [BindProperty]
-        public UpdateAccountRequest UpdateAccount { get; set; } = default!;
+        [BindProperty] public AccountResponse Account { get; set; }
+        [BindProperty] public UpdateAccountRequest UpdateAccount { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -39,14 +37,17 @@ namespace Presentation.Pages.Shared
             {
                 return Page();
             }
+
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
             var account = await GetAccount(id, client);
             if (account == null)
             {
                 return NotFound();
             }
+
             Account = account;
             return Page();
         }
@@ -59,14 +60,17 @@ namespace Presentation.Pages.Shared
             {
                 return Page();
             }
+
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
             var account = await GetAccount(Account.Id, client);
             if (account == null)
             {
                 return NotFound();
             }
+
             await Update(Account.Id, client);
 
             return RedirectToPage("ProfilePage");
@@ -86,6 +90,7 @@ namespace Presentation.Pages.Shared
 
             return null;
         }
+
         public async Task<AccountResponse> Update(Guid id, HttpClient client)
         {
             var json = JsonConvert.SerializeObject(UpdateAccount);
@@ -110,15 +115,16 @@ namespace Presentation.Pages.Shared
                 var imageFile = Request.Form.Files[0];
                 multipartContent.Add(new StreamContent(imageFile.OpenReadStream()), "Avatar", imageFile.FileName);
             }*/
-            var response = await client.PutAsync(endpoint, content/*multipartContent*/);
+            var response = await client.PutAsync(endpoint, content /*multipartContent*/);
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<AccountResponse>(data);
-                if(result.Avatar != null)
+                if (result.Avatar != null)
                 {
                     HttpContext.Session.SetString("Avatar", result.Avatar);
                 }
+
                 return result;
             }
 

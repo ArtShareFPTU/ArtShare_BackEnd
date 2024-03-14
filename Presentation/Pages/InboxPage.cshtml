@@ -78,19 +78,21 @@
             </span>
             <h2>Send Mail</h2>
         </div>
-        <form asp-page="InBoxPage" asp-page-handler="send" method="post">
+        <form asp-page="InBoxPage" asp-page-handler="send" method="post" enctype="multipart/form-data">
             <div class="w3-panel">
                 <label>To</label>
-                <input asp-for="inbox.Receiver.UserName" class="w3-input w3-border w3-margin-bottom" type="text">
+                <input name="inbox.ReceiverId" class="w3-input w3-border w3-margin-bottom" type="text">
                 <label>Subject</label>
-                <input asp-for="inbox.Title" class="w3-input w3-border w3-margin-bottom" type="text">
-                <input asp-for="inbox.Content" class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="What's on your mind?">
+                <input name="inbox.Title" class="w3-input w3-border w3-margin-bottom" type="text">
+                <label>File</label>
+                <input name="inbox.file" class="w3-input w3-border w3-margin-bottom" type="file">
+                <label>Content</label>
+                <textarea name="inbox.Content" class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="What's on your mind?"></textarea>
                 <div class="w3-section">
-                    <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">
+                    <a href="javascript:void(0)" class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">
                         Cancel <i class="fa fa-remove"></i>
                     </a>
-                    <button type="submit" class="w3-button w3-light-grey w3-right"
-                            onclick="document.getElementById('id01').style.display='none'">
+                    <button type="submit" class="w3-button w3-light-grey w3-right">
                         Send <i class="fa fa-paper-plane"></i>
                     </button>
                 </div>
@@ -126,10 +128,38 @@
             <p>
                 @Html.DisplayFor(modle => modle.InboxDetailResponse.Content)
             </p>
+            <p>
+                <img src="@Model.InboxDetailResponse.file" alt="Image">
+            </p>
+
         </div>
     }
 
 </div>
+
+<div id="popupError" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+        <header class="w3-container w3-red">
+            <span onclick="hideErrorPopup()" class="w3-button w3-display-topright">&times;</span>
+            <h2>Error</h2>
+        </header>
+        <div class="w3-container">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showErrorPopup(message) {
+        var errorMessageElement = document.getElementById('errorMessage');
+        errorMessageElement.innerText = message;
+        document.getElementById('popupError').style.display = 'block';
+    }
+
+    function hideErrorPopup() {
+        document.getElementById('popupError').style.display = 'none';
+    }
+</script>
 
 <script>
             var openInbox = document.getElementById("myBtn");
@@ -177,6 +207,5 @@
             var openTab = document.getElementById("firstTab");
             openTab.click();
         </script>
-
 
 </body>

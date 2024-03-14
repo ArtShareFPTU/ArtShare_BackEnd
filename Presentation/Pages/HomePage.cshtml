@@ -52,9 +52,8 @@
 
 <!-- Masthead-->
 <header class="backhead">
-    
-        <img class="imax" src="/assets/img/background1.jpg" />
-    
+
+    <img class="imax" src="/assets/img/background1.jpg"/>
 
 
 </header>
@@ -236,13 +235,13 @@
             <a href="#">category 5</a>
         </div>
 
-        <button class="scroll-left">&lt;</button>
-        <button class="scroll-right">&gt;</button>
-    </div>
+    <button class="scroll-left">&lt;</button>
+    <button class="scroll-right">&gt;</button>
+</div>
 <div class="flexbin flexbin-margin" style="margin: 0 70px;">
     @foreach (var item in Model.Artwork)
     {
-        <div class="con1" >
+        <div class="con1">
             <div class="watermark">ARToln</div>
             <img src="@Html.DisplayFor(modelItem => item.Url)"/>
             <div class="overlay1">

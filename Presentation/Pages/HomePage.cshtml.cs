@@ -26,7 +26,8 @@ public class HomePage : PageModel
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);
         var categorys = await GetCategorys(client);
         Category = categorys;
@@ -40,7 +41,7 @@ public class HomePage : PageModel
                 Artwork = artworks;
             else
             {
-                var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}" ;
+                var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}";
                 var response = await client.GetAsync(endpoint);
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,9 +50,7 @@ public class HomePage : PageModel
 
                     Artwork = result;
                 }
-                
             }
-               
         }
 
         return Page();

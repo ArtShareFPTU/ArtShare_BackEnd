@@ -5,13 +5,13 @@
     ViewData["Title"] = "EditProfilePage";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-<hr />
+<hr/>
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
                 <h1 class="card-title text-center">Edit Profile</h1>
-                <hr />
+                <hr/>
                 <form method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*
                     <div class="form-group">
@@ -29,22 +29,22 @@
                     </div>*@
                     <div class="form-group">
                         <label asp-for="UpdateAccount.Description" class="control-label"></label>
-                        <input asp-for="UpdateAccount.Description" class="form-control" placeholder="@Model.Account.Description" />
+                        <input asp-for="UpdateAccount.Description" class="form-control" placeholder="@Model.Account.Description"/>
                         <span asp-validation-for="UpdateAccount.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="UpdateAccount.FullName" class="control-label"></label>
-                        <input asp-for="UpdateAccount.FullName" class="form-control" minlength="3" maxlength="30" placeholder="@Model.Account.FullName" />
+                        <input asp-for="UpdateAccount.FullName" class="form-control" minlength="3" maxlength="30" placeholder="@Model.Account.FullName"/>
                         <span asp-validation-for="UpdateAccount.FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="UpdateAccount.Avatar" class="control-label">Image</label>
-                        <input type="file" asp-for="UpdateAccount.Avatar" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf" />
+                        <input type="file" asp-for="UpdateAccount.Avatar" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp,.heic,.pdf"/>
                         <span asp-validation-for="UpdateAccount.Avatar" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="Save" class="btn btn-primary"/>
                     </div>
                 </form>
                 <div class="text-center">
@@ -54,4 +54,4 @@
         </div>
     </div>
 </div>
-<hr />
+<hr/>

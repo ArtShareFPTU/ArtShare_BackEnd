@@ -32,7 +32,8 @@ public class ArtworkDetailsModel : PageModel
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
 
         if (artwork == null)

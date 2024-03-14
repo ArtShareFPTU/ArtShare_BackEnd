@@ -36,7 +36,8 @@ public class CreateArtworkModel : PageModel
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
         if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Accounts = await GetAccounts(client);
         Tags = await GetTag(client);
         Categories = await GetCategory(client);
@@ -52,7 +53,8 @@ public class CreateArtworkModel : PageModel
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
         if (key == null) return RedirectToPage("./Logout");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var endpoint = _artworkManage + "CreateArtwork/create";
 
         // Create multipart form data content
@@ -85,6 +87,7 @@ public class CreateArtworkModel : PageModel
         {
             multipartContent.Add(new StringContent(tagId.ToString()), "ArtworkTags");
         }
+
         if (Request.Form.Files.Count > 0)
         {
             var imageFile = Request.Form.Files[0];
@@ -113,7 +116,7 @@ public class CreateArtworkModel : PageModel
                 TempData["AnnounceMessage"] = "This file is not supported, try another one";
                 return RedirectToPage();
             }
-            else if(response.StatusCode == HttpStatusCode.Unauthorized)
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 return RedirectToPage("./LogoutPage");
             }
@@ -144,6 +147,7 @@ public class CreateArtworkModel : PageModel
 
         return null;
     }
+
     public async Task<List<Tag>> GetTag(HttpClient client)
     {
         var endpoint = _tagManage + "GetTags";
@@ -158,6 +162,7 @@ public class CreateArtworkModel : PageModel
 
         return null;
     }
+
     public async Task<List<Category>> GetCategory(HttpClient client)
     {
         var endpoint = _categoryManage + "GetCategorys";
@@ -172,6 +177,7 @@ public class CreateArtworkModel : PageModel
 
         return null;
     }
+
     public async Task<IActionResult> CreateTagAsync(TagCreation tagCreation)
     {
         try

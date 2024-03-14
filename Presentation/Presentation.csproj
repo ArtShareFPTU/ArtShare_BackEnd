@@ -7,33 +7,33 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.27" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.27" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.27"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.27"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.csproj" />
-        <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
-        <ProjectReference Include="..\ModelLayer\ModelLayer.csproj" />
-        <ProjectReference Include="..\WebApiLayer\WebApiLayer.csproj" />
+        <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.csproj"/>
+        <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj"/>
+        <ProjectReference Include="..\ModelLayer\ModelLayer.csproj"/>
+        <ProjectReference Include="..\WebApiLayer\WebApiLayer.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Pages\Categories\Create.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Categories\Delete.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Categories\Details.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Categories\Edit.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Categories\Index.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Tags\Create.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Tags\Delete.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Tags\Details.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Tags\Edit.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Tags\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Categories\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Categories\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Categories\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Categories\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Categories\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Tags\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Tags\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Tags\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Tags\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Tags\Index.cshtml"/>
     </ItemGroup>
 
 </Project>

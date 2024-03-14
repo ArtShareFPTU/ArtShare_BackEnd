@@ -237,12 +237,12 @@ $(document).ready(function () {
                 backgroundColor: Array(10).fill().map(() => getRandomColor()), // Randomized colors
                 borderWidth: 1
             },
-            {
-                label: 'Profit (million)',
-                data: [0.75, 0.6, 0.48, 0.45, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275],
-                backgroundColor: Array(10).fill().map(() => getRandomColor()), // Randomized colors
-                borderWidth: 1
-            }]
+                {
+                    label: 'Profit (million)',
+                    data: [0.75, 0.6, 0.48, 0.45, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275],
+                    backgroundColor: Array(10).fill().map(() => getRandomColor()), // Randomized colors
+                    borderWidth: 1
+                }]
         },
         options: {
             responsive: false,
@@ -263,8 +263,8 @@ $(document).ready(function () {
     // salesBarChart ends
 
     /**
-     * TODO canvasQChart 
-    */
+     * TODO canvasQChart
+     */
     const lineChartExampleOne = document.getElementById('canvasQChart');
     new Chart(lineChartExampleOne, {
         type: 'bar',

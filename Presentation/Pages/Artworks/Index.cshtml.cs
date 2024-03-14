@@ -19,14 +19,14 @@ namespace Presentation.Pages.Artworks
             _context = context;
         }
 
-        public IList<Artwork> Artwork { get;set; } = default!;
+        public IList<Artwork> Artwork { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
             if (_context.Artworks != null)
             {
                 Artwork = await _context.Artworks
-                .Include(a => a.Account).ToListAsync();
+                    .Include(a => a.Account).ToListAsync();
             }
         }
     }

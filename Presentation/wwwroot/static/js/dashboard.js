@@ -107,7 +107,7 @@ $(document).ready(function () {
                         color: '#2c2e33' // Set the color of the y-axis grid lines
                     },
                     suggestedMin: 0,
-                    suggestedMax: 65000, 
+                    suggestedMax: 65000,
 
                 },
                 y1: {
@@ -118,7 +118,7 @@ $(document).ready(function () {
                         color: '#2c2e33'
                     },
                     suggestedMin: 0,
-                    suggestedMax: 65000, 
+                    suggestedMax: 65000,
                 },
                 x: {
                     grid: {

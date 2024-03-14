@@ -41,8 +41,8 @@ public class CheckoutPage : PageModel
         // deserialize cart
         if (json != null) CartsList = JsonConvert.DeserializeObject<List<Carts>>(json);
 
-        if(json != null)
-        Amount = CartsList.Sum(c => c.Price);
+        if (json != null)
+            Amount = CartsList.Sum(c => c.Price);
     }
 
 
@@ -53,7 +53,7 @@ public class CheckoutPage : PageModel
         {
             return RedirectToPage("LoginPage");
         }
-        
+
         // get cart from session
         var jsonCart = HttpContext.Session.GetString("cart");
 
@@ -86,15 +86,16 @@ public class CheckoutPage : PageModel
         httpRequestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         //handle response
-        var response = await _client.PostAsync($"{_payPalConfig.BaseUrl}/v1/checkout/orders", httpRequestMessage.Content);
+        var response =
+            await _client.PostAsync($"{_payPalConfig.BaseUrl}/v1/checkout/orders", httpRequestMessage.Content);
         string responseContent = await response.Content.ReadAsStringAsync();
-        
+
         //Remove session
         HttpContext.Session.Remove("cart");
-        
+
         //get link approval 
         string link = await GetApprovalUrl(responseContent);
-        
+
         //get id token and update to DB
         JObject jsonObject = JObject.Parse(responseContent);
         string id = (string)jsonObject["id"];
@@ -120,10 +121,11 @@ public class CheckoutPage : PageModel
             var result = JsonConvert.DeserializeObject<Order>(order);
             return result.Id;
         }
+
         return Guid.Empty;
     }
-    
-    
+
+
     public async Task CreateTokenInOrder(string token, Guid orderId)
     {
         var accessToken = HttpContext.Session.GetString("Token");
@@ -134,9 +136,9 @@ public class CheckoutPage : PageModel
             Id = orderId,
             Token = token
         };
-        
+
         var json = JsonConvert.SerializeObject(createToken);
-        
+
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var response = await _client.PutAsync($"https://localhost:7168/api/Order/CreateTokenOrder", content);

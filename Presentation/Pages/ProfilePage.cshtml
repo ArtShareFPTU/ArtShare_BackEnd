@@ -18,7 +18,7 @@
     <link href="css/profilestyle.css" rel="stylesheet">
 </head>
 <body>
-    <style>
+<style>
         .con1 {
             display: flex;
             position: relative;
@@ -59,133 +59,142 @@
             padding-top: 6rem !important;
         }
     </style>
+<div>
     <div>
-        <div>
-            <!-- Profile widget -->
-            <div class="bg-white shadow rounded overflow-hidden">
-                <div class="px-4 pt-6 pb-4 cover">
-                    <div class="media align-items-end profile-head">
-                        <div class="profile mr-3">
-                            @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
-                            {
-                                @if(Model.Accounts.Avatar != null)
-                                {
-                                    <img src="@Model.Accounts.Avatar"
-                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                }else{
-                                    <img src="~/assets/img/avatar1.png"
-                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                }
-                                <a asp-page="EditProfilePage" asp-route-id="@Model.Accounts.Id" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
-                            }else{
-                                @if (Model.Accounts.Avatar != null)
-                                {
-                                    <img src="@Model.Accounts.Avatar"
-                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                }
-                                else
-                                {
-                                    <img src="~/assets/img/avatar1.png"
-                                         alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                }
-                            }
-                            
-                        </div>
-                        <div class="media-body mb-5 text-white">
-                            <h4 class="mt-0 mb-0">@Model.Accounts.UserName</h4>
-                            <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>@Model.Accounts.FullName</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-light p-4 d-flex justify-content-end text-center">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumArtwork</h5><small class="text-muted">
-                                <i class="fas fa-image mr-1"></i>Photos
-                            </small>
-                        </li>
-                        <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowers</h5><small class="text-muted">
-                                <i class="fas fa-user mr-1"></i>Followers
-                            </small>
-                        </li>
-                        <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowings</h5><small class="text-muted">
-                                <i class="fas fa-user mr-1"></i>Following
-                            </small>
-                        </li>
-                    </ul>
-                </div>
-                <div class="px-4 py-3">
-                    <h5 class="mb-0">About</h5>
-                    <div class="p-4 rounded shadow-sm bg-light">
-                        <p class="font-italic mb-0">@Model.Accounts.Description</p>
-                    </div>
-                </div>
-                <div class="py-4 px-4">
-                    @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
-                    {
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
-                            @*<a href="/CreateTag" class="btn btn-link text-muted">Create Tag</a>
-                        <a href="/CreateCategory" class="btn btn-link text-muted">Create Category</a>*@
-
-                        </div>
-                    }
-                    <div class="row">
-
-                        @if (Model.Artwork != null)
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-6 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3">
+                        @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
                         {
-                            @foreach (var art in Model.Artwork)
+                            @if (Model.Accounts.Avatar != null)
                             {
-                                <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
-                                    <div class="con1">
-                                        <div class="watermark">ARToln</div>
-                                        <img src="@art.Url" alt="" class="img-fluid rounded shadow-sm">
-                                         <div class="overlay1">
-                                                <div class="text1">
-                                                @if (HttpContext.Session.GetString("Token") != null && HttpContext.Session.GetString("Username").Equals(Model.Accounts.UserName))
-                                                {
-                                                    <h4>
-                                                        <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="UpdateArtwork" asp-route-id="@art.Id">Edit</a>
-                                                    </h4>
-                                                    <h4>
-                                                        <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="./DetailPage" asp-route-id="@art.AccountId">Detail</a>
-                                                    </h4>
-                                                }
-                                                else
-                                                {
-                                                    <h2 size="20" style="font-family: 'Arial Black'">
-                                                        @art.Title<br>
-                                                    </h2>
-                                                    <p size="15" style="font-family: 'Arial'; display: inline-block; vertical-align: middle;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z" />
-                                                        </svg>
-                                                        @art.Likes
-                                                    </p>
-                                                    <h5>
-                                                        <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="./DetailPage" asp-route-id="@art.Id">Detail</a>
-                                                    </h5>
-                                                }
-                                                </div>
-                                          </div>
-                                        
-                                    </div>
-                                    
-                                </div>
+                                <img src="@Model.Accounts.Avatar"
+                                     alt="..." width="130" class="rounded mb-2 img-thumbnail">
                             }
+                            else
+                            {
+                                <img src="~/assets/img/avatar1.png"
+                                     alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                            }
+
+                            <a asp-page="EditProfilePage" asp-route-id="@Model.Accounts.Id" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
                         }
                         else
                         {
-                            <p>No artwork available.</p>
+                            @if (Model.Accounts.Avatar != null)
+                            {
+                                <img src="@Model.Accounts.Avatar"
+                                     alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                            }
+                            else
+                            {
+                                <img src="~/assets/img/avatar1.png"
+                                     alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                            }
                         }
 
                     </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0">@Model.Accounts.UserName</h4>
+                        <p class="small mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>@Model.Accounts.FullName
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumArtwork</h5>
+                        <small class="text-muted">
+                            <i class="fas fa-image mr-1"></i>Photos
+                        </small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowers</h5>
+                        <small class="text-muted">
+                            <i class="fas fa-user mr-1"></i>Followers
+                        </small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">@Model.Accounts.NumFollowings</h5>
+                        <small class="text-muted">
+                            <i class="fas fa-user mr-1"></i>Following
+                        </small>
+                    </li>
+                </ul>
+            </div>
+            <div class="px-4 py-3">
+                <h5 class="mb-0">About</h5>
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <p class="font-italic mb-0">@Model.Accounts.Description</p>
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                @if (HttpContext.Session.GetString("Username") == Model.Accounts.UserName)
+                {
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">Recent photos</h5><a href="/CreateArtwork" class="btn btn-link text-muted">Upload Artwork</a>
+                        @*<a href="/CreateTag" class="btn btn-link text-muted">Create Tag</a>
+                        <a href="/CreateCategory" class="btn btn-link text-muted">Create Category</a>*@
+
+                    </div>
+                }
+                <div class="row">
+
+                    @if (Model.Artwork != null)
+                    {
+                        @foreach (var art in Model.Artwork)
+                        {
+                            <div class="col-lg-4 mb-2 pr-lg-1 d-flex justify-content-center align-items-center">
+                                <div class="con1">
+                                    <div class="watermark">ARToln</div>
+                                    <img src="@art.Url" alt="" class="img-fluid rounded shadow-sm">
+                                    <div class="overlay1">
+                                        <div class="text1">
+                                            @if (HttpContext.Session.GetString("Token") != null && HttpContext.Session.GetString("Username").Equals(Model.Accounts.UserName))
+                                            {
+                                                <h4>
+                                                    <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="UpdateArtwork" asp-route-id="@art.Id">Edit</a>
+                                                </h4>
+                                                <h4>
+                                                    <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="./DetailPage" asp-route-id="@art.Id">Detail</a>
+                                                </h4>
+                                            }
+                                            else
+                                            {
+                                                <h2 size="20" style="font-family: 'Arial Black'">
+                                                    @art.Title<br>
+                                                </h2>
+                                                <p size="15" style="font-family: 'Arial'; display: inline-block; vertical-align: middle;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                                                    </svg>
+                                                    @art.Likes
+                                                </p>
+                                                <h5>
+                                                    <a style="font-family: 'Arial'; color:white; text-decoration: none" asp-page="./DetailPage" asp-route-id="@art.Id">Detail</a>
+                                                </h5>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No artwork available.</p>
+                    }
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
-
