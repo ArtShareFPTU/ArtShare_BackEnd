@@ -50,7 +50,7 @@
     <div class="container-detail">
         <div class="cover watermark-container">
             <div class="watermark">ARTOln</div>
-            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt=""> 
+            <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
         </div>
         <div class="content">
             <div class="content-body">
@@ -77,22 +77,26 @@
                             <button type="submit">Download for $<span>@Html.DisplayFor(modle => modle.ArtworkRespone.Fee)</span></button>
                         </form>
                         <form method="post" asp-page-handler="Download">
-                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id" />
+                            <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
                             <button type="submit">Download <strong>free</strong></button>
                         </form>
 
                         <form method="post" asp-page-handler="AddToCart">
                             <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>
-                            <button type="submit"><i class="fas fa-shopping-cart"></i> <span>Add to Cart</span></button>
+                            <button type="submit">
+                                <i class="fas fa-shopping-cart"></i> <span>Add to Cart</span>
+                            </button>
                         </form>
                     </div>
 
-                    
-                    <div  class="like-content">
+
+                    <div class="like-content">
                         <form method="post" asp-page-handler="AddLike">
                             <input type="hidden" asp-for="ArtworkRespone.Id"/>
-                            <button style="border:none;" type="submit"><i class="fa fa-solid fa-thumbs-up"></i></button>
-                            
+                            <button style="border:none;" type="submit">
+                                <i class="fa fa-solid fa-thumbs-up"></i>
+                            </button>
+
                         </form>
                         <span>@Html.DisplayFor(modle => modle.ArtworkRespone.Likes)</span>
                     </div>
@@ -103,13 +107,13 @@
                         </div>
 
                         <div style="display: table-caption; margin: 10px 0; ">
-                            
+
                             <form method="post" asp-page-handler="CreateComment">
                                 <!-- Trường ẩn để chứa AccountId -->
-                                <input type="hidden" asp-for="ArtworkRespone.Id"  />
+                                <input type="hidden" asp-for="ArtworkRespone.Id"/>
 
                                 <!-- Trường ẩn để chứa ArtworkId -->
-                                <input type="hidden" name="commentCreation.ArtworkId"  />
+                                <input type="hidden" name="commentCreation.ArtworkId"/>
 
                                 <textarea name="commentCreation.Content" style="width: 426px; height: 65px; padding: 10px;" placeholder="Add comment"></textarea>
                                 <button class="btn btn-primary" type="submit" style="padding: 5px; cursor: pointer;">Comment</button>

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.IService;
 using DataAccessLayer.BussinessObject.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Request.Inbox;
 using ModelLayer.DTOS.Response.Inbox;
 
 namespace BusinessLogicLayer.Service;
@@ -37,10 +39,9 @@ public class InboxService : IInboxService
         return _mapper.Map<InboxDetailResponse>(result);
     }
 
-    public async Task<Inbox> CreateInboxAsync(Inbox item)
+    public async Task<IActionResult> CreateInboxAsync(InboxCreation item)
     {
-        item.Receiver = null;
         var inbox = await _inboxRepository.CreateInboxAsync(item);
-        return _mapper.Map<Inbox>(inbox);
+        return inbox;
     }
 }

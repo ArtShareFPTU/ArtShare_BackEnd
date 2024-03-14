@@ -19,8 +19,7 @@ namespace Presentation.Pages.Artworks
             _context = context;
         }
 
-        [BindProperty]
-      public Artwork Artwork { get; set; } = default!;
+        [BindProperty] public Artwork Artwork { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -35,10 +34,11 @@ namespace Presentation.Pages.Artworks
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Artwork = artwork;
             }
+
             return Page();
         }
 
@@ -48,6 +48,7 @@ namespace Presentation.Pages.Artworks
             {
                 return NotFound();
             }
+
             var artwork = await _context.Artworks.FindAsync(id);
 
             if (artwork != null)

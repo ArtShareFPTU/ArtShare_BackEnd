@@ -35,7 +35,8 @@ public class DeleteArtworkModel : PageModel
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
         if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artwork = await GetArtwork(client, id);
 
         if (artwork == null)
@@ -156,7 +157,8 @@ public class DeleteArtworkModel : PageModel
         if (id == null) return NotFound();
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var result = await DeleteArtwork(client, id);
 
         TempData["AnnounceMessage"] = result;

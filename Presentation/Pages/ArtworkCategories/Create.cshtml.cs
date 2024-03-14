@@ -39,14 +39,13 @@ namespace Presentation.Pages.ArtworkCategories
             return Page();
         }
 
-        [BindProperty]
-        public ArtworkCategoryAddition ArtworkCategory { get; set; } = default!;
-        
+        [BindProperty] public ArtworkCategoryAddition ArtworkCategory { get; set; } = default!;
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid) return Page();
             var client = _httpClientFactory.CreateClient();
             var endpoint = _artworkManage + "CreateCategory4Artwork";
 
@@ -82,8 +81,10 @@ namespace Presentation.Pages.ArtworkCategories
                 ModelState.Clear();
                 return RedirectToPage();
             }
+
             return Page();
         }
+
         public async Task<List<Tag>> GetTag(HttpClient client)
         {
             var endpoint = _tagManage + "GetTags";
@@ -113,6 +114,7 @@ namespace Presentation.Pages.ArtworkCategories
 
             return null;
         }
+
         private async Task<List<Artwork>> GetArtworks(HttpClient client)
         {
             var endpoint = _artworkManage + "GetArtworks";

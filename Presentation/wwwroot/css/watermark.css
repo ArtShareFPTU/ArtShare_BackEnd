@@ -1,8 +1,9 @@
 ﻿body {
 }
+
 .watermark-container {
     position: relative;
-    display: inline-block; 
+    display: inline-block;
 }
 
 .watermark {
@@ -17,7 +18,7 @@
     color: black;
 }
 
-    .watermark img {
-        width: 100%;
-        display: block; 
-    }
+.watermark img {
+    width: 100%;
+    display: block;
+}

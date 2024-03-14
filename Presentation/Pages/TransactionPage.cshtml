@@ -129,69 +129,69 @@
     </div>
 
 
-    <hr />
-    <div class="container">
-        <div style="width: 100%;">
-            <h1 style=" text-align: center;">Sold Items</h1>
-        </div>
-        <div class="row">
-            @if (@Model.orderdetail != null)
-            {
-                <div class="col-12 mb-3 mb-lg-5">
-                    <div class="position-relative card table-nowrap table-card">
-                        <div class="card-header align-items-center">
-                            <h5 class="mb-0">Latest Transactions</h5>
-                            <p class="mb-0 small text-muted">Processing</p>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead class="small text-uppercase bg-body text-muted">
-                                    <tr>
-                                        <th>Artwork Title</th>
-                                        <th>From</th>
-                                        <th>Date</th>
-                                        <th>Payment Method</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        decimal totalPrice = 0; // Khởi tạo biến tổng giá
+<hr/>
+<div class="container">
+    <div style="width: 100%;">
+        <h1 style=" text-align: center;">Sold Items</h1>
+    </div>
+    <div class="row">
+        @if (@Model.orderdetail != null)
+        {
+            <div class="col-12 mb-3 mb-lg-5">
+                <div class="position-relative card table-nowrap table-card">
+                    <div class="card-header align-items-center">
+                        <h5 class="mb-0">Latest Transactions</h5>
+                        <p class="mb-0 small text-muted">Processing</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead class="small text-uppercase bg-body text-muted">
+                            <tr>
+                                <th>Artwork Title</th>
+                                <th>From</th>
+                                <th>Date</th>
+                                <th>Payment Method</th>
+                                <th>Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @{
+                                decimal totalPrice = 0; // Khởi tạo biến tổng giá
 
-                                        foreach (var ord in Model.orderdetail)
-                                        {
-                                            totalPrice += ord.Price; // Cộng giá của mỗi mục vào tổng giá
-                                            <tr class="align-middle">
-                                                <td>
-                                                    @ord.Artwork.Title
-                                                </td>
-                                                <td>@ord.Order.Account.UserName</td>
-                                                <td>@ord.Order.PaymentDate</td>
-                                                <td>
-                                                    PayPal
-                                                </td>
-                                                <td>$@ord.Price </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
+                                foreach (var ord in Model.orderdetail)
+                                {
+                                    totalPrice += ord.Price; // Cộng giá của mỗi mục vào tổng giá
+                                    <tr class="align-middle">
+                                        <td>
+                                            @ord.Artwork.Title
+                                        </td>
+                                        <td>@ord.Order.Account.UserName</td>
+                                        <td>@ord.Order.PaymentDate</td>
+                                        <td>
+                                            PayPal
+                                        </td>
+                                        <td>$@ord.Price </td>
+                                    </tr>
+                                }
+                            }
+                            </tbody>
                         </table>
                     </div>
                     <div class="card-footer text-end">
                         <p class="btn btn-gray">Total: $@totalPrice</p>
                     </div>
                 </div>
-                </div>
-            }
-            else
-            {
-                <p>No artwork available.</p>
-            }
-        </div>
+            </div>
+        }
+        else
+        {
+            <p>No artwork available.</p>
+        }
     </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
 
     </script>
 </body>

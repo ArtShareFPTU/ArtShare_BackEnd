@@ -20,14 +20,17 @@ namespace Presentation.Pages
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
         }
+
         public AccountResponse Accounts { get; set; }
         [BindProperty] public List<Order> orders { get; set; }
         [BindProperty] public List<OrderDetail> orderdetail { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
             Guid id = Guid.Parse(GetIdFromJwt(key));
             var ord = await GetOrderByAccountId(id, client);
             var ordetails = await GetOrderDetailByAccountId(id, client);
@@ -40,8 +43,10 @@ namespace Presentation.Pages
                 orders = ord;
                 orderdetail = ordetails;
             }
+
             return Page();
         }
+
         private async Task<List<Order>> GetOrderByAccountId(Guid id, HttpClient client)
         {
             var endpoint = _orderManage + $"Order/GetOrderByAccountId/{id}";
@@ -53,8 +58,10 @@ namespace Presentation.Pages
 
                 return result;
             }
+
             return null;
         }
+
         private async Task<List<OrderDetail>> GetOrderDetailByAccountId(Guid id, HttpClient client)
         {
             var endpoint = _orderManage + $"Order/GetOrderDetailByAccountId/{id}";
@@ -66,8 +73,10 @@ namespace Presentation.Pages
 
                 return result;
             }
+
             return null;
         }
+
         public string GetIdFromJwt(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

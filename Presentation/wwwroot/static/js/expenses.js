@@ -66,7 +66,7 @@ $(document).ready(function () {
 
     };
 
-    var config = { responsive: true };
+    var config = {responsive: true};
 
     // Create the pie chart using Plotly
     Plotly.newPlot('expenseQuartlyReport', data, layout, config);

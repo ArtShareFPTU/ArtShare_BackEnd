@@ -29,7 +29,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Artwork.AccountId" class="control-label">Account ID</label>
-                        <input asp-for="Artwork.AccountId" value="@Model.Accounts.Id" class="form-control" readonly />
+                        <input asp-for="Artwork.AccountId" value="@Model.Accounts.Id" class="form-control" readonly/>
                         <span asp-validation-for="Artwork.AccountId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -74,7 +74,7 @@
                             }
                         </select>
                         <span asp-validation-for="Artwork.ArtworkTags" class="text-danger"></span>
-                        
+
 
                     </div>
                     <div class="form-group">
@@ -88,7 +88,3 @@
         </div>
     </div>
 </div>
-
-
-
-

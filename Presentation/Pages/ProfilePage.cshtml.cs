@@ -21,32 +21,17 @@ public class ProfilePage : PageModel
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
     }
+
     public AccountResponse Accounts { get; set; }
     public List<ArtworkRespone> Artwork { get; set; }
+
     public async Task<IActionResult> OnGetAsync()
     {
         var client = _httpClientFactory.CreateClient();
         var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         Guid id = Guid.Parse(GetIdFromJwt(key));
-        var account = await GetAccountById(id,client);
-        var artwork = await GetArtworkByArtistId(id,client);
-        if (account == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            Accounts = account;
-            Artwork = artwork;
-        }
-        return Page();
-    }
-    public async Task<IActionResult> OnGetArtistProfile(Guid id)
-    {
-        var client = _httpClientFactory.CreateClient();
-        var key = HttpContext.Session.GetString("Token");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var account = await GetAccountById(id, client);
         var artwork = await GetArtworkByArtistId(id, client);
         if (account == null)
@@ -58,21 +43,46 @@ public class ProfilePage : PageModel
             Accounts = account;
             Artwork = artwork;
         }
+
         return Page();
     }
+
+    public async Task<IActionResult> OnGetArtistProfile(Guid id)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        var account = await GetAccountById(id, client);
+        var artwork = await GetArtworkByArtistId(id, client);
+        if (account == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            Accounts = account;
+            Artwork = artwork;
+        }
+
+        return Page();
+    }
+
     private async Task<AccountResponse> GetAccountById(Guid id, HttpClient client)
     {
         var endpoint = _accountManage + $"Account/GetAccount/{id}";
         var response = await client.GetAsync(endpoint);
-        if(response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<AccountResponse>(content);
 
             return result;
         }
+
         return null;
     }
+
     private async Task<List<ArtworkRespone>> GetArtworkByArtistId(Guid artistId, HttpClient client)
     {
         var endpoint = _accountManage + $"Artwork/GetArtworksByArtistId/{artistId}";
@@ -84,6 +94,7 @@ public class ProfilePage : PageModel
 
             return result;
         }
+
         return null;
     }
 

@@ -22,10 +22,12 @@ namespace Presentation.Pages
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
             if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
             return Page();
         }
+
         public async Task<IActionResult> OnPost()
         {
             try
@@ -33,7 +35,8 @@ namespace Presentation.Pages
                 var client = _httpClientFactory.CreateClient();
                 var key = HttpContext.Session.GetString("Token");
                 if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
                 var multipartContent = new MultipartFormDataContent();
                 multipartContent.Add(new StringContent(Tag.Title), "Title");
@@ -64,6 +67,5 @@ namespace Presentation.Pages
                 return Page();
             }
         }
-
     }
 }

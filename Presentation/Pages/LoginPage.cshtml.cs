@@ -15,18 +15,16 @@ namespace Presentation.Pages
 {
     public class LoginPageModel : PageModel
     {
-		private readonly HttpClient _client = new HttpClient();
-		private readonly IConfiguration _configuration;
+        private readonly HttpClient _client = new HttpClient();
+        private readonly IConfiguration _configuration;
 
         public LoginPageModel(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        [BindProperty]
-		public  LoginAccountResponse accountResponse { get; set; }
-		[BindProperty]
-		public CreateAccountRequest createAccountRequest { get; set; }
+        [BindProperty] public LoginAccountResponse accountResponse { get; set; }
+        [BindProperty] public CreateAccountRequest createAccountRequest { get; set; }
 
         public async Task<IActionResult> OnPostLogin() {
 
@@ -69,25 +67,25 @@ namespace Presentation.Pages
 		}
 
 
-		public async Task<IActionResult> OnPostRegister()
-		{
+        public async Task<IActionResult> OnPostRegister()
+        {
+            var json = JsonSerializer.Serialize(createAccountRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("https://localhost:7168/api/Account/CreateAccount", content);
+            var data = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ServiceResponse<AccountResponse>>(data);
+            if (result.Success == false)
+            {
+                ViewData["Notification"] = result.Message;
+                return Page();
+            }
+            else
+            {
+                ViewData["Notification"] = result.Message;
+                return RedirectToPage("/LoginPage");
+            }
+        }
 
-			var json = JsonSerializer.Serialize(createAccountRequest);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			var response = await _client.PostAsync("https://localhost:7168/api/Account/CreateAccount", content);
-			var data = await response.Content.ReadAsStringAsync();
-			var result = JsonConvert.DeserializeObject<ServiceResponse<AccountResponse>>(data);
-			if (result.Success == false)
-			{
-				ViewData["Notification"] = result.Message;
-				return Page();
-			}
-			else
-			{
-				ViewData["Notification"] = result.Message;
-				return RedirectToPage("/LoginPage");
-			}
-		}
         private string GetUsernameFromJwt(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -108,6 +106,7 @@ namespace Presentation.Pages
 
             return userName;
         }
+
         private string GetAvatarFromJwt(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
