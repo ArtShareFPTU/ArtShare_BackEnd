@@ -42,14 +42,14 @@ public class CategoryController : ControllerBase
     {
         return await _categoryService.GetArtworkByCategoryId(categoryId);
     }
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost("create")]
     public async Task<IActionResult> CreateCategory([FromForm] CategoryCreation categoryCreation)
     {
         try
         {
-            var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
-            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);
+            /*var customer = _contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type.Contains("Id")).Value;
+            if (customer == null) return StatusCode(StatusCodes.Status401Unauthorized);*/
             var result = await _categoryService.AddCategoryAsync(categoryCreation);
             if (result is StatusCodeResult statusCodeResult)
             {
