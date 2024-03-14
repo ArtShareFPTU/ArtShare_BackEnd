@@ -92,15 +92,15 @@
             <div class="card cardQuickInfo">
                 <div class="card-body">
                     <div>
-                        <h3>29%</h3>
-                        <p>Total bounce rate</p>
+                        <h3>@Model.Accounts.Count() Users</h3>
+                        <p>New users registration</p>
                     </div>
                     <div>
-                        <i class="bi bi-globe-americas"></i>
+                        <i class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="single-page/index.html">
+                    <a asp-page="Accounts">
                         Read more <i class="bi bi-arrow-right-circle"></i>
                     </a>
                 </div>
@@ -111,22 +111,24 @@
             <div class="card cardQuickInfo">
                 <div class="card-body">
                     <div>
-                        <h3>499</h3>
-                        <p>New users registration</p>
+                        <h3>@Model.artworks.Count() Artworks</h3>
+                        <p>Total Artworks</p>
                     </div>
                     <div>
-                        <i class="bi bi-person-fill-add"></i>
+                        <i class="bi bi-image"></i>
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="single-page/index.html">
+                    <a asp-page="ManageArtwork">
                         Read more <i class="bi bi-arrow-right-circle"></i>
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 sm-mb-3">
+        
+
+        @*<div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 sm-mb-3">
             <div class="card cardQuickInfo">
                 <div class="card-body">
                     <div>
@@ -143,7 +145,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
     <!-- row for cardQuickInfo ends -->
 
@@ -490,113 +492,59 @@
                         <table class="table overflow-scroll table-hover">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    
                                     <th>Client</th>
-                                    <th>Order no</th>
-                                    <th>Product</th>
+                                    <th>Artwork</th>
                                     <th>Selling price</th>
-                                    <th>Payment mode</th>
-                                    <th>Date</th>
-                                    <th>Payment status</th>
+                                    <th>Order Date</th>
+                                    <th>Payment Method</th>
+                                    <th>Payment Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <input class="form-check-input" type="checkbox" />
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <span class="nameInitial">JD</span>&nbsp;&nbsp;John
-                                        Doe
-                                    </td>
-                                    <td>ORD123456</td>
-                                    <td>Example Product</td>
-                                    <td>49.99</td>
-                                    <td>Credit Card</td>
-                                    <td>2023-01-01</td>
-                                    <td>
-                                        <div class="badge badge-outline-success">
-                                            Approved
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach(var order in Model.orders)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (order.Order.Account.Avatar != null)    
+                                            {
+                                                <img src="@order.Order.Account.Avatar"
+                                                     class="productImg me-2"
+                                                     alt="..." />
+                                                <a>@order.Order.Account.UserName</a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/assets/img/avatar1.png"
+                                                     class="productImg me-2"
+                                                     alt="..." />
+                                                <a>@order.Order.Account.UserName</a>
+                                            }
+                                        </td>
+                                        <td><img style="width:120px;" src="@order.Artwork.Url" /></td>
+                                        <td>@order.Price</td>
+                                        <td>@order.Order.CreateDate.Value.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>@order.Order.PaymentMethod</td>
+                                        <td>@order.Order.PaymentDate.Value.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            @if (order.Order.Status.Equals("Completed"))
+                                            {
+                                                <div class="badge badge-outline-success">
+                                                    @order.Order.Status
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="badge badge-outline-danger">
+                                                    @order.Order.Status
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                
 
-                                <tr>
-                                    <td>
-                                        <input class="form-check-input" type="checkbox" />
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <span class="nameInitial">JS</span>&nbsp;&nbsp;Jane
-                                        Smith
-                                    </td>
-                                    <td>ORD789012</td>
-                                    <td>Another Product</td>
-                                    <td>29.99</td>
-                                    <td>PayPal</td>
-                                    <td>2023-02-15</td>
-                                    <td>
-                                        <div class="badge badge-outline-danger">Failed</div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input class="form-check-input" type="checkbox" />
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <span class="nameInitial">BJ</span>&nbsp;&nbsp;Bob
-                                        Johnson
-                                    </td>
-                                    <td>ORD345678</td>
-                                    <td>Special Item</td>
-                                    <td>99.99</td>
-                                    <td>Debit Card</td>
-                                    <td>2023-03-20</td>
-                                    <td>
-                                        <div class="badge badge-outline-success">
-                                            Approved
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input class="form-check-input" type="checkbox" />
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <span class="nameInitial">AB</span>&nbsp;&nbsp;Alice
-                                        Brown
-                                    </td>
-                                    <td>ORD901234</td>
-                                    <td>Unique Product</td>
-                                    <td>59.99</td>
-                                    <td>Bank Transfer</td>
-                                    <td>2023-04-10</td>
-                                    <td>
-                                        <div class="badge badge-outline-warning">
-                                            Pending
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input class="form-check-input" type="checkbox" />
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <span class="nameInitial">CG</span>&nbsp;&nbsp;Charlie Green
-                                    </td>
-                                    <td>ORD567890</td>
-                                    <td>Special Edition</td>
-                                    <td>79.99</td>
-                                    <td>Credit Card</td>
-                                    <td>2023-05-25</td>
-                                    <td>
-                                        <div class="badge badge-outline-success">
-                                            Approved
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

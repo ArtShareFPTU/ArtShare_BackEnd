@@ -7,6 +7,7 @@ using ModelLayer.DTOS.Response.Commons;
 using Newtonsoft.Json;
 using NuGet.Protocol.Plugins;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -38,13 +39,24 @@ namespace Presentation.Pages
 				var result = JsonConvert.DeserializeObject<ServiceResponse<string>>(data);
 				if(result.Data != null)
 				{
-                    HttpContext.Session.SetString("Token", result.Data);
-                    HttpContext.Session.SetString("Username", GetUsernameFromJwt(result.Data));
-                    if (GetAvatarFromJwt(result.Data) != null)
+                    var checkRole = GetRoleFromJwt(result.Data);
+                    if (checkRole == "User")
                     {
-                        HttpContext.Session.SetString("Avatar", GetAvatarFromJwt(result.Data));
+                        HttpContext.Session.SetString("Token", result.Data);
+                        HttpContext.Session.SetString("Username", GetUsernameFromJwt(result.Data));
+                        HttpContext.Session.SetString("Role", "User");
+                        if (GetAvatarFromJwt(result.Data) != null)
+                        {
+                            HttpContext.Session.SetString("Avatar", GetAvatarFromJwt(result.Data));
+                        }
+                        return RedirectToPage("/HomePage");
                     }
-                    return RedirectToPage("/HomePage");
+                    else if(checkRole == "Admin")
+                    {
+                        HttpContext.Session.SetString("Token", result.Data);
+                        HttpContext.Session.SetString("Role", "Admin");
+                        return RedirectToPage("/Admin/Index");
+                    }
                 }
 				else
 				{
@@ -115,6 +127,26 @@ namespace Presentation.Pages
             string ava = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Avatar")?.Value;
 
             return ava;
+        }
+        private string GetRoleFromJwt(string jwtToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
+
+            tokenHandler.ValidateToken(jwtToken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            }, out SecurityToken validatedToken);
+
+            var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
+
+            // Truy cập vào các thông tin trong payload
+            var roleClaim = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+            return roleClaim;
         }
     }
 }

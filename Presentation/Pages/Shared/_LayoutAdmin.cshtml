@@ -82,47 +82,34 @@
                     <!-- accounts -->
                     <p class="mt-2 mb-1 text-secondary text-small">DASHBOARD</p>
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active" aria-current="page">
+                        <a asp-page="Index" class="nav-link active" aria-current="page">
                             <i class="bi bi-house-door-fill me-2"></i>
-                            Home v.1
+                            Home
                         </a>
                     </li>
-                    <!-- todo -->
-                    <li class="d-none">
-                        <a href="index.html#" class="nav-link">
-                            <i class="bi bi-marker-tip me-2"></i>
-                            Widgets
-                        </a>
-                    </li>
-                    <!-- todo -->
-                    <li class="d-none">
-                        <a href="index.html#" class="nav-link">
-                            <i class="bi bi-ui-checks-grid me-2"></i>
-                            Forms
-                        </a>
-                    </li>
+                    
                     <!-- products -->
-                    <p class="mt-2 mb-1 text-secondary text-small">PRODUCTS</p>
+                    <p class="mt-2 mb-1 text-secondary text-small">MANAGEMENT</p>
                     <li>
-                        <a href="Accounts" class="nav-link">
+                        <a asp-page="Accounts" class="nav-link">
                             <i class="bi bi-table me-2"></i>
-                            Products
+                            Accounts
                         </a>
                     </li>
                     <li>
-                        <a href="sales/index.html" class="nav-link">
-                            <i class="bi bi-bank me-2"></i>
-                            Sales
+                        <a asp-page="ManageArtwork" class="nav-link">
+                            <i class="bi bi-image me-2"></i>
+                            Artworks
                         </a>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="expenses/index.html" class="nav-link">
                             <i class="bi bi-receipt me-2"></i>
                             Expense
                         </a>
-                    </li>
+                    </li>*@
 
-                    <!-- accounts -->
+                    @*<!-- accounts -->
                     <p class="mt-2 mb-1 text-secondary text-small">ACCOUNTS</p>
                     <li>
                         <a href="accounts/login/index.html" class="nav-link">
@@ -141,8 +128,8 @@
                             <i class="bi bi-at me-2"></i>
                             Registration
                         </a>
-                    </li>
-                    <!-- Theme -->
+                    </li>*@
+                    @*<!-- Theme -->
                     <p class="mt-2 mb-1 text-secondary text-small">THEME</p>
                     <li>
                         <a href="components/index.html" class="nav-link">
@@ -182,7 +169,7 @@
                             <i class="bi bi-file-earmark-text me-2"></i>
                             Documentation
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </nav>
@@ -302,7 +289,7 @@
                                             <div class="divider my-1"></div>
                                             <li>
                                                 <a class="dropdown-item"
-                                                   href="accounts/login/index.html">
+                                                    asp-page="Logout">
                                                     <small>
                                                         <i class="bi bi-box-arrow-right me-2"></i>Sign out
                                                     </small>

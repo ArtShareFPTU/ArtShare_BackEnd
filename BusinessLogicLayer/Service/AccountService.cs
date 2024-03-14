@@ -104,6 +104,11 @@ public class AccountService : IAccountService
             response.Success = false;
             response.Message = "Wrong password!";
         }
+        else if (user.Status == AccountStatus.Inactive.ToString())
+        {
+            response.Success = false;
+            response.Message = "User is inactive!";
+        }
         else
         {
             response.Success = true;
@@ -120,7 +125,7 @@ public class AccountService : IAccountService
             {
                 new Claim("Id", ua.Id.ToString()),
                 new Claim("Username", ua.UserName.ToString()),
-                new Claim("Role", "User")
+                new Claim(ClaimTypes.Role, "User")
                 
             };
         if (ua.Avatar != null)

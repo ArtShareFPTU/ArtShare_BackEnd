@@ -59,8 +59,7 @@
             <h1 style=" text-align: center;">Transaction History</h1>
         </div>
         <div class="row">
-            @if (@Model.orders != null)
-            {
+            
             <div class="col-12 mb-3 mb-lg-5">
                 <div class="position-relative card table-nowrap table-card">
                     <div class="card-header align-items-center">
@@ -81,7 +80,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    @{
+                                @if (@Model.orders != null)
+                                {
+                                    {
                                         int total = 0;
                                         foreach (var ord in Model.orders)
                                         {
@@ -110,6 +111,11 @@
                                             </tr>
                                         }
                                     }
+                                }
+                                else
+                                {
+                                    <p>No artwork available.</p>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -118,11 +124,7 @@
                     </div>
                 </div>
             </div>
-            }
-            else
-            {
-                <p>No artwork available.</p>
-            }
+           
         </div>
     </div>
 

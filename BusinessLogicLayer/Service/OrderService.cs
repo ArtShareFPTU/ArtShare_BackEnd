@@ -87,4 +87,9 @@ public class OrderService : IOrderService
         var ord = await _orderDetailRepository.GetOrderDetailByAccountId(id);
         return ord;
     }
+    public async Task<List<OrderDetail>> GetOrderDetails()
+    {
+        var ord = await _orderDetailRepository.GetAllOrderDetailAsync();
+        return ord;
+    }
 }

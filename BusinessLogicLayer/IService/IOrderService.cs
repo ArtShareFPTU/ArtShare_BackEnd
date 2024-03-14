@@ -14,4 +14,5 @@ public interface IOrderService
     Task UpdateOrderAsync(Order Order);
     Task DeleteOrderAsync(Guid id);
     Task<List<OrderDetail>> GetOrderDetailByAccountId(Guid id);
+    Task<List<OrderDetail>> GetOrderDetails();
 }

@@ -20,7 +20,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<Order>> GetAllOrderAsync()
     {
-        return await _context.Orders.ToListAsync();
+        return await _context.Orders.Include(c => c.Account).Include(c => c.OrderDetails).ThenInclude(a => a.Artwork).ToListAsync();
     }
 
     public async Task<Order> GetOrderByIdAsync(Guid id)
