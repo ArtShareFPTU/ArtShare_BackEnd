@@ -20,9 +20,9 @@ namespace Presentation.Pages
 
         public string Username { get; set; }
         [BindProperty] public InboxCreation inbox { get; set; }
-        [BindProperty] public InboxDetailResponse InboxDetailResponse { get; set; } = default!;
-        [BindProperty] public List<InboxReceiverResponse> InboxReceiverResponses { get; set; } = default!;
-        [BindProperty] public List<InboxSenderResponse> InboxSenderResponses { get; set; } = default!;
+        public InboxDetailResponse InboxDetailResponse { get; set; } = default!;
+        public List<InboxReceiverResponse> InboxReceiverResponses { get; set; } = new List<InboxReceiverResponse>();
+        public List<InboxSenderResponse> InboxSenderResponses { get; set; } = new List<InboxSenderResponse>();
 
         public InboxPageModel(IConfiguration configuration)
         {
@@ -30,15 +30,26 @@ namespace Presentation.Pages
             _client = new HttpClient();
         }
 
-        public async Task OnGet()
+        public async Task OnGet(Guid? id)
         {
             var accessToken = HttpContext.Session.GetString("Token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            if (id != null)
+            {
+                var response = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxDetail/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
+                }
+            }
             
             Username = GetUserNameFromJwt(accessToken);
-            var id = GetIdFromJwt(accessToken);
+            var userId = GetIdFromJwt(accessToken);
             var responseReceiver =
-                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxReceiverResponses/{id}");
+                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxReceiverResponses/{userId}");
+            InboxReceiverResponses = new List<InboxReceiverResponse>();
             if (responseReceiver.IsSuccessStatusCode)
             {
                 var contentReceiver = await responseReceiver.Content.ReadAsStringAsync();
@@ -46,7 +57,8 @@ namespace Presentation.Pages
             }
 
             var responseSender =
-                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxSenderResponses/{id}");
+                await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxSenderResponses/{userId}");
+            InboxSenderResponses = new List<InboxSenderResponse>();
             if (responseSender.IsSuccessStatusCode)
             {
                 var contentReceiver = await responseSender.Content.ReadAsStringAsync();
@@ -163,36 +175,6 @@ namespace Presentation.Pages
             string user = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Username")?.Value;
 
             return user;
-        }
-        
-        public async Task<IActionResult> OnGetSend(Guid id)
-        {
-            var accessToken = HttpContext.Session.GetString("Token");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var response = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxDetail/{id}");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
-            }
-            OnGet();
-            return Page();
-        }
-        
-        public async Task<IActionResult> OnGetReceiver(Guid id)
-        {
-            var accessToken = HttpContext.Session.GetString("Token");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var response = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxDetail/{id}");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
-            }
-            await OnGet();
-            return Page();
         }
         
     }
