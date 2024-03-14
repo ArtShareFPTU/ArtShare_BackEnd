@@ -47,4 +47,18 @@ public class OderDetailRepository : IOrderDetailRepository
         var orderdetail = await _context.OrderDetails.Include(c => c.Order).ThenInclude(a => a.Account).Include(c => c.Artwork).Where(c => c.Artwork.AccountId == accountId).ToListAsync();
         return orderdetail;
     }
+    public async Task<List<Artwork>> GetArtworksByOrderId(Guid orderId)
+    {
+        var orderDetails = await _context.OrderDetails
+            .Where(od => od.OrderId == orderId)
+            .ToListAsync();
+
+        var artworkIds = orderDetails.Select(od => od.ArtworkId).ToList();
+
+        var artworks = await _context.Artworks
+            .Where(a => artworkIds.Contains(a.Id))
+            .ToListAsync();
+
+        return artworks;
+    }
 }

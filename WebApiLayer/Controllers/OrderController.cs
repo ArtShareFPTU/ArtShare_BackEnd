@@ -1,4 +1,5 @@
 using BusinessLogicLayer.IService;
+using BusinessLogicLayer.Service;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS;
@@ -64,5 +65,17 @@ public class OrderController : ControllerBase
     public async Task<ActionResult<List<OrderDetail>>> GetOrderDetails()
     {
         return await _orderService.GetOrderDetails();
+    }
+
+    [HttpGet("{orderId}")]
+    public async Task<ActionResult<List<Artwork>>> GetArtWorkByOderId(Guid orderId)
+    {
+        return await _orderService.GetArtworksByOrderId(orderId);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Order>> GetOrderById(Guid id)
+    {
+        return await _orderService.GetOrderByIdAsync(id);
     }
 }
