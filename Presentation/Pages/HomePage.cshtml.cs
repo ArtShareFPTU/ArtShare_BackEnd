@@ -29,6 +29,8 @@ public class HomePage : PageModel
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var artworks = await GetArtworks(client);
+        var categorys = await GetCategorys(client);
+        Category = categorys;
         if (artworks == null)
         {
             return NotFound();

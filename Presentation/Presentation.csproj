@@ -34,6 +34,19 @@
         <_ContentIncludedByDefault Remove="Pages\Tags\Details.cshtml"/>
         <_ContentIncludedByDefault Remove="Pages\Tags\Edit.cshtml"/>
         <_ContentIncludedByDefault Remove="Pages\Tags\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\ArtworkCategories\Create.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkCategories\Delete.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkCategories\Details.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkCategories\Edit.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Artworks\Create.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Artworks\Delete.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Artworks\Details.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Artworks\Edit.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\Artworks\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkTags\Create.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkTags\Delete.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkTags\Details.cshtml" />
+        <_ContentIncludedByDefault Remove="Pages\ArtworkTags\Edit.cshtml" />
     </ItemGroup>
 
 </Project>
