@@ -18,6 +18,11 @@ public class OrderService : IOrderService
         _orderDetailRepository = orderDetailRepository;
     }
 
+    public Task<Order> GetOrderByToken(string token)
+    {
+        return _OrderRepository.GetOrderByTokenAsync(token);
+    }
+
     public async Task<List<Order>> GetAllOrderAsync()
     {
         return await _OrderRepository.GetAllOrderAsync();
@@ -58,14 +63,16 @@ public class OrderService : IOrderService
     public async Task UpdateToken(string token, string result)
     {
         var order = await _OrderRepository.GetOrderByTokenAsync(token);
-        if (result.Equals("Success"))
+        if (result.Equals("Completed"))
         {
             order.PaymentDate = DateTime.Now;
+            order.TotalFee = order.OrderDetails.Sum(o => o.Price);
             order.Status = OrderStatus.Completed.ToString();            
         }
         else
         {
             order.PaymentDate = DateTime.Now;
+            order.TotalFee = 0;
             order.Status = OrderStatus.Cancelled.ToString();           
         }
         await _OrderRepository.UpdateOrderAsync(order); 
@@ -91,5 +98,15 @@ public class OrderService : IOrderService
     {
         var ord = await _orderDetailRepository.GetAllOrderDetailAsync();
         return ord;
+    }
+
+    public async Task<List<Artwork>> GetArtworksByOrderId(Guid orderId)
+    {
+        return await _orderDetailRepository.GetArtworksByOrderId(orderId);
+    }
+
+    public async Task<Order> GetOrderByIdAsync(Guid id)
+    {
+        return await _OrderRepository.GetOrderByIdAsync(id);
     }
 }

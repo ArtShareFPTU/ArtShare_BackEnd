@@ -1,4 +1,5 @@
 using BusinessLogicLayer.IService;
+using BusinessLogicLayer.Service;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
 using ModelLayer.DTOS;
@@ -37,6 +38,13 @@ public class OrderController : ControllerBase
     {
         return await _orderService.GetOrderDetailByAccountId(id);
     }
+    
+    [HttpGet("{token}")]
+    public async Task<Order> GetOrderByToken(string token)
+    {
+        return await _orderService.GetOrderByToken(token);
+    }
+    
     // PUT: api/Order/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut]
@@ -64,5 +72,17 @@ public class OrderController : ControllerBase
     public async Task<ActionResult<List<OrderDetail>>> GetOrderDetails()
     {
         return await _orderService.GetOrderDetails();
+    }
+
+    [HttpGet("{orderId}")]
+    public async Task<ActionResult<List<Artwork>>> GetArtWorkByOderId(Guid orderId)
+    {
+        return await _orderService.GetArtworksByOrderId(orderId);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Order>> GetOrderById(Guid id)
+    {
+        return await _orderService.GetOrderByIdAsync(id);
     }
 }

@@ -13,7 +13,8 @@ public class PaymentSuccessPage : PageModel
 {
     private readonly HttpClient _client = new HttpClient();
 
-    [BindProperty] public OrderDetail OrderDetail { get; set; }
+    [BindProperty] public Order Order { get; set; }
+    public string SaveToken { get; set; }
 
     public async void OnGet(string token, string PayerID)
     {
@@ -24,6 +25,8 @@ public class PaymentSuccessPage : PageModel
         };
         var json = JsonConvert.SerializeObject(result);
 
+        SaveToken = token;
+        
         var key = HttpContext.Session.GetString("Token");
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -33,29 +36,36 @@ public class PaymentSuccessPage : PageModel
         }
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(string token)
     {
         var key = HttpContext.Session.GetString("Token");
         if (key == null || key.Length == 0) return RedirectToPage("./Logout");
-        _client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-        var imageId = HttpContext.Session.GetString("imageId");
-        if (!Guid.TryParse(imageId, out Guid id))
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+        
+        
+        // Lấy Order có chứa artwork
+        var order = await _client.GetAsync($"https://localhost:7168/api/Order/GetOrderByToken/{token}");
+        if (order.IsSuccessStatusCode)
         {
-            // Handle invalid imageId
-            return BadRequest("Invalid imageId");
+            var jsonString = await order.Content.ReadAsStringAsync();
+            Order = JsonConvert.DeserializeObject<Order>(jsonString);
         }
 
-        string url = "https://localhost:7168/api/Artwork/DownloadImage?id=" + id;
-        var downloadImage = await _client.GetAsync(url);
-        if (downloadImage.IsSuccessStatusCode)
+        //dùng vong lặp trong trường hợp mua nhiều ảnh
+        // nhung chỉ tai dc 1 ảnh do return
+        foreach (var item in Order.OrderDetails)
         {
-            var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
-            fileName = RemovePaidVersionFromFileName(fileName);
-            var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
-            return File(fileData, "image/jpg", fileName);
+            string url = "https://localhost:7168/api/Artwork/DownloadImage?id=" + item.ArtworkId;
+            var downloadImage = await _client.GetAsync(url);
+            if (downloadImage.IsSuccessStatusCode)
+            {
+                var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
+                fileName = RemovePaidVersionFromFileName(fileName);
+                var fileData = await downloadImage.Content.ReadAsByteArrayAsync(); 
+                return File(fileData, "image/jpg", fileName);
+            }
         }
-
+        
         return Page();
     }
 
