@@ -18,6 +18,7 @@ namespace Presentation.Pages
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
+        public string Username { get; set; }
         [BindProperty] public InboxCreation inbox { get; set; }
         [BindProperty] public InboxDetailResponse InboxDetailResponse { get; set; } = default!;
         [BindProperty] public List<InboxReceiverResponse> InboxReceiverResponses { get; set; } = default!;
@@ -33,7 +34,8 @@ namespace Presentation.Pages
         {
             var accessToken = HttpContext.Session.GetString("Token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
+            
+            Username = GetUserNameFromJwt(accessToken);
             var id = GetIdFromJwt(accessToken);
             var responseReceiver =
                 await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxReceiverResponses/{id}");
@@ -85,10 +87,18 @@ namespace Presentation.Pages
                 formData.Add(new StringContent(inbox.SenderId.ToString()), "SenderId");
                 formData.Add(new StringContent(inbox.ReceiverId.ToString()), "ReceiverId");
                 formData.Add(new StringContent(inbox.Title), "Title");
-                formData.Add(new StreamContent(Request.Form.Files[0].OpenReadStream()), "file",
-                    Request.Form.Files[0].FileName);
                 formData.Add(new StringContent(inbox.Content), "Content");
 
+                if (Request.Form.Files.Count > 0)
+                {
+                    formData.Add(new StreamContent(Request.Form.Files[0].OpenReadStream()), "file",
+                        Request.Form.Files[0].FileName);
+                }
+                else
+                {
+                    formData.Add(new StringContent(string.Empty), "Image");
+                }
+                
                 // Send the message
                 var response = await _client.PostAsync("https://localhost:7168/api/Inbox/CreateInbox", formData);
 
@@ -134,6 +144,27 @@ namespace Presentation.Pages
             return userId;
         }
 
+        public string GetUserNameFromJwt(string jwtToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
+
+            tokenHandler.ValidateToken(jwtToken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            }, out SecurityToken validatedToken);
+
+            var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
+
+            // Truy cập vào các thông tin trong payload
+            string user = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Username")?.Value;
+
+            return user;
+        }
+        
         public async Task<IActionResult> OnGetSend(Guid id)
         {
             var accessToken = HttpContext.Session.GetString("Token");

@@ -37,6 +37,11 @@ public class CategoryController : ControllerBase
     {
         return await _categoryService.GetCategoryByArtworkId(artworkId);
     }
+    [HttpGet("{categoryId}")]
+    public async Task<ActionResult<List<Artwork>>> GetArtWorkByCategoryId(Guid categoryId)
+    {
+        return await _categoryService.GetArtworkByCategoryId(categoryId);
+    }
     [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateCategory([FromForm] CategoryCreation categoryCreation)
