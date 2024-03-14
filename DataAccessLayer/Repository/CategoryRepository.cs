@@ -36,7 +36,20 @@ public class CategoryRepository : ICategoryRepository
             categories.Add(await _context.Categories.FirstOrDefaultAsync(c => c.Id.Equals(category)));
         return categories;
     }
+    public async Task<List<Artwork>> GetArtworkByCategoryId(Guid id)
+    {
+        var artworkCategories = await _context.ArtworkCategories
+            .Where(c => c.CategoryId == id)
+            .ToListAsync();
 
+        var artworkIds = artworkCategories.Select(c => c.ArtworkId).ToList();
+
+        var artworks = await _context.Artworks
+            .Where(a => artworkIds.Contains(a.Id))
+            .ToListAsync();
+
+        return artworks;
+    }
     public async Task<IActionResult> AddCategoryAsync(CategoryCreation category)
     {
         var categoryExist = await _context.Categories.AnyAsync(c => c.Title.ToLower().Equals(category.Title.ToLower()));
