@@ -90,9 +90,18 @@
             }
         </div>
         <div class="cart-header">
-            <a asp-page="CheckoutPage">
-                <i style="    font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
-            </a>
+            @if (@Context.Session.GetString("Token") != null)
+            {
+                <a asp-page="CheckoutPage">
+                    <i style="font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
+                </a>
+            }
+            else
+            {
+                <a>
+                    <i style="font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
+                </a>
+            }
         </div>
     </div>
 </nav>

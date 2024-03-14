@@ -208,4 +208,12 @@
             openTab.click();
         </script>
 
+<script>
+    document.getElementById('receiverUsernameInput').addEventListener('input', function(event) {
+        if (this.value === '@Model.Username') {
+            this.value = ''; // Xóa giá trị nếu là "user1"
+        }
+    });
+</script>
+
 </body>
