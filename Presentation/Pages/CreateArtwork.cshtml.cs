@@ -57,19 +57,21 @@ public class CreateArtworkModel : PageModel
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
         var endpoint = _artworkManage + "CreateArtwork/create";
 
+        var selectedCategoryIds = Request.Form["Artwork.ArtworkCategories"].Where(id => !string.IsNullOrEmpty(id)).Select(Guid.Parse).ToList();
+        var selectedTagIds = Request.Form["Artwork.ArtworkTags"].Where(id => !string.IsNullOrEmpty(id)).Select(Guid.Parse).ToList();
+
         // Create multipart form data content
         var multipartContent = new MultipartFormDataContent();
 
         // Add artwork data as JSON string
-
         var artworkData = new ArtworkCreation
         {
             AccountId = Guid.Parse(Request.Form["Artwork.AccountId"]),
             Title = Request.Form["Artwork.Title"],
             Description = Request.Form["Artwork.Description"],
             Fee = decimal.Parse(Request.Form["Artwork.Fee"]),
-            ArtworkCategories = Request.Form["Artwork.ArtworkCategories"].Select(id => Guid.Parse(id)).ToList(),
-            ArtworkTags = Request.Form["Artwork.ArtworkTags"].Select(id => Guid.Parse(id)).ToList()
+            ArtworkCategories = selectedCategoryIds,
+            ArtworkTags = selectedTagIds
         };
 
         multipartContent.Add(new StringContent(artworkData.AccountId.ToString()), "AccountId");
@@ -78,6 +80,7 @@ public class CreateArtworkModel : PageModel
         multipartContent.Add(new StringContent("0"), "Likes");
         multipartContent.Add(new StringContent(artworkData.Fee.ToString()), "Fee");
         multipartContent.Add(new StringContent("Active"), "Status");
+
         foreach (var categoryId in artworkData.ArtworkCategories)
         {
             multipartContent.Add(new StringContent(categoryId.ToString()), "ArtworkCategories");
@@ -132,6 +135,7 @@ public class CreateArtworkModel : PageModel
 
         return Page();
     }
+
 
     private async Task<AccountResponse> GetAccounts(HttpClient client)
     {
