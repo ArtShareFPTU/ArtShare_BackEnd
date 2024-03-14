@@ -55,10 +55,10 @@ public class AccountService : IAccountService
         await _accountRepository.AddAccountAsync(account);
     }
 
-    public async Task<ServiceResponse<AccountResponse>> UpdateAccount(Guid id, UpdateAccountRequest account)
+    public async Task<ServiceResponse<AccountResponse>> UpdateAccount(UpdateAccountRequest account)
     {
         var respone = new ServiceResponse<AccountResponse>();
-        var checkid = await _accountRepository.GetAccountById(id);
+        var checkid = await _accountRepository.GetAccountById(account.Id);
         if (checkid == null)
         {
             respone.Success = false;
@@ -69,7 +69,7 @@ public class AccountService : IAccountService
         {
             // use Mapper ` request => DB
             var data = _mapper.Map(account, checkid);
-            var setdata = await _accountRepository.UpdateAccount(data);
+            var setdata = await _accountRepository.UpdateAccount(account);
             respone.Success = true;
             respone.Message = "Update successfully";
             respone.Data = _mapper.Map<AccountResponse>(setdata);
@@ -199,4 +199,8 @@ public class AccountService : IAccountService
         return respone;
     }
 
+    public async Task<List<Account>> GetTop5AccountsNumArtwork()
+    {
+        return await _accountRepository.GetTop5AccountsNumArtwork();
+    }
 }

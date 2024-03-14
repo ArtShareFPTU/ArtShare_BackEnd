@@ -11,6 +11,7 @@ namespace Presentation.Pages.Admin
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _adminManage = "https://localhost:7168/api/";
         [BindProperty] public List<AccountResponse> Accounts { get; set; }
+        [BindProperty] public List<Account> AccountsTop5 { get; set; }
         [BindProperty] public List<OrderDetail> orders { get; set; } = default!;
         [BindProperty] public IEnumerable<Artwork> artworks { get; set; }
         public IndexModel(IHttpClientFactory httpClientFactory)
@@ -26,6 +27,7 @@ namespace Presentation.Pages.Admin
             var account = await GetAccounts(client);
             var art = await GetArtworks(client);
             var ord = await GetOrderDetails(client);
+            var acctop = await GetTop5Accounts(client);
             if (account == null)
             {
                 return NotFound();
@@ -35,6 +37,7 @@ namespace Presentation.Pages.Admin
                 Accounts = account;
                 artworks = art;
                 orders = ord;
+                AccountsTop5 = acctop;
             }
             return Page();
         }
@@ -72,6 +75,19 @@ namespace Presentation.Pages.Admin
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<List<OrderDetail>>(content);
+
+                return result;
+            }
+            return null;
+        }
+        private async Task<List<Account>> GetTop5Accounts(HttpClient client)
+        {
+            var endpoint = _adminManage + "Account/GetTop5Account";
+            var response = await client.GetAsync(endpoint);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<Account>>(content);
 
                 return result;
             }

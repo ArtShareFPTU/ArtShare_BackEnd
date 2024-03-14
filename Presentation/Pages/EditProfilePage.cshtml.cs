@@ -71,7 +71,8 @@ namespace Presentation.Pages.Shared
                 return NotFound();
             }
 
-            await Update(Account.Id, client);
+            await Update(client);
+
 
             return RedirectToPage("ProfilePage");
         }
@@ -91,31 +92,33 @@ namespace Presentation.Pages.Shared
             return null;
         }
 
-        public async Task<AccountResponse> Update(Guid id, HttpClient client)
+        public async Task<AccountResponse> Update(HttpClient client)
         {
-            var json = JsonConvert.SerializeObject(UpdateAccount);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var endpoint = _accountManage + $"UpdateAccount/{id}";
-            // Create multipart form data content
-            var multipartContent = new MultipartFormDataContent();
+            /*var json = JsonConvert.SerializeObject(UpdateAccount);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");*/
+            var endpoint = _accountManage + "UpdateAccount/update";
+
+            
 
             // Add artwork data as JSON string
 
-            /*var accountData = new UpdateAccountRequest
+            var accountData = new UpdateAccountRequest
             {
-                FullName = UpdateAccount.FullName,
-                UserName = UpdateAccount.UserName,
-                Description = UpdateAccount.Description,
+                Id = Guid.Parse(Request.Form["UpdateAccount.Id"]),
+                FullName = Request.Form["UpdateAccount.FullName"],
+                Description = Request.Form["UpdateAccount.Description"],
             };
-            multipartContent.Add(new StringContent(accountData.FullName), "FullName");
-            multipartContent.Add(new StringContent(accountData.UserName), "UserName");
-            multipartContent.Add(new StringContent(accountData.Description), "Description");*/
-            /*if (Request.Form.Files.Count > 0)
+            // Create multipart form data content
+            var multipartContent = new MultipartFormDataContent();
+                multipartContent.Add(new StringContent(accountData.FullName), "FullName");
+                multipartContent.Add(new StringContent(accountData.Id.ToString()), "Id");
+                multipartContent.Add(new StringContent(accountData.Description), "Description");
+            if (Request.Form.Files.Count > 0)
             {
                 var imageFile = Request.Form.Files[0];
                 multipartContent.Add(new StreamContent(imageFile.OpenReadStream()), "Avatar", imageFile.FileName);
-            }*/
-            var response = await client.PutAsync(endpoint, content /*multipartContent*/);
+            }
+            var response = await client.PutAsync(endpoint, /*content*/ multipartContent);
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadAsStringAsync();

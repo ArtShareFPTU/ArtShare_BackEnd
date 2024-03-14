@@ -9,6 +9,7 @@ namespace ModelLayer.DTOS.Request.Account;
 
 public class UpdateAccountRequest
 {
+    public Guid Id { get; set; }
     public string? Description { get; set; }
     public string? FullName { get; set; }
     public IFormFile? Avatar { get; set; }

@@ -73,17 +73,17 @@
         <div class="card cardQuickInfo">
             <div class="card-body">
                 <div>
-                    <h3>$ 200K</h3>
-                    <p>Total earnings</p>
+                    <h3>@Model.orders.Count() Transactions</h3>
+                    <p>Total Transaction</p>
                 </div>
                 <div>
-                    <i class="bi bi-currency-dollar"></i>
+                        <i class="bi bi-receipt"></i>
                 </div>
             </div>
             <div class="card-footer text-center">
-                <a href="sales/index.html">
+                @*<a href="sales/index.html">
                     Read more <i class="bi bi-arrow-right-circle"></i>
-                </a>
+                </a>*@
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
     <!-- row for cardQuickInfo ends -->
 
 <div class="row mt-4 sm-mt-0">
-<div class="col-lg-8">
+@*<div class="col-lg-8">
     <!-- purhcase_sales_history -->
     <div class="card sm-mb-3">
         <div class="card-body">
@@ -229,11 +229,11 @@
         </div>
     </div>
     <!-- user_demographics ends -->
-</div>
+</div>*@
 
 <div class="col-lg-4 col-sm-12 col-xs-12">
     <!-- visitors' browser -->
-    <div class="card sm-mt-3">
+    @*<div class="card sm-mt-3">
         <div class="card-body">
             <h6 class="card-title">Visitors' Browser</h6>
             <div class="d-flex justify-content-center">
@@ -398,7 +398,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <!-- recently added products ends -->
 </div>
 </div>
@@ -414,24 +414,40 @@
                     <a href="messenger/index.html" class="amj-a">Read all</a>
                 </small>
             </h6>
+                    @foreach(var acc in Model.AccountsTop5)
+                    {
+                        <div class="media py-2 my-2">
+                            @if(acc.Avatar != null)
+                            {
+                                <img src="@acc.Avatar"
+                                     class="rounded-circle me-3"
+                                     height="45px"
+                                     width="45px"
+                                alt="" />
+                            }
+                            else
+                            {
+                                <img src="./assets/img/avatar1.png"
+                                     class="rounded-circle me-3"
+                                     height="45px"
+                                     width="45px"
+                                     alt="" />
+                            }
+                            
+                            <div class="media-body">
+                                <h6 class="mt-0">
+                                    @acc.UserName
+                                    <span>@acc.Birthday.Value.Date.ToString("dd - MMM/yyyy")</span>
+                                </h6>
+                                <p>Number of Artworks: @acc.Artworks.Count()</p>
+                                <p>Comments: @acc.Comments.Count()</p>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                    }
+            
 
-            <div class="media py-2 my-2">
-                <img src="static/img/profile/profile-1.jpg"
-                     class="rounded-circle me-3"
-                     height="45px"
-                     width="45px"
-                     alt=""/>
-                <div class="media-body">
-                    <h6 class="mt-0">
-                        John Doe
-                        <span>Jan. 1, 2024</span>
-                    </h6>
-                    <p>Hello, how are you doing today?</p>
-                </div>
-            </div>
-            <div class="divider"></div>
-
-            <div class="media py-2 my-2">
+            @*<div class="media py-2 my-2">
                 <img src="static/img/profile/profile-2.jpg"
                      class="rounded-circle me-3"
                      height="45px"
@@ -493,14 +509,14 @@
                             <p>Just wanted to say a quick hello!</p>
                         </div>
                     </div>
-                    <div class="divider"></div>
-                </div>
-            </div>
+                    <div class="divider"></div>*@
         </div>
+    </div>
+</div>
         <div class="col-lg-9">
             <div class="card mt-4 sm-mt-3">
                 <div class="card-body table-responsive">
-                    <h6 class="card-title">Order Status</h6>
+                    <h6 class="card-title">Order List</h6>
                     <div class="table-responsive">
                         <table class="table overflow-scroll table-hover">
                             <thead>
@@ -520,7 +536,8 @@
                                 {
                                     <tr>
                                         <td>
-                                            @if (order.Order.Account.Avatar != null)    
+                                            <a>@order.Order.Account.UserName</a>
+                                            @*@if (order.Order.Account.Avatar != null)    
                                             {
                                                 <img src="@order.Order.Account.Avatar"
                                                      class="productImg me-2"
@@ -533,13 +550,13 @@
                                                      class="productImg me-2"
                                                      alt="..." />
                                                 <a>@order.Order.Account.UserName</a>
-                                            }
+                                            }*@
                                         </td>
                                         <td><img style="width:120px;" src="@order.Artwork.Url" /></td>
                                         <td>@order.Price</td>
-                                        <td>@order.Order.CreateDate.Value.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>@order.Order.CreateDate</td>
                                         <td>@order.Order.PaymentMethod</td>
-                                        <td>@order.Order.PaymentDate.Value.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>@order.Order.PaymentDate</td>
                                         <td>
                                             @if (order.Order.Status.Equals("Completed"))
                                             {

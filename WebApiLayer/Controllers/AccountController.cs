@@ -82,10 +82,10 @@ public class AccountController : ControllerBase
 
     // PUT: api/Account/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<ServiceResponse<AccountResponse>> UpdateAccount([FromBody] UpdateAccountRequest account, Guid id)
+    [HttpPut("update")]
+    public async Task<ServiceResponse<AccountResponse>> UpdateAccount([FromForm] UpdateAccountRequest account)
     {
-        var response = await _accountService.UpdateAccount(id, account);
+        var response = await _accountService.UpdateAccount(account);
         return response;
     }
 
@@ -113,5 +113,11 @@ public class AccountController : ControllerBase
     public async Task DeleteAccount(Guid id)
     {
         await _accountService.DeleteAccountAsync(id);
+    }
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<List<Account>> GetTop5Account()
+    {
+        return await _accountService.GetTop5AccountsNumArtwork();
     }
 }

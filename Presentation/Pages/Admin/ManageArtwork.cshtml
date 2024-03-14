@@ -96,6 +96,7 @@
                         <table class="table overflow-scroll table-hover">
                             <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Username</th>
                                     <th>Title</th>
                                     <th>Image</th>
@@ -106,9 +107,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @{decimal stt = 0;}
                                 @foreach (var acc in Model.artworks)
                                 {
+                                    stt += 1;
                                     <tr>
+                                        <td>@stt</td>
                                         <td>@acc.Account.UserName</td>
                                         <td>@acc.Title</td>
                                         <td><img style="width:120px;" src="@acc.Url" /></td>
