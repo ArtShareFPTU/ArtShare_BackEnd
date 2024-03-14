@@ -6,6 +6,7 @@ namespace BusinessLogicLayer.IService;
 
 public interface IOrderService
 {
+    Task<Order> GetOrderByToken(string token);
     Task<List<Order>> GetAllOrderAsync();
     Task<List<Order>> GetOrderByAccountId(Guid id);
     Task<Order> AddOrderAsync(List<Carts> cartsList, Guid customerId);

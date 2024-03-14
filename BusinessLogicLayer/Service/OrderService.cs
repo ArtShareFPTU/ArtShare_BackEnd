@@ -18,6 +18,11 @@ public class OrderService : IOrderService
         _orderDetailRepository = orderDetailRepository;
     }
 
+    public Task<Order> GetOrderByToken(string token)
+    {
+        return _OrderRepository.GetOrderByTokenAsync(token);
+    }
+
     public async Task<List<Order>> GetAllOrderAsync()
     {
         return await _OrderRepository.GetAllOrderAsync();

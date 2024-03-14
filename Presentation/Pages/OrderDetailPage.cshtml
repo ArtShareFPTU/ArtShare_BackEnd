@@ -1,6 +1,7 @@
 ﻿@page
 @model Presentation.Pages.OrderDetailPageModel
 @{
+    ViewData["Title"] = "OrderDetailPage";
 }
 <style>
     body {
@@ -111,14 +112,22 @@
     <div class="card card-1 " style="width:65%; margin-top:50px;">
         <div class="card-header bg-white">
             <div class="media flex-sm-row flex-column-reverse justify-content-between  ">
-                <div class="col my-auto"> <h4 class="mb-0">Thanks for your Order!</h4> </div>
-                <div class="col-auto text-center  my-auto pl-0 pt-sm-4"> <img class="img-fluid my-auto align-items-center mb-0 pt-3" src="https://i.etsystatic.com/25412764/r/il/054f4c/2803626738/il_794xN.2803626738_qecc.jpg" width="115" height="115"> </div>
+                <div class="col my-auto">
+                    <h4 class="mb-0">Thanks for your Order!</h4>
+                </div>
+                <div class="col-auto text-center  my-auto pl-0 pt-sm-4">
+                    <img class="img-fluid my-auto align-items-center mb-0 pt-3" src="https://i.etsystatic.com/25412764/r/il/054f4c/2803626738/il_794xN.2803626738_qecc.jpg" width="115" height="115">
+                </div>
             </div>
         </div>
         <div class="card-body">
             <div class="row justify-content-between mb-3">
-                <div class="col-auto"> <h6 class="color-1 mb-0 change-color">Orders</h6> </div>
-                <div class="col-auto  "> <small>Receipt Voucher : 1KAU9-84UIL</small> </div>
+                <div class="col-auto">
+                    <h6 class="color-1 mb-0 change-color">Orders</h6>
+                </div>
+                <div class="col-auto  ">
+                    <small>Receipt Voucher : 1KAU9-84UIL</small>
+                </div>
             </div>
             @foreach (var item in Model.Artwork)
             {
@@ -127,12 +136,23 @@
                         <div class="card card-2">
                             <div class="card-body">
                                 <div class="media">
-                                    <div class="sq align-self-center "> <img class="img-fluid  my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="@Html.DisplayFor(modelItem => item.Url)" width="135" height="135" /> </div>
+                                    <div class="sq align-self-center ">
+                                        <img class="img-fluid  my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="@Html.DisplayFor(modelItem => item.Url)" width="135" height="135"/>
+                                    </div>
                                     <div class="media-body my-auto text-right">
                                         <div class="row  my-auto flex-column flex-md-row">
-                                            <div class="col my-auto"> <h6 class="mb-0"> @Html.DisplayFor(modelItem => item.Title)</h6>  </div>
-                                            <div class="col-auto my-auto"> <small>@Html.DisplayFor(modelItem => item.Account.FullName) </small></div>
-                                            <div class="col my-auto"> <a href="#">donwload</a></div>
+                                            <div class="col my-auto">
+                                                <h6 class="mb-0"> @Html.DisplayFor(modelItem => item.Title)</h6>
+                                            </div>
+                                            <div class="col-auto my-auto">
+                                                <small>@Html.DisplayFor(modelItem => item.Account.FullName) </small>
+                                            </div>
+                                            <div class="col my-auto">
+                                                <form asp-page-handler="Download" method="post">
+                                                    <input hidden="hidden" name="id" value="@item.Id">
+                                                    <button type="submit"> DownLoad</button>
+                                                </form>
+                                            </div>
                                             <div class="col my-auto">
                                                 <h6 class="mb-0">$ @Html.DisplayFor(modelItem => item.Fee)</h6>
                                             </div>
@@ -145,24 +165,38 @@
                     </div>
                 </div>
             }
-           
-            
-            
+
             <div class="row  ">
-                <div class="col"><p class="mb-1"> Invoice Number : @Html.DisplayFor(modle => modle.Order.Id)</p><p class="mb-1">Invoice Date : @Html.DisplayFor(modle => modle.Order.PaymentDate)</p><p class="mb-1">Recepits Voucher:18KU-62IIK</p></div>
+                <div class="col">
+                    <p class="mb-1"> Invoice Number : @Html.DisplayFor(modle => modle.Order.Id)</p>
+                    <p class="mb-1">Invoice Date : @Html.DisplayFor(modle => modle.Order.PaymentDate)</p>
+                    <p class="mb-1">Recepits Voucher:18KU-62IIK</p>
+                </div>
             </div>
         </div>
         <div class="card-footer">
             <div class="jumbotron-fluid">
                 <div class="row justify-content-between ">
-                    <div class="col-sm-auto col-auto my-auto"><img class="img-fluid my-auto align-self-center " src="https://i.etsystatic.com/25412764/r/il/054f4c/2803626738/il_794xN.2803626738_qecc.jpg" width="115" height="115"></div>
-                    <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold">TOTAL PAID</h2></div>
-                    <div class="col-auto my-auto ml-auto"><h1 class="display-3 ">$ @Html.DisplayFor(modle => modle.Order.TotalFee)</h1></div>
+                    <div class="col-sm-auto col-auto my-auto">
+                        <img class="img-fluid my-auto align-self-center " src="https://i.etsystatic.com/25412764/r/il/054f4c/2803626738/il_794xN.2803626738_qecc.jpg" width="115" height="115">
+                    </div>
+                    <div class="col-auto my-auto ">
+                        <h2 class="mb-0 font-weight-bold">TOTAL PAID</h2>
+                    </div>
+                    <div class="col-auto my-auto ml-auto">
+                        <h1 class="display-3 ">$ @Html.DisplayFor(modle => modle.Order.TotalFee)</h1>
+                    </div>
                 </div>
                 <div class="row mb-3 mt-3 mt-md-0">
-                    <div class="col-auto border-line"> <small class="text-white">PAN:AA02hDW7E</small></div>
-                    <div class="col-auto border-line"> <small class="text-white">CIN:UMMC20PTC </small></div>
-                    <div class="col-auto "><small class="text-white">GSTN:268FD07EXX </small> </div>
+                    <div class="col-auto border-line">
+                        <small class="text-white">PAN:AA02hDW7E</small>
+                    </div>
+                    <div class="col-auto border-line">
+                        <small class="text-white">CIN:UMMC20PTC </small>
+                    </div>
+                    <div class="col-auto ">
+                        <small class="text-white">GSTN:268FD07EXX </small>
+                    </div>
                 </div>
             </div>
         </div>

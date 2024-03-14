@@ -40,5 +40,38 @@ namespace Presentation.Pages
             }
 
         }
+        
+        public async Task<IActionResult> OnPostDownload(Guid id)
+        {
+            var key = HttpContext.Session.GetString("Token");
+            if (key == null || key.Length == 0) return RedirectToPage("./Logout");
+            _client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+
+            string url = "https://localhost:7168/api/Artwork/DownloadImage?id=" + id;
+            var downloadImage = await _client.GetAsync(url);
+            if (downloadImage.IsSuccessStatusCode)
+            {
+                var fileName = downloadImage.Content.Headers.ContentDisposition.FileName;
+                fileName = RemovePaidVersionFromFileName(fileName);
+                var fileData = await downloadImage.Content.ReadAsByteArrayAsync();
+                return File(fileData, "image/jpg", fileName);
+            }
+            return Page();
+        }
+
+        private string RemovePaidVersionFromFileName(string fileName)
+        {
+            const string paidVersion = "-Paid-version";
+
+            int paidVersionIndex = fileName.IndexOf(paidVersion);
+            if (paidVersionIndex != -1)
+            {
+                // Loại bỏ phần "Paid version" và khoảng trắng phía sau nếu có
+                fileName = fileName.Remove(paidVersionIndex, paidVersion.Length).TrimEnd();
+            }
+
+            return fileName;
+        }
     }
 }

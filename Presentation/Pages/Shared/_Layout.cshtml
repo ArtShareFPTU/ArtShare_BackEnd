@@ -79,7 +79,7 @@
             }
         </div>
         <div class="cart-header">
-            @if (@Context.Session.GetString("Token") != null)
+            @if (@Context.Session.GetString("cart") != null)
             {
                 <a asp-page="CheckoutPage">
                     <i style="font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
