@@ -120,9 +120,18 @@
         white-space: nowrap;
         display: flex;
         overflow: hidden;
-        margin-left: 30px;
+        margin:0 30px;
+        align-content: center;
     }
-
+    .category-container button{
+            padding: 8px 18px;
+            margin-left:5px;
+            font-size: large;
+            border: none;
+            background-color: #2c2c2c;
+            color: white;
+            border-radius: 5px;
+    }
     .category-box a {
         text-decoration: none;
         padding: 8px;
@@ -138,7 +147,7 @@
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 25px;
+        width: 30px;
         background: transparent;
         border: none;
         color: black;
@@ -193,17 +202,23 @@
 
 <body>
     <div class="category-box">
+        @* <div class="category-container">
+            <a href="#">category 1</a>
+            <a href="#">category 2</a>
+            <a href="#">category 3</a>
+            <a href="#">category 4</a>
+            <a href="#">category 5</a>
+            
+        </div> *@
         <div class="category-container">
-            <a href="#">category 1</a>
-            <a href="#">category 2</a>
-            <a href="#">category 3</a>
-            <a href="#">category 4</a>
-            <a href="#">category 5</a>
-            @* <a href="#">category 1</a>
-            <a href="#">category 2</a>
-            <a href="#">category 3</a>
-            <a href="#">category 4</a>
-            <a href="#">category 5</a>
+            @foreach (var item in Model.Category)
+            {
+                <form  asp-page-handler="CategoryById" method="post">
+                    <input type="hidden" name="categoryId" value="@Html.DisplayFor(modelItem => item.Id)" />
+                    <button  type="submit">@Html.DisplayFor(modelItem => item.Title)</button>
+                </form>
+                
+            }
             <a href="#">category 1</a>
             <a href="#">category 2</a>
             <a href="#">category 3</a>
@@ -218,7 +233,7 @@
             <a href="#">category 2</a>
             <a href="#">category 3</a>
             <a href="#">category 4</a>
-            <a href="#">category 5</a> *@
+            <a href="#">category 5</a>
         </div>
 
         <button class="scroll-left">&lt;</button>
