@@ -94,4 +94,14 @@ public class OrderService : IOrderService
         var ord = await _orderDetailRepository.GetAllOrderDetailAsync();
         return ord;
     }
+
+    public async Task<List<Artwork>> GetArtworksByOrderId(Guid orderId)
+    {
+        return await _orderDetailRepository.GetArtworksByOrderId(orderId);
+    }
+
+    public async Task<Order> GetOrderByIdAsync(Guid id)
+    {
+        return await _OrderRepository.GetOrderByIdAsync(id);
+    }
 }
