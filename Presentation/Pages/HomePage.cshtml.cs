@@ -37,6 +37,11 @@ public class HomePage : PageModel
         }
         else
         {
+            var checkRole = HttpContext.Session.GetString("Role");
+            if(checkRole == "Admin")
+            {
+                return RedirectToPage("/Admin/Index");
+            }
             if (search == null || search.Length == 0)
                 Artwork = artworks;
             else

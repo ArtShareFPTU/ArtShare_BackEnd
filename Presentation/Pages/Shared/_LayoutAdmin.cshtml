@@ -71,125 +71,112 @@
                 <img src="static/img/logo-40x25.png" alt=""/>
             </span>
 
-            <!-- for SM screen - close -->
-            <span class="d-none" id="sidebarUntoggleBtn">
-                <i class="bi bi-x-circle-fill"></i>
-            </span>
-        </div>
-        <!-- first a ends -->
-        <hr/>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <!-- accounts -->
-            <p class="mt-2 mb-1 text-secondary text-small">DASHBOARD</p>
-            <li class="nav-item">
-                <a href="index.html" class="nav-link active" aria-current="page">
-                    <i class="bi bi-house-door-fill me-2"></i>
-                    Home v.1
-                </a>
-            </li>
-            <!-- todo -->
-            <li class="d-none">
-                <a href="index.html#" class="nav-link">
-                    <i class="bi bi-marker-tip me-2"></i>
-                    Widgets
-                </a>
-            </li>
-            <!-- todo -->
-            <li class="d-none">
-                <a href="index.html#" class="nav-link">
-                    <i class="bi bi-ui-checks-grid me-2"></i>
-                    Forms
-                </a>
-            </li>
-            <!-- products -->
-            <p class="mt-2 mb-1 text-secondary text-small">PRODUCTS</p>
-            <li>
-                <a href="Accounts" class="nav-link">
-                    <i class="bi bi-table me-2"></i>
-                    Products
-                </a>
-            </li>
-            <li>
-                <a href="sales/index.html" class="nav-link">
-                    <i class="bi bi-bank me-2"></i>
-                    Sales
-                </a>
-            </li>
-            <li>
-                <a href="expenses/index.html" class="nav-link">
-                    <i class="bi bi-receipt me-2"></i>
-                    Expense
-                </a>
-            </li>
+                    <!-- for SM screen - close -->
+                    <span class="d-none" id="sidebarUntoggleBtn">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </span>
+                </div>
+                <!-- first a ends -->
+                <hr />
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!-- accounts -->
+                    <p class="mt-2 mb-1 text-secondary text-small">DASHBOARD</p>
+                    <li class="nav-item">
+                        <a asp-page="Index" class="nav-link active" aria-current="page">
+                            <i class="bi bi-house-door-fill me-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    
+                    <!-- products -->
+                    <p class="mt-2 mb-1 text-secondary text-small">MANAGEMENT</p>
+                    <li>
+                        <a asp-page="Accounts" class="nav-link">
+                            <i class="bi bi-table me-2"></i>
+                            Accounts
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-page="ManageArtwork" class="nav-link">
+                            <i class="bi bi-image me-2"></i>
+                            Artworks
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="expenses/index.html" class="nav-link">
+                            <i class="bi bi-receipt me-2"></i>
+                            Expense
+                        </a>
+                    </li>*@
 
-            <!-- accounts -->
-            <p class="mt-2 mb-1 text-secondary text-small">ACCOUNTS</p>
-            <li>
-                <a href="accounts/login/index.html" class="nav-link">
-                    <i class="bi bi-box-arrow-right me-2"></i>
-                    Sign in
-                </a>
-            </li>
-            <li>
-                <a href="profile/index.html" class="nav-link">
-                    <i class="bi bi-person-circle me-2"></i>
-                    My Profile
-                </a>
-            </li>
-            <li>
-                <a href="accounts/registration/index.html" class="nav-link">
-                    <i class="bi bi-at me-2"></i>
-                    Registration
-                </a>
-            </li>
-            <!-- Theme -->
-            <p class="mt-2 mb-1 text-secondary text-small">THEME</p>
-            <li>
-                <a href="components/index.html" class="nav-link">
-                    <i class="bi bi-file-font me-2"></i>
-                    Components
-                </a>
-            </li>
-            <!-- others -->
-            <p class="mt-2 mb-1 text-secondary text-small">OTHERS</p>
-            <li>
-                <a href="404/index.html" class="nav-link">
-                    <i class="bi bi-4-circle-fill me-2"></i>
-                    404
-                </a>
-            </li>
-            <li>
-                <a href="blank-page/index.html" class="nav-link">
-                    <i class="bi bi-file-earmark-fill me-2"></i>
-                    Blank Page
-                </a>
-            </li>
-            <li>
-                <!-- "sys logs = timeline" -->
-                <a href="system-logs/index.html" class="nav-link">
-                    <i class="bi bi-body-text me-2"></i>
-                    Sys Logs
-                </a>
-            </li>
-            <li>
-                <a href="faq/index.html" class="nav-link">
-                    <i class="bi bi-person-raised-hand me-2"></i>
-                    FAQ
-                </a>
-            </li>
-            <li>
-                <a href="documentation/index.html" class="nav-link">
-                    <i class="bi bi-file-earmark-text me-2"></i>
-                    Documentation
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<!-- #mainSidebar ends -->
-<!-- #pageContent -->
-<div id="pageContent" class="d-flex flex-column">
-    <!-- topnav -->
+                    @*<!-- accounts -->
+                    <p class="mt-2 mb-1 text-secondary text-small">ACCOUNTS</p>
+                    <li>
+                        <a href="accounts/login/index.html" class="nav-link">
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            Sign in
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile/index.html" class="nav-link">
+                            <i class="bi bi-person-circle me-2"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="accounts/registration/index.html" class="nav-link">
+                            <i class="bi bi-at me-2"></i>
+                            Registration
+                        </a>
+                    </li>*@
+                    @*<!-- Theme -->
+                    <p class="mt-2 mb-1 text-secondary text-small">THEME</p>
+                    <li>
+                        <a href="components/index.html" class="nav-link">
+                            <i class="bi bi-file-font me-2"></i>
+                            Components
+                        </a>
+                    </li>
+                    <!-- others -->
+                    <p class="mt-2 mb-1 text-secondary text-small">OTHERS</p>
+                    <li>
+                        <a href="404/index.html" class="nav-link">
+                            <i class="bi bi-4-circle-fill me-2"></i>
+                            404
+                        </a>
+                    </li>
+                    <li>
+                        <a href="blank-page/index.html" class="nav-link">
+                            <i class="bi bi-file-earmark-fill me-2"></i>
+                            Blank Page
+                        </a>
+                    </li>
+                    <li>
+                        <!-- "sys logs = timeline" -->
+                        <a href="system-logs/index.html" class="nav-link">
+                            <i class="bi bi-body-text me-2"></i>
+                            Sys Logs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq/index.html" class="nav-link">
+                            <i class="bi bi-person-raised-hand me-2"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="documentation/index.html" class="nav-link">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            Documentation
+                        </a>
+                    </li>*@
+                </ul>
+            </div>
+        </nav>
+        <!-- #mainSidebar ends -->
+        <!-- #pageContent -->
+        <div id="pageContent" class="d-flex flex-column">
+            <!-- topnav -->
 
     <div id="topNavigation" class="px-3 py-2">
         <div class="container-fluid">
@@ -225,108 +212,108 @@
                                 </a>
                             </li>
 
-                            <!-- Email -->
-                            <li>
-                                <a href="mail/index.html" class="nav-link text-white">
-                                    <i class="bi bi-envelope">
-                                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-info rounded-circle">
-                                            <span class="visually-hidden">New alerts</span>
-                                        </span>
-                                    </i>
-                                </a>
-                            </li>
-                            <!-- notification -->
-                            <li>
-                                <a href="index.html#"
-                                   class="nav-link text-white"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="bi bi-bell">
-                                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-info rounded-circle">
-                                            <span class="visually-hidden">New alerts</span>
-                                        </span>
-                                    </i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <!-- Email -->
                                     <li>
-                                        <a class="dropdown-item" href="messenger/index.html">
-                                            <small>
-                                                <i class="bi bi-envelope me-2"></i>10 new
-                                                messages
-                                            </small>
+                                        <a href="mail/index.html" class="nav-link text-white">
+                                            <i class="bi bi-envelope">
+                                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-info rounded-circle">
+                                                    <span class="visually-hidden">New alerts</span>
+                                                </span>
+                                            </i>
                                         </a>
                                     </li>
+                                    <!-- notification -->
                                     <li>
-                                        <a class="dropdown-item"
-                                           href="single-page/index.html">
-                                            <small>
-                                                <i class="bi bi-file-pdf me-2"></i>5 new
-                                                reports
-                                            </small>
+                                        <a href="index.html#"
+                                           class="nav-link text-white"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            <i class="bi bi-bell">
+                                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-info rounded-circle">
+                                                    <span class="visually-hidden">New alerts</span>
+                                                </span>
+                                            </i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item" href="messenger/index.html">
+                                                    <small>
+                                                        <i class="bi bi-envelope me-2"></i>10 new
+                                                        messages
+                                                    </small>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="single-page/index.html">
+                                                    <small>
+                                                        <i class="bi bi-file-pdf me-2"></i>5 new
+                                                        reports
+                                                    </small>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- for profile page -->
+                                    <li>
+                                        <a href="index.html#"
+                                           class="nav-link text-white"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            <i class="bi bi-person-circle"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item" href="profile/index.html">
+                                                    <small>
+                                                        <i class="bi bi-person-fill me-2"></i>My Profile
+                                                    </small>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="system-logs/index.html">
+                                                    <small>
+                                                        <i class="bi bi-body-text me-2"></i>Acitivity Log
+                                                    </small>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="profile/index.html">
+                                                    <small>
+                                                        <i class="bi bi-gear-fill me-2"></i>Settings
+                                                    </small>
+                                                </a>
+                                            </li>
+                                            <!-- <hr class="my-1"> -->
+                                            <div class="divider my-1"></div>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    asp-page="Logout">
+                                                    <small>
+                                                        <i class="bi bi-box-arrow-right me-2"></i>Sign out
+                                                    </small>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- for modal applications -->
+                                    <li>
+                                        <a href="index.html#"
+                                           class="nav-link text-white"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modalApplication">
+                                            <i class="bi bi-boxes"></i>
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <!-- for profile page -->
-                            <li>
-                                <a href="index.html#"
-                                   class="nav-link text-white"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="bi bi-person-circle"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="profile/index.html">
-                                            <small>
-                                                <i class="bi bi-person-fill me-2"></i>My Profile
-                                            </small>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="system-logs/index.html">
-                                            <small>
-                                                <i class="bi bi-body-text me-2"></i>Acitivity Log
-                                            </small>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="profile/index.html">
-                                            <small>
-                                                <i class="bi bi-gear-fill me-2"></i>Settings
-                                            </small>
-                                        </a>
-                                    </li>
-                                    <!-- <hr class="my-1"> -->
-                                    <div class="divider my-1"></div>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="accounts/login/index.html">
-                                            <small>
-                                                <i class="bi bi-box-arrow-right me-2"></i>Sign out
-                                            </small>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- for modal applications -->
-                            <li>
-                                <a href="index.html#"
-                                   class="nav-link text-white"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#modalApplication">
-                                    <i class="bi bi-boxes"></i>
-                                </a>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- topnav ends -->
-    @RenderBody()
+            <!-- topnav ends -->
+            @RenderBody()
 
     <!-- footer -->
     <!-- divider for footer -->

@@ -2,6 +2,7 @@ using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ModelLayer.BussinessObject;
+using ModelLayer.Enum;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
@@ -49,7 +50,7 @@ public class AccountRepository : IAccountRepository
     public async Task DeleteAccountAsync(Guid id)
     {
         var account = await _context.Accounts.FindAsync(id);
-        _context.Accounts.Remove(account);
+        account.Status = AccountStatus.Inactive.ToString();
         await _context.SaveChangesAsync();
     }
 

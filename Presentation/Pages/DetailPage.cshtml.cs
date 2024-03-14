@@ -25,6 +25,7 @@ public class DetailPageModel : PageModel
     private readonly IHttpClientFactory _httpClientFactory;
 
     public AccountResponse Accounts { get; set; }
+    public string Username { get; set; }
 
     public DetailPageModel(IConfiguration configuration, IHttpClientFactory httpClientFactory)
     {
@@ -39,9 +40,12 @@ public class DetailPageModel : PageModel
 
     public async Task OnGetAsync(Guid id)
     {
-        //var accessToken = HttpContext.Session.GetString("account");
-        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
+        var accessToken = HttpContext.Session.GetString("Token");
+        if (accessToken != null)
+        {
+            Username = GetUsernameFromJwt(accessToken);
+        }
+        
         var artwork = await _client.GetAsync($"https://localhost:7168/api/Artwork/GetArtworkById/{id}");
         if (artwork.IsSuccessStatusCode)
         {
@@ -324,5 +328,26 @@ public class DetailPageModel : PageModel
         string userId = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
 
         return userId;
+    }
+    
+    public string GetUsernameFromJwt(string jwtToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["Tokens:Key"]);
+
+        tokenHandler.ValidateToken(jwtToken, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        }, out SecurityToken validatedToken);
+
+        var jwtTokenDecoded = (JwtSecurityToken)validatedToken;
+
+        // Truy c?p vào các thông tin trong payload
+        string user = jwtTokenDecoded.Claims.FirstOrDefault(x => x.Type == "Username")?.Value;
+
+        return user;
     }
 }

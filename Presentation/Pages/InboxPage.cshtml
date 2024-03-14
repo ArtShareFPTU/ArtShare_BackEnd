@@ -81,7 +81,7 @@
         <form asp-page="InBoxPage" asp-page-handler="send" method="post" enctype="multipart/form-data">
             <div class="w3-panel">
                 <label>To</label>
-                <input name="inbox.ReceiverId" class="w3-input w3-border w3-margin-bottom" type="text">
+                <input name="inbox.ReceiverId" class="w3-input w3-border w3-margin-bottom" type="text" id="receiverUsernameInput">
                 <label>Subject</label>
                 <input name="inbox.Title" class="w3-input w3-border w3-margin-bottom" type="text">
                 <label>File</label>
@@ -207,5 +207,13 @@
             var openTab = document.getElementById("firstTab");
             openTab.click();
         </script>
+
+<script>
+    document.getElementById('receiverUsernameInput').addEventListener('input', function(event) {
+        if (this.value === '@Model.Username') {
+            this.value = '';
+        }
+    });
+</script>
 
 </body>
