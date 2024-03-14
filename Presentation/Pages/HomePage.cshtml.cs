@@ -56,7 +56,24 @@ public class HomePage : PageModel
 
         return Page();
     }
+    public async Task<IActionResult> OnGetSearch(string? search)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var key = HttpContext.Session.GetString("Token");
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
 
+        var endpoint = _artworkManage + $"GetArtworkFromSearch/resource?search={search}";
+        var response = await client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<Artwork>>(content);
+
+            Artwork = result;
+        }
+        return RedirectToPage("/HomePage");
+    }
     private async Task<List<Artwork>> GetArtworks(HttpClient client)
     {
         var endpoint = _artworkManage + "GetArtworks";
