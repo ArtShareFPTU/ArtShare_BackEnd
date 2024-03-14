@@ -58,14 +58,16 @@ public class OrderService : IOrderService
     public async Task UpdateToken(string token, string result)
     {
         var order = await _OrderRepository.GetOrderByTokenAsync(token);
-        if (result.Equals("Success"))
+        if (result.Equals("Completed"))
         {
             order.PaymentDate = DateTime.Now;
+            order.TotalFee = order.OrderDetails.Sum(o => o.Price);
             order.Status = OrderStatus.Completed.ToString();            
         }
         else
         {
             order.PaymentDate = DateTime.Now;
+            order.TotalFee = 0;
             order.Status = OrderStatus.Cancelled.ToString();           
         }
         await _OrderRepository.UpdateOrderAsync(order); 

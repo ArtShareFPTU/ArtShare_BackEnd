@@ -53,11 +53,11 @@
         <i class="fa fa-inbox w3-margin-right"></i>Send<i class="fa fa-caret-down w3-margin-left"></i>
     </a>
     <div id="Demo2" class="w3-hide w3-animate-left" style="    max-height: 464px; overflow-y: auto;">
-        @if (Model.InboxSenderResponses != null)
+        @if (Model.InboxSenderResponses.Count != 0)
         {
             @foreach (var item in Model.InboxSenderResponses)
             {
-                <a asp-page-handler="Send" asp-route-id="@item.Id">
+                <a asp-page-handler="Receiver" asp-route-id="@item.Id">
                     <div class="w3-container">
                         <span class="w3-opacity w3-large">@item.Receiver</span>
                         <h6>Subject: <span>@item.Title</span></h6>

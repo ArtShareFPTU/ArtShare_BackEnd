@@ -15,7 +15,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order> GetOrderByTokenAsync(string token)
     {
-        return await _context.Orders.FirstOrDefaultAsync(o => o.Token.Equals(token));
+        return await _context.Orders.Include(o => o.OrderDetails).FirstOrDefaultAsync(o => o.Token.Equals(token));
     }
 
     public async Task<List<Order>> GetAllOrderAsync()

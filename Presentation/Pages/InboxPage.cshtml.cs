@@ -42,7 +42,7 @@ namespace Presentation.Pages
             if (responseReceiver.IsSuccessStatusCode)
             {
                 var contentReceiver = await responseReceiver.Content.ReadAsStringAsync();
-                InboxReceiverResponses = JsonConvert.DeserializeObject<List<InboxReceiverResponse>>(contentReceiver);
+                InboxReceiverResponses =  JsonConvert.DeserializeObject<List<InboxReceiverResponse>>(contentReceiver);
             }
 
             var responseSender =
@@ -176,8 +176,24 @@ namespace Presentation.Pages
                 var content = await response.Content.ReadAsStringAsync();
                 InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
             }
-
+            OnGet();
             return Page();
         }
+        
+        public async Task<IActionResult> OnGetReceiver(Guid id)
+        {
+            var accessToken = HttpContext.Session.GetString("Token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _client.GetAsync($"https://localhost:7168/api/Inbox/GetInboxDetail/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                InboxDetailResponse = JsonConvert.DeserializeObject<InboxDetailResponse>(content);
+            }
+            await OnGet();
+            return Page();
+        }
+        
     }
 }
