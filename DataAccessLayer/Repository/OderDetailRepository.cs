@@ -55,7 +55,7 @@ public class OderDetailRepository : IOrderDetailRepository
 
         var artworkIds = orderDetails.Select(od => od.ArtworkId).ToList();
 
-        var artworks = await _context.Artworks
+        var artworks = await _context.Artworks.Include(c => c.Account)
             .Where(a => artworkIds.Contains(a.Id))
             .ToListAsync();
 
