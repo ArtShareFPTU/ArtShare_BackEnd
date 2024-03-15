@@ -27,7 +27,7 @@
                 <hr/>
                 <form method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
+                    <div class="form-group" hidden="hidden">
                         <label asp-for="Artwork.AccountId" class="control-label">Account ID</label>
                         <input asp-for="Artwork.AccountId" value="@Model.Accounts.Id" class="form-control" readonly />
                         <span asp-validation-for="Artwork.AccountId" class="text-danger"></span>
@@ -49,12 +49,11 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Artwork.Fee" class="control-label">Fee</label>
-                        <input asp-for="Artwork.Fee" class="form-control" />
+                        <input asp-for="Artwork.Fee" class="form-control" type="number"/>
                         <span asp-validation-for="Artwork.Fee" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Artwork.ArtworkCategories" class="form-label">Category IDs</label>
-                        <a asp-page="/CreateCategory" class="btn btn-link">Create New Category</a>
                         @foreach (var item in Model.Categories)
                         {
                             <div class="form-check">
