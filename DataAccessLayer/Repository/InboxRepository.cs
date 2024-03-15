@@ -34,20 +34,24 @@ public class InboxRepository : IInboxRepository
 
     public async Task<IActionResult> CreateInboxAsync(InboxCreation item)
     {
-        var fileExtension = Path.GetExtension(item.file.FileName)?.ToLower();
-        if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
-            && fileExtension != ".bmp" && fileExtension != ".gif" && fileExtension != ".tiff"
-            && fileExtension != ".webp" && fileExtension != ".heic" && fileExtension != ".pdf")
-            return new StatusCodeResult(415);
-        byte[] fileBytes;
-        using (MemoryStream memoryStream = new MemoryStream())
+        string? fileData = null; 
+        if (item.file != null)
         {
-            await item.file.CopyToAsync(memoryStream);
-            fileBytes = memoryStream.ToArray();
+            var fileExtension = Path.GetExtension(item.file.FileName)?.ToLower();
+            if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png"
+                && fileExtension != ".bmp" && fileExtension != ".gif" && fileExtension != ".tiff"
+                && fileExtension != ".webp" && fileExtension != ".heic" && fileExtension != ".pdf")
+                return new StatusCodeResult(415);
+            byte[] fileBytes;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await item.file.CopyToAsync(memoryStream);
+                fileBytes = memoryStream.ToArray();
+            }
+            var imgbbPremiumURL = await UploadToImgBB(fileBytes, item.Title + "(Request)");
+            if (imgbbPremiumURL == null) return new StatusCodeResult(500);
+            fileData = imgbbPremiumURL.ToString();
         }
-        var imgbbPremiumURL = await UploadToImgBB(fileBytes, item.Title + "(Request)");
-        if (imgbbPremiumURL == null) return new StatusCodeResult(500);
-        string fileData = imgbbPremiumURL.ToString();
         var inbox = new Inbox
         {
             Id = Guid.NewGuid(),
