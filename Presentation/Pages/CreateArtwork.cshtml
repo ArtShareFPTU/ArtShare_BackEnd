@@ -53,7 +53,7 @@
                         <span asp-validation-for="Artwork.Fee" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Artwork.ArtworkCategories" class="form-label">Category IDs</label>
+                        <label asp-for="Artwork.ArtworkCategories" class="form-label">Category</label>
                         @foreach (var item in Model.Categories)
                         {
                             <div class="form-check">
@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Artwork.ArtworkTags" class="form-label">Tag IDs</label>
+                        <label asp-for="Artwork.ArtworkTags" class="form-label">Tag</label>
                         <a asp-page="/CreateTag" class="btn btn-link">Create New Tag</a>
                         @foreach (var item in Model.Tags)
                         {
