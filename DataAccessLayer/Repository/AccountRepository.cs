@@ -8,16 +8,19 @@ using ModelLayer.Enum;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
 using System.Text.Json;
+using ModelLayer.DTOS.Pagination;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
 public class AccountRepository : IAccountRepository
 {
     private readonly ArtShareContext _context;
+    protected readonly DbSet<Account> _dbSet;
 
     public AccountRepository()
     {
         _context = new ArtShareContext();
+        _dbSet = _context.Set<Account>();
     }
 
     public async Task<List<Account>> GetAllAccountAsync()
@@ -158,5 +161,24 @@ public class AccountRepository : IAccountRepository
     {
         return await _context.Accounts.Include(c => c.Artworks).OrderByDescending(c => c.Artworks.Count()).Include(c => c.FollowFollowers)
             .Include(c => c.FollowArtists).Take(5).ToListAsync();
+    }
+
+    public async Task<Pagination<Account>> ToPagination(int pageindex = 0)
+    {
+        var itemCount = await _dbSet.CountAsync();
+        var items = await _dbSet
+            .Skip(pageindex * 5)
+            .Take(5)
+            .AsNoTracking()
+            .ToListAsync();
+        var result = new Pagination<Account>()
+        {
+            PageIndex = pageindex,
+            PageSize = 5,
+            TotalItemCount = itemCount,
+            Items = items,
+        };
+
+        return result;
     }
 }

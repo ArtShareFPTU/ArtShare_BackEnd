@@ -4,6 +4,7 @@ using DataAccessLayer.BussinessObject.IRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Account;
 using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
@@ -32,7 +33,11 @@ public class AccountService : IAccountService
         var response = await _accountRepository.GetAllAccountAsync();
         return _mapper.Map<List<AccountResponse>>(response);
     }
-
+    public async Task<Pagination<AccountResponse>> GetAllAccountPagination(int pageindex = 0)
+    {
+        var response = await _accountRepository.ToPagination(pageindex);
+        return _mapper.Map<Pagination<AccountResponse>>(response);
+    }
     public async Task<Account> GetAccountByArtworkId(Guid id)
     {
         return await _accountRepository.GetAccountByArtworkId(id);

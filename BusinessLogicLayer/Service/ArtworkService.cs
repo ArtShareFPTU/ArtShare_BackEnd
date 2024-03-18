@@ -4,8 +4,10 @@ using DataAccessLayer.BussinessObject.IRepository;
 
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
+using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Comment;
 
 namespace BusinessLogicLayer.Service;
@@ -136,5 +138,9 @@ public class ArtworkService : IArtworkService
     public async Task<List<ArtworkTag>> GetArtworkTags()
     {
         return await _ArtworkRepository.GetArtworkTags();
+    }
+    public async Task<Pagination<Artwork>> GetAllArtworkPagination(int pageindex = 0)
+    {
+        return await _ArtworkRepository.ToPagination(pageindex);
     }
 }

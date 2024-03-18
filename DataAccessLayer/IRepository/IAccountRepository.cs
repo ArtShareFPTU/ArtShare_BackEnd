@@ -1,4 +1,5 @@
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Account;
 
 namespace DataAccessLayer.BussinessObject.IRepository;
@@ -17,4 +18,5 @@ public interface IAccountRepository
     Task<Account> GetByUserName(string username);
     Task<string> GetAdminAccount(string email, string password);
     Task<List<Account>> GetTop5AccountsNumArtwork();
+    Task<Pagination<Account>> ToPagination(int pageindex = 0);
 }

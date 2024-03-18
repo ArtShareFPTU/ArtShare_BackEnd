@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Artwork;
 
 namespace DataAccessLayer.BussinessObject.IRepository;
@@ -28,5 +29,6 @@ public interface IArtworkRepository
      Task<List<ArtworkTag>> GetArtworkTags();
 
     Task<List<Artwork>> GetArtworkFromSearch(string search);
+    Task<Pagination<Artwork>> ToPagination(int pageindex = 0);
 
 }
