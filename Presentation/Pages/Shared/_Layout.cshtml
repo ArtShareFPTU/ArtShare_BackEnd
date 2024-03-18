@@ -20,11 +20,11 @@
     <script src="js/site.js"></script>
     @*<link href="css/gallerystyle.css" rel="stylesheet" />*@
 </head>
-<body id="page-top">
+<body id="page-top" style="background: #4b4646">
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" style="background: black">
     <div class="container">
-        <a style="text-decoration: none; color: black" href="/HomePage">
+        <a style="text-decoration: none; color: white" href="/HomePage">
             <h3>ARTOln</h3>
         </a>
         <div class="header-container1-right">
@@ -50,9 +50,9 @@
             @if (Context.Session.GetString("Token") is null)
             {
                 <div class="header_Login-img">
-                    <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login"/>
+                    <img style="color: white; width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" alt="login"/>
                     <div class="header-Login header_Login-ht">
-                        <p style="margin-top: 5px;" class="header-Login-p">
+                        <p style="color: white;  margin-top: 5px;" class="header-Login-p">
                             <a asp-page="/LoginPage">Login</a>
                         </p>
 
@@ -63,9 +63,9 @@
                     <div class="header_Login-img">
                         @if(Context.Session.GetString("Avatar") == null)
                         {
-                            <img style="width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" />
+                            <img style="color: white;  width: 36px;height: 36px; border-radius: 50%;" src="~/assets/img/avatar1.png" />
                         }else{
-                            <img style="width: 36px;height: 36px; border-radius: 50%;" src="@Context.Session.GetString("Avatar")" alt="login" />
+                            <img style="color: white;  width: 36px;height: 36px; border-radius: 50%;" src="@Context.Session.GetString("Avatar")" alt="login" />
                         }
                         <div class="header-Login header_Login-ht">
                             <p style="margin-top: 5px;" class="header-Login-p"><a asp-page="/ProfilePage" >My Profile</a></p>
@@ -75,20 +75,20 @@
 
                     </div>
                 </div>
-                <div class="" style="width: contain; color: darkblue; margin: 5px;">@Context.Session.GetString("Username")</div>
+                <div class="" style="color: white;  width: fit-content; margin: 5px;">@Context.Session.GetString("Username")</div>
             }
         </div>
         <div class="cart-header">
             @if (@Context.Session.GetString("cart") != null)
             {
                 <a asp-page="CheckoutPage">
-                    <i style="font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
+                    <i style="font-size: 30px;color: white;" class="fa fa-shopping-cart"></i>
                 </a>
             }
             else
             {
                 <a>
-                    <i style="font-size: 30px;color: black;" class="fa fa-shopping-cart"></i>
+                    <i style="font-size: 30px;color: white;" class="fa fa-shopping-cart"></i>
                 </a>
             }
         </div>

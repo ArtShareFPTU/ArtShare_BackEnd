@@ -55,12 +55,12 @@
         <p>We received your purchase request.</p>
         <p>You can download the file here.</p>
     </div>
+
     <div class="download-form">
-        <form method="post">
-            <input hidden="hidden" name="token" value="@Model.SaveToken"/>
-            <button type="submit">Download</button>
-        </form>
+        <a asp-page="OrderDetailPage" asp-route-id="@Model.Order.Id">DownLoad</a>
     </div>
+
+
 </div>
 </body>
 </html>

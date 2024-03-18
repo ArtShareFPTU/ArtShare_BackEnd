@@ -57,8 +57,7 @@
 </style>
 <main class="detail-content">
     <div class="container-detail">
-        <div class="cover watermark-container">
-            <div class="watermark">ARTOln</div>
+        <div class="cover">
             <img src="@Html.DisplayFor(modle => modle.ArtworkRespone.Url)" alt="">
         </div>
         <div class="content">
@@ -80,7 +79,7 @@
                         @Html.DisplayFor(modle => modle.ArtworkRespone.Description)
                     </p>
 
-                    @if(Model.Username != null && Model.Username != Model.ArtworkRespone.Name){
+                    @if(HttpContext.Session.GetString("Token") == null || Model.Username != Model.ArtworkRespone.Name){
                     <div class="add-to-card" style="padding: 5px 0; width: 426px;display: flex;justify-content: space-evenly;">
                         <form method="post" asp-page-handler="Payment">
                             <input type="hidden" name="Id" value="@Model.ArtworkRespone.Id"/>

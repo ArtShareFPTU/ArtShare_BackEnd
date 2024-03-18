@@ -37,7 +37,7 @@
     <div id="Demo1" class="w3-hide w3-animate-left" style="    max-height: 464px; overflow-y: auto;">
             @foreach (var item in Model.InboxReceiverResponses)
             {
-                <a asp-page="InboxPage" asp-route-id="@item.Id">
+                <a asp-page="InboxPage" asp-route-id="@item.Id" style="text-decoration: none; border: 1px solid black;">
                     <div class="w3-container">
                         <span class="w3-opacity w3-large">@item.Sender</span>
                         <h6>Subject: <span>@item.Title</span></h6>
@@ -110,23 +110,26 @@
     </a>
     @if (Model.InboxDetailResponse != null)
     {
-        <div id="Borge" class="w3-container person">
-            <br>
-            <h5 class="w3-opacity">Subject: @Html.DisplayFor(modle => modle.InboxDetailResponse.Title)</h5>
-            <h4>
-                <i class="fa fa-clock-o"></i> @Html.DisplayFor(modle => modle.InboxDetailResponse.CreateDate)
-            </h4>
-            <a class="w3-button w3-light-grey" href="#">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
-            <a class="w3-button w3-light-grey" href="#">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
-            <hr>
-            <p>
-                @Html.DisplayFor(modle => modle.InboxDetailResponse.Content)
-            </p>
-            <p>
-                <img src="@Model.InboxDetailResponse.file" alt="Image">
-            </p>
+            <div id="Borge" class="w3-container person">
+                <br>
+                <h5 class="w3-opacity">Subject: @Html.DisplayFor(model => model.InboxDetailResponse.Title)</h5>
+                <h4>
+                    <i class="fa fa-clock-o"></i> @Html.DisplayFor(model => model.InboxDetailResponse.CreateDate)
+                </h4>
+                <a class="w3-button w3-light-grey" href="#">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
+                <a class="w3-button w3-light-grey" href="#">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
+                <hr>
+                <p>
+                    @Html.DisplayFor(model => model.InboxDetailResponse.Content)
+                </p>
+                @if (!string.IsNullOrEmpty(Model.InboxDetailResponse.file))
+                {
+                    <p>
+                        <img src="@Model.InboxDetailResponse.file" alt="Image">
+                    </p>
+                }
+            </div>
 
-        </div>
     }
 
 </div>

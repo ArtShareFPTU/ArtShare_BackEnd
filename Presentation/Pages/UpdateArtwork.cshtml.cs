@@ -62,8 +62,8 @@ public class UpdateArtworkModel : PageModel
             Description = Request.Form["ArtworkUpdate.Description"],
             Fee = decimal.Parse(Request.Form["ArtworkUpdate.Fee"]),
             Status = Request.Form["ArtworkUpdate.Status"],
-            ArtworkCategories = Request.Form["ArtworkUpdate.ArtworkCategories"].Select(id => Guid.Parse(id)).ToList(),
-            ArtworkTags = Request.Form["ArtworkUpdate.ArtworkTags"].Select(id => Guid.Parse(id)).ToList()
+            ArtworkCategories = Request.Form["Artwork.ArtworkCategories"].Where(id => !string.IsNullOrEmpty(id)).Select(Guid.Parse).ToList(),
+            ArtworkTags = Request.Form["Artwork.ArtworkTags"].Where(id => !string.IsNullOrEmpty(id)).Select(Guid.Parse).ToList()
         };
 
         var endpoint = _artworkManage + "UpdateArtwork/update";
@@ -95,11 +95,14 @@ public class UpdateArtworkModel : PageModel
         if (response.StatusCode != null)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
                 TempData["AnnounceMessage"] = "Update artwork success";
+                return RedirectToPage("/UpdateArtwork", new { id = artworkUpdate.Id });
+            }
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
                 TempData["AnnounceMessage"] = "This artwork was removed or not existed before";
-                return RedirectToPage();
+                return RedirectToPage("/UpdateArtwork", new { id = artworkUpdate.Id });
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
@@ -108,12 +111,12 @@ public class UpdateArtworkModel : PageModel
             else
             {
                 TempData["AnnounceMessage"] = "Error when updating artwork";
-                return RedirectToPage();
+                return RedirectToPage("/UpdateArtwork", new { id = artworkUpdate.Id });
             }
         }
 
         ModelState.Clear();
-        return RedirectToPage();
+        return RedirectToPage("/UpdateArtwork", new { id = artworkUpdate.Id });
     }
 
 
