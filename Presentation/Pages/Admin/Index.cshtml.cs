@@ -56,7 +56,7 @@ namespace Presentation.Pages.Admin
         }
         private async Task<IEnumerable<Artwork>> GetArtworks(HttpClient client)
         {
-            var endpoint = _adminManage + "Artwork/GetArtworksForAdmin";
+            var endpoint = _adminManage + "Artwork/GetArtworks";
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {

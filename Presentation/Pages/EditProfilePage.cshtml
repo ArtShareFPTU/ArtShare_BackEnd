@@ -29,12 +29,12 @@
                     </div>*@
                     <div class="form-group">
                         <label asp-for="UpdateAccount.Description" class="control-label"></label>
-                        <input asp-for="UpdateAccount.Description" class="form-control" placeholder="@Model.Account.Description"/>
+                        <input asp-for="UpdateAccount.Description" class="form-control" value="@Model.Account.Description" required/>
                         <span asp-validation-for="UpdateAccount.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="UpdateAccount.FullName" class="control-label"></label>
-                        <input asp-for="UpdateAccount.FullName" class="form-control" minlength="3" maxlength="30" placeholder="@Model.Account.FullName"/>
+                        <input asp-for="UpdateAccount.FullName" class="form-control" minlength="3" maxlength="30" value="@Model.Account.FullName" required/>
                         <span asp-validation-for="UpdateAccount.FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">

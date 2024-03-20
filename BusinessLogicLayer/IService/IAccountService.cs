@@ -1,4 +1,5 @@
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Account;
 using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
@@ -18,4 +19,5 @@ public interface IAccountService
     Task<ServiceResponse<string>> Login(string email, string password);
     Task<ServiceResponse<AccountResponse>> CreateNewAccount(CreateAccountRequest userAccount);
     Task<List<Account>> GetTop5AccountsNumArtwork();
+    Task<Pagination<AccountResponse>> GetAllAccountPagination(int pageindex = 0);
 }

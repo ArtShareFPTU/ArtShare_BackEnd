@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Response.Account;
 using Newtonsoft.Json;
 
@@ -15,31 +16,49 @@ namespace Presentation.Pages.Admin
         {
             _httpClientFactory = httpClientFactory;
         }
-        [BindProperty] public IEnumerable<Artwork> artworks { get; set; }
-        public async Task<IActionResult> OnGetAsync()
+        [BindProperty] public Pagination<Artwork> artworks { get; set; }
+        [BindProperty] public int PageIndex { get; set; } = 0;
+        public async Task<IActionResult> OnGetAsync(int? pageIndex)
         {
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-            var art = await GetArtworks(client);
-            if (art == null)
+            if(pageIndex == null)
             {
-                return NotFound();
+                var art = await GetArtworks(PageIndex, client);
+                if (art == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    artworks = art;
+                }
+                return Page();
             }
             else
             {
-                artworks = art;
+                var art = await GetArtworks(pageIndex, client);
+                if (art == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    artworks = art;
+                }
+                return Page();
             }
-            return Page();
+            
         }
-        private async Task<IEnumerable<Artwork>> GetArtworks(HttpClient client)
+        private async Task<Pagination<Artwork>> GetArtworks(int? pageIndex,HttpClient client)
         {
-            var endpoint = _adminManage + "Artwork/GetArtworksForAdmin";
+            var endpoint = _adminManage + $"Artwork/GetArtworksForAdmin/{pageIndex}";
             var response = await client.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<IEnumerable<Artwork>>(content);
+                var result = JsonConvert.DeserializeObject<Pagination<Artwork>>(content);
 
                 return result;
             }

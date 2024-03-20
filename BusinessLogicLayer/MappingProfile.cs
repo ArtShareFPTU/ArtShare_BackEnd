@@ -1,5 +1,6 @@
 using AutoMapper;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Account;
 using ModelLayer.DTOS.Request.Order;
 using ModelLayer.DTOS.Response;
@@ -66,7 +67,7 @@ public class MappingProfile : Profile
             .ForMember(c => c.NumArtwork, opt => opt.MapFrom(a => a.Artworks.Count()))
             .ForMember(c => c.NumFollowers, opt => opt.MapFrom(a => a.FollowFollowers.Count()))
             .ForMember(c => c.NumFollowings, opt => opt.MapFrom(a => a.FollowArtists.Count()));
-
+        CreateMap<Pagination<Account>, Pagination<AccountResponse>>();
         CreateMap<CreateAccountRequest, Account>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(c => c.FullName, opt => opt.MapFrom(a => a.FullName))
@@ -75,5 +76,6 @@ public class MappingProfile : Profile
             .ForMember(c => c.Birthday, opt => opt.MapFrom(a => a.Birthday))
             .ForMember(c => c.Email, opt => opt.MapFrom(a => a.Email))
             .ForMember(c => c.Password, opt => opt.MapFrom(a => a.Password));
+
     }
 }

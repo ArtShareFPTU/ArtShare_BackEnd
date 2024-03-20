@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Account;
 using ModelLayer.DTOS.Response.Account;
 using ModelLayer.DTOS.Response.Commons;
@@ -31,6 +32,12 @@ public class AccountController : ControllerBase
     public async Task<ActionResult<List<AccountResponse>>> GetAccount()
     {
         return await _accountService.GetAllAccountAsync();
+    }
+    [Authorize(Roles = "Admin")]
+    [HttpGet("{pageIndex}")]
+    public async Task<ActionResult<Pagination<AccountResponse>>> GetAccountPagination(int pageIndex = 0)
+    {
+        return await _accountService.GetAllAccountPagination(pageIndex);
     }
 
     // GET: api/Account/5

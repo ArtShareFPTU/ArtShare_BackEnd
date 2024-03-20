@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
+using ModelLayer.DTOS.Response.Account;
 
 namespace BusinessLogicLayer.IService;
 
@@ -27,4 +29,5 @@ public interface IArtworkService
     Task<List<ArtworkTag>> GetArtworkTagByTagId(Guid id);
     Task<List<ArtworkTag>> GetArtworkTags();
     Task<List<Artwork>> GetArtworkFromSearch(string search);
+    Task<Pagination<Artwork>> GetAllArtworkPagination(int pageindex = 0);
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.BussinessObject;
+using ModelLayer.DTOS.Pagination;
 using ModelLayer.DTOS.Request.Artwork;
 using ModelLayer.DTOS.Response;
 
@@ -29,10 +30,10 @@ public class ArtworkController : ControllerBase
         return await _artworkService.GetAllArtworkAsync();
     }
     [Authorize(Roles = "Admin")]
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Artwork>>> GetArtworksForAdmin()
+    [HttpGet("{pageIndex}")]
+    public async Task<ActionResult<Pagination<Artwork>>> GetArtworksForAdmin(int pageIndex = 0)
     {
-        return await _artworkService.GetAllArtworkAsync();
+        return await _artworkService.GetAllArtworkPagination(pageIndex);
     }
     [AllowAnonymous]
 	[HttpGet("{id}")]
