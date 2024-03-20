@@ -60,7 +60,9 @@ public class ArtworkRepository : IArtworkRepository
             if (imgbbURL_Premium == null) return new StatusCodeResult(500);
 
             using var image = SixLabors.ImageSharp.Image.Load(imageData);
-            image.Mutate(x => x.Resize(640, 360)); 
+            int newWidth = (int)(image.Width * 0.9); // Giảm chiều rộng đi 10%
+            int newHeight = (int)(image.Height * 0.9); // Giảm chiều cao đi 10%
+            image.Mutate(x => x.Resize(newWidth, newHeight));
 
             using (var outputStream = new MemoryStream())
             {
