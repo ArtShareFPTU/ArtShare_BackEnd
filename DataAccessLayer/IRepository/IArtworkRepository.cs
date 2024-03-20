@@ -29,6 +29,7 @@ public interface IArtworkRepository
      Task<List<ArtworkTag>> GetArtworkTags();
 
     Task<List<Artwork>> GetArtworkFromSearch(string search);
+    
     Task<Pagination<Artwork>> ToPagination(int pageindex = 0);
 
 }

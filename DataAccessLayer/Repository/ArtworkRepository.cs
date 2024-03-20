@@ -8,16 +8,19 @@ using SixLabors.ImageSharp;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ModelLayer.DTOS.Pagination;
 
 namespace DataAccessLayer.BussinessObject.Repository;
 
 public class ArtworkRepository : IArtworkRepository
 {
     private readonly ArtShareContext _context;
+    protected readonly DbSet<Artwork> _dbSet;
 
     public ArtworkRepository()
     {
         _context = new ArtShareContext();
+        _dbSet = _context.Set<Artwork>();
     }
 
     public async Task<List<Artwork>> GetAllArtworkAsync()
@@ -327,5 +330,23 @@ public class ArtworkRepository : IArtworkRepository
         return checklist;
     }
 
-    
+    public async Task<Pagination<Artwork>> ToPagination(int pageindex = 0)
+    {
+        var itemCount = await _dbSet.CountAsync();
+        var items = await _dbSet
+            .Skip(pageindex * 7)
+            .Include(c => c.Account)
+            .Take(7)
+            .AsNoTracking()
+            .ToListAsync();
+        var result = new Pagination<Artwork>()
+        {
+            PageIndex = pageindex,
+            PageSize = 7,
+            TotalItemCount = itemCount,
+            Items = items,
+        };
+
+        return result;
+    }
 }
