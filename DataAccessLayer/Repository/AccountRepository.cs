@@ -54,6 +54,13 @@ public class AccountRepository : IAccountRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task UnblockAccountAsync(Guid id)
+    {
+        var account = await _context.Accounts.FindAsync(id);
+        account.Status = AccountStatus.Active.ToString();
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<Account> GetAccountByEmail(string email)
     {
         return await _context.Set<Account>().FirstOrDefaultAsync(c => c.Email.ToLower().Equals(email.ToLower()));

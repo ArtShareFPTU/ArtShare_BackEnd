@@ -14,6 +14,7 @@ public interface IAccountService
     Task<Account> GetAccountByArtworkId(Guid id);
     Task<ServiceResponse<AccountResponse>> UpdateAccount(Guid id, UpdateAccountRequest account);
     Task DeleteAccountAsync(Guid id);
+    Task UnblockAccountAsync(Guid id);
     Task<ServiceResponse<string>> Login(string email, string password);
     Task<ServiceResponse<AccountResponse>> CreateNewAccount(CreateAccountRequest userAccount);
 }

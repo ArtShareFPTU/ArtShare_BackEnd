@@ -114,4 +114,10 @@ public class AccountController : ControllerBase
     {
         await _accountService.DeleteAccountAsync(id);
     }
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id}")]
+    public async Task UnBlockAccount(Guid id)
+    {
+        await _accountService.UnblockAccountAsync(id);
+    }
 }

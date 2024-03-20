@@ -9,6 +9,7 @@ public interface IAccountRepository
     Task AddAccountAsync(Account account);
     Task<Account> UpdateAccount(Account account);
     Task DeleteAccountAsync(Guid id);
+    Task UnblockAccountAsync(Guid id);
     Task<Account> GetAccountByArtworkId(Guid id);
     Task<Account> GetAccountByEmail(string email);
     Task<Account> CreateAccount(Account userAccount);

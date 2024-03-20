@@ -45,16 +45,38 @@ namespace Presentation.Pages.Admin
             {
                 var account = await GetAccounts(client);
                 Accounts = account;
-                return BadRequest("Delete unsuccessfully");
+                return Page();
             }
             else
             {
                 var account = await GetAccounts(client);
                 Accounts = account;
-                return Page();
+                
+                return BadRequest("Delete unsuccessfully");
             }
                 
         }
+        public async Task<IActionResult> OnPostUnBlock(Guid id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var key = HttpContext.Session.GetString("Token");
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
+            var un = await UnBlockAccount(id,client);
+            if(un == true)
+            {
+                var account = await GetAccounts(client);
+                Accounts = account;
+                return Page();
+            }
+            else
+            {
+                var account = await GetAccounts(client);
+                Accounts = account;
+
+                return BadRequest("Delete unsuccessfully");
+            }
+        }
+
         private async Task<bool> DeleteAccount(Guid id, HttpClient client)
         {
             var endpoint = _adminManage + $"Account/DeleteAccount/{id}";
@@ -65,6 +87,18 @@ namespace Presentation.Pages.Admin
                 return true;
             }else
             return false;
+        }
+        private async Task<bool> UnBlockAccount(Guid id, HttpClient client)
+        {
+            var endpoint = _adminManage + $"Account/UnBlockAccount/{id}";
+            var response = await client.PutAsync(endpoint,null);
+            if (response.IsSuccessStatusCode)
+            {
+                await response.Content.ReadAsStringAsync();
+                return true;
+            }
+            else
+                return false;
         }
         private async Task<List<AccountResponse>> GetAccounts(HttpClient client)
         {

@@ -199,4 +199,8 @@ public class AccountService : IAccountService
         return respone;
     }
 
+    public async Task UnblockAccountAsync(Guid id)
+    {
+        await _accountRepository.UnblockAccountAsync(id);
+    }
 }
