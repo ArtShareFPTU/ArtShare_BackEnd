@@ -168,6 +168,8 @@ public class AccountRepository : IAccountRepository
         var itemCount = await _dbSet.CountAsync();
         var items = await _dbSet
             .Skip(pageindex * 5)
+            .Include(c => c.Artworks).Include(c => c.FollowFollowers)
+            .Include(c => c.FollowArtists)
             .Take(5)
             .AsNoTracking()
             .ToListAsync();

@@ -340,7 +340,8 @@ public class ArtworkRepository : IArtworkRepository
         var itemCount = await _dbSet.CountAsync();
         var items = await _dbSet
             .Skip(pageindex * 7)
-            .Take(5)
+            .Include(c => c.Account)
+            .Take(7)
             .AsNoTracking()
             .ToListAsync();
         var result = new Pagination<Artwork>()

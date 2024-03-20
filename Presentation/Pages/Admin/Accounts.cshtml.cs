@@ -21,21 +21,37 @@ namespace Presentation.Pages.Admin
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? pageIndex)
         {
             var client = _httpClientFactory.CreateClient();
             var key = HttpContext.Session.GetString("Token");
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", key);
-            var account = await GetAccounts(PageIndex, client);
-            if (account == null)
+            if (pageIndex == null)
             {
-                return NotFound();
+                var art = await GetAccounts(PageIndex, client);
+                if (art == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    Accounts = art;
+                }
+                return Page();
             }
             else
             {
-                Accounts = account;
+                var art = await GetAccounts(pageIndex, client);
+                if (art == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    Accounts = art;
+                }
+                return Page();
             }
-            return Page();
         }
         public async Task<IActionResult> OnPostDelete(Guid id)
         {
@@ -68,7 +84,7 @@ namespace Presentation.Pages.Admin
             }else
             return false;
         }
-        private async Task<Pagination<AccountResponse>> GetAccounts(int pageIndex, HttpClient client)
+        private async Task<Pagination<AccountResponse>> GetAccounts(int? pageIndex, HttpClient client)
         {
             var endpoint = _adminManage + $"Account/GetAccountPagination/{pageIndex}";
             var response = await client.GetAsync(endpoint);
