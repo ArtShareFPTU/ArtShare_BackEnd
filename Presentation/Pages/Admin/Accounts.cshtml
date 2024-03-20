@@ -4,7 +4,15 @@
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
+<script>
+    function confirmDelete() {
+        if (confirm("Are you sure you want to block this account?")) {
 
+        } else {
+            return false;
+        }
+    }
+</script>
 
 <div class="container-fluid px-4">
     <!-- section searchForMobile -->
@@ -140,13 +148,25 @@
                                         <td>@acc.CreateDate.Value.Date.ToString("dd/MM/yyyy")</td>
                                         <td>@acc.Status</td>
                                         <td>
-                                            <a asp-page="Accounts" 
-                                                asp-page-handler="OnPostDelete" asp-route-id="@acc.Id"
-                                               class="amj-a me-2"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#modalDeleteConfirmation">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
+                                            @if (acc.Status == "Active")
+                                            {
+                                                <form asp-page="Accounts" asp-page-handler="Delete" method="post" id="deleteForm">
+                                                    <input type="hidden" name="id" id="accountId" value="@acc.Id" />
+                                                    <button type="submit" class="amj-a me-2 delete-account" onclick="return confirmDelete()">
+                                                        Block
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-page="Accounts" asp-page-handler="UnBlock" method="post">
+                                                    <input type="hidden" name="id" id="accountId" value="@acc.Id" />
+                                                    <button type="submit" class="amj-a me-2 delete-account">
+                                                        UnBlock
+                                                    </button>
+                                                </form>
+                                            }
+
                                         </td>
                                     </tr>
                                 }

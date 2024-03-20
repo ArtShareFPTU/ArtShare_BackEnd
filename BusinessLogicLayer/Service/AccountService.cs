@@ -203,4 +203,8 @@ public class AccountService : IAccountService
     {
         return await _accountRepository.GetTop5AccountsNumArtwork();
     }
+    public async Task UnblockAccountAsync(Guid id)
+    {
+        await _accountRepository.UnblockAccountAsync(id);
+    }
 }

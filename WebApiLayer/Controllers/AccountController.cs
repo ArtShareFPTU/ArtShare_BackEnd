@@ -120,4 +120,11 @@ public class AccountController : ControllerBase
     {
         return await _accountService.GetTop5AccountsNumArtwork();
     }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id}")]
+    public async Task UnBlockAccount(Guid id)
+    {
+        await _accountService.UnblockAccountAsync(id);
+    }
 }
