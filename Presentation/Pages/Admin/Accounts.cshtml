@@ -115,7 +115,7 @@
                                     <th>Username</th>
                                     <th>Created Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @*<th>Action</th>*@
                                 </tr>
                             </thead>
                             <tbody>
@@ -147,7 +147,7 @@
                                         <td>@acc.UserName</td>
                                         <td>@acc.CreateDate.Value.Date.ToString("dd/MM/yyyy")</td>
                                         <td>@acc.Status</td>
-                                        <td>
+                                        @*<td>
                                             @if (acc.Status == "Active")
                                             {
                                                 <form asp-page="Accounts" asp-page-handler="Delete" method="post" id="deleteForm">
@@ -167,7 +167,7 @@
                                                 </form>
                                             }
 
-                                        </td>
+                                        </td>*@
                                     </tr>
                                 }
                             </tbody>
